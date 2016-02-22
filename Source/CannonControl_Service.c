@@ -1,0 +1,217 @@
+/****************************************************************************
+ Module
+   CannonControl_Service.c
+
+ Description
+		
+****************************************************************************/
+/*----------------------------- Include Files -----------------------------*/
+/* include header files for this state machine as well as any machines at the
+   next lower level in the hierarchy that are sub-machines to this machine
+*/
+#include "ES_Configure.h"
+#include "ES_Framework.h"
+#include "CannonControl_Service.h"
+#include "Helpers.h"
+#include "Definitions.h"
+#include "PWM_Service.h"
+#include "Math.h"
+
+/*----------------------------- Module Defines ----------------------------*/
+//Define Gains
+#define P_GAIN 1.92f
+#define D_GAIN 2.5f
+#define I_GAIN .45f
+
+//Cannon Test Speeds in RPM
+#define CANNON_SHOOT_SPEED 30
+#define CANNON_STOP_SPEED 0
+
+/*---------------------------- Module Functions ---------------------------*/
+/* prototypes for private functions for this service.They should be functions
+   relevant to the behavior of this service
+*/
+
+static void calculateControlResponse(uint32_t ThisPeriod, float integralTerm, uint32_t targetSpeed);
+static float CalculateRPM(uint32_t period);
+
+/*---------------------------- Module Variables ---------------------------*/
+// with the introduction of Gen2, we need a module level Priority variable
+static uint8_t MyPriority;
+
+//Encoder Input Capture Variables
+static uint32_t Period;
+static uint32_t LastCapture;
+
+//Target RPM
+static float RPMTarget;
+
+//Controls
+float integralTerm = 0.0; /* integrator control effort */
+
+/*------------------------------ Module Code ------------------------------*/
+/****************************************************************************
+ Function
+     InitCannonControlService
+
+ Parameters
+     uint8_t : the priorty of this service
+
+ Returns
+     bool, false if error in initialization, true otherwise
+
+****************************************************************************/
+bool InitCannonControlService ( uint8_t Priority )
+{
+  ES_Event ThisEvent;
+	
+  MyPriority = Priority;
+  printf("Cannon Service Attempt Initialization \n\r");
+	
+	//Initialize Our Input Captures for Encoder
+	InitInputCapture(CANNON_ENCODER_INTERRUPT_PARAMATERS);
+	
+	//Initialize Periodic Interrupt for Control Laws
+	InitPeriodic(CANNON_CONTROL_INTERRUPT_PARAMATERS);
+  
+	printf("Cannon Service Initialized \n\r");
+	
+	// post the initial transition event
+  ThisEvent.EventType = ES_INIT;
+  if (ES_PostToService( MyPriority, ThisEvent) == true)
+  {
+      return true;
+  }else
+  {
+      return false;
+  }
+}
+
+/****************************************************************************
+ Function
+     PostCannonControlService
+
+ Parameters
+     EF_Event ThisEvent ,the event to post to the queue
+
+ Returns
+     bool false if the Enqueue operation failed, true otherwise
+****************************************************************************/
+bool PostCannonControlService( ES_Event ThisEvent )
+{
+  return ES_PostToService( MyPriority, ThisEvent);
+}
+
+/****************************************************************************
+ Function
+    RunCannonControlService
+
+ Parameters
+   ES_Event : the event to process
+
+ Returns
+   ES_Event, ES_NO_EVENT if no error ES_ERROR otherwise
+
+****************************************************************************/
+ES_Event RunCannonControlService( ES_Event ThisEvent )
+{
+  ES_Event ReturnEvent;
+  ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
+
+	//If we are in testing mode
+	if(TESTING_MODE){
+	
+		//If we receive any of these events (from keyboard presses)
+		switch (ThisEvent.EventType){
+			case (ES_START_CANNON):
+				{
+					//For Testing
+					setTargetCannonSpeed(CANNON_SHOOT_SPEED);
+					//For Actual Implementation
+					//setTargetCannonSpeed(RPMTarget);
+				}
+				break;
+			case (ES_STOP_CANNON):
+				{
+					setTargetCannonSpeed(CANNON_STOP_SPEED);
+				}
+				break;
+		}
+	}
+	
+  return ReturnEvent;
+}
+
+/***************************************************************************
+Interrupt Responses
+ ***************************************************************************/
+void CannonEncoder_InterruptResponse(void){
+	uint32_t ThisCapture;
+
+	// start by clearing the source of the interrupt, the input capture event
+	clearCaptureInterrupt(CANNON_ENCODER_INTERRUPT_PARAMATERS);
+
+	// now grab the captured value and calculate the period
+	ThisCapture = captureInterrupt(CANNON_ENCODER_INTERRUPT_PARAMATERS);
+
+  //Update the Period based on the difference between the two rising edges
+	Period = ThisCapture - LastCapture;
+
+	// update LastCapture to prepare for the next edge
+	LastCapture = ThisCapture;
+}
+
+//Interrupt Response to Manage our Control Feedback loop to the motors
+void CannonControl_PeriodicInterruptResponse(void){
+	// start by clearing the source of the interrupt
+	clearPeriodicInterrupt(CANNON_CONTROL_INTERRUPT_PARAMATERS);
+	
+	//Calculate Control Response individually
+	calculateControlResponse(Period, integralTerm, RPMTarget);
+}
+
+/***************************************************************************
+Control Law
+ ***************************************************************************/
+static void calculateControlResponse(uint32_t ThisPeriod, float integralTerm, uint32_t targetSpeed){
+	static float RPMError; /* make static for speed */
+	static float LastError; /* for Derivative Control */
+	static float currentRPM;
+	
+	//Calculate RPM (Need new formula
+	currentRPM = CalculateRPM(ThisPeriod);
+	
+	//Calculate Error (absolute)
+	RPMError = fabs(targetSpeed) - currentRPM; //fabs is absolute value
+	
+	/*
+	printf("\n\r period %d", ThisPeriod);
+	printf("\n\r targetSpeed %d", targetSpeed);
+	printf("\n\r currentRPM %d", currentRPM);
+	printf("\n\r RPMError %d", RPMError);
+	*/
+	
+	//Determine Integral Term
+	integralTerm += I_GAIN * RPMError;
+	integralTerm = clamp(integralTerm, 0, 100); /* anti-windup */
+	
+	//Calculate Desired Duty Cycle
+	uint8_t RequestedDuty = (P_GAIN * ((RPMError)+integralTerm+(D_GAIN * (RPMError-LastError))));
+	
+	//Call the Swet PWM Function
+	SetPWM_Cannon(RequestedDuty);
+}
+
+
+/****************************************************************************
+ Function
+     Set the New Target Speed Function
+****************************************************************************/
+void setTargetCannonSpeed(uint32_t newCannonRPM){
+	RPMTarget = newCannonRPM;
+}
+
+static float CalculateRPM(uint32_t period) 
+{
+	return ((TICKS_PER_MS * SECS_PER_MIN * MS_PER_SEC * FLYWHEEL_GEAR_RATIO) / ((float) period * ENCODER_PULSES_PER_REV));
+}
