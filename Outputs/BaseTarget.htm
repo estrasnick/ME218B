@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Outputs\BaseTarget.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Outputs\BaseTarget.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5040049: Last Updated: Sun Feb 21 22:58:01 2016
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5040049: Last Updated: Sun Feb 21 23:50:59 2016
 <BR><P>
 <H3>Maximum Stack Usage =        344 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -992,8 +992,8 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> es_framework.o(.constdata)
 </UL>
-<P><STRONG><a name="[cb]"></a>InitInputCapture</STRONG> (Thumb, 266 bytes, Stack size 36 bytes, helpers.o(i.InitInputCapture))
-<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = InitInputCapture
+<P><STRONG><a name="[cb]"></a>InitInputCapture</STRONG> (Thumb, 300 bytes, Stack size 52 bytes, helpers.o(i.InitInputCapture))
+<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = InitInputCapture
 </UL>
 <BR>[Called By]<UL><LI><a href="#[25]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPeriscopeControlService
 <LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitCannonControlService
@@ -1050,7 +1050,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> es_framework.o(.constdata)
 </UL>
 <P><STRONG><a name="[23]"></a>InitPhotoTransistorService</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, phototransistor_service.o(i.InitPhotoTransistorService))
-<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = InitPhotoTransistorService &rArr; InitInputCapture
+<BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = InitPhotoTransistorService &rArr; InitInputCapture
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitInputCapture
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_PostToService
@@ -1117,7 +1117,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_rvmdk.o(RESET)
 </UL>
-<P><STRONG><a name="[9]"></a>PhotoTransistor_InterruptResponse</STRONG> (Thumb, 264 bytes, Stack size 24 bytes, phototransistor_service.o(i.PhotoTransistor_InterruptResponse))
+<P><STRONG><a name="[9]"></a>PhotoTransistor_InterruptResponse</STRONG> (Thumb, 352 bytes, Stack size 24 bytes, phototransistor_service.o(i.PhotoTransistor_InterruptResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152 + Unknown Stack Size
 <LI>Call Chain = PhotoTransistor_InterruptResponse &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
@@ -2023,7 +2023,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[f2]"></a>initializeHEInterrupts</STRONG> (Thumb, 54 bytes, Stack size 8 bytes, halleffect_sm.o(i.initializeHEInterrupts))
-<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = initializeHEInterrupts &rArr; InitInputCapture
+<BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = initializeHEInterrupts &rArr; InitInputCapture
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitInputCapture
 </UL>
