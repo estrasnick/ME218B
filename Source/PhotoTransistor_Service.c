@@ -21,8 +21,8 @@
 /*----------------------------- Module Defines ----------------------------*/
 
 #define PERIOD_MEASURING_ERROR_TOLERANCE 25 //in microseconds
-#define NUMBER_CONSECUTIVE_PULSES_2STORE 7
-#define NUMBER_PULSES_TO_BE_ALIGNED 7
+#define NUMBER_CONSECUTIVE_PULSES_2STORE 4
+#define NUMBER_PULSES_TO_BE_ALIGNED 4
 #define NUMBER_PHOTOTRANSISTORS 1
 #define NUMBER_BEACON_FREQUENCIES 4
 
@@ -73,8 +73,6 @@ static Beacon beacons[] =
 static uint32_t PhotoTransistor_LastPeriods[NUMBER_CONSECUTIVE_PULSES_2STORE];
 
 static uint32_t LastCapture;
-
-static bool NewData = false;
 
 static uint8_t LastBeacon = NULL_BEACON;
 
@@ -178,22 +176,6 @@ float GetBeaconAngle(uint8_t beaconIndex)
 	return beacons[beaconIndex].lastEncoderAngle;
 }
 
-/****************************************************************************
- Function
-    ResetNewData()
-
- Parameters
-   
-
- Returns
-   
-
-****************************************************************************/
-void ResetNewData(void)
-{
-	NewData = false;
-}
-
 /***************************************************************************
  private functions
  ***************************************************************************/
@@ -230,10 +212,6 @@ void PhotoTransistor_InterruptResponse(void)
 	// If so, update the beacon structure
 	if (matchingBeacon != NULL_BEACON)
 	{
-		if (matchingBeacon != LastBeacon)
-		{
-			NewData = true;
-		}
 		LastBeacon = matchingBeacon;
 		beacons[matchingBeacon].lastUpdateTime = ThisCapture;
 		beacons[matchingBeacon].lastEncoderAngle = GetPeriscopeAngle();
@@ -257,7 +235,7 @@ void PhotoTransistor_InterruptResponse(void)
 	// Determine if we should recalculate our position and angle
 	if (matchingBeacon == BEACON_INDEX_NW && TimeForUpdate())
 	{
-		NewData = false;
+		ResetUpdateTimes();
 		ES_Event NewEvent;
 		NewEvent.EventType = ES_CALCULATE_POSITION;
 		PostPositionLogicService(NewEvent);
@@ -306,7 +284,7 @@ static bool IsBeaconMatch(uint8_t beaconIndex)
 
 static bool TimeForUpdate()
 {
-	bool returnVal = (NewData && (beacons[BEACON_INDEX_NW].lastUpdateTime > beacons[BEACON_INDEX_NE].lastUpdateTime) && (beacons[BEACON_INDEX_NE].lastUpdateTime > beacons[BEACON_INDEX_SE].lastUpdateTime));
+	bool returnVal = ((beacons[BEACON_INDEX_NW].lastUpdateTime > beacons[BEACON_INDEX_NE].lastUpdateTime) && (beacons[BEACON_INDEX_NE].lastUpdateTime > beacons[BEACON_INDEX_SE].lastUpdateTime) && (beacons[BEACON_INDEX_SE].lastUpdateTime != 0));
 	return returnVal;
 }
 
@@ -314,4 +292,12 @@ static bool TimeForUpdate()
 static bool ToleranceCheck(uint32_t period, uint32_t targetPeriod, uint8_t tolerance)
 {
 	return ((period <= targetPeriod + tolerance) && (period >= targetPeriod - tolerance));
+}
+
+void ResetUpdateTimes(void)
+{
+	for (int i = 0; i < NUMBER_BEACON_FREQUENCIES; i++)
+	{
+		beacons[i].lastUpdateTime = 0;
+	}
 }

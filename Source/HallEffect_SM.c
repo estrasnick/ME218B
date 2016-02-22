@@ -52,9 +52,9 @@
 static ES_Event DuringMeasure_t( ES_Event Event);
 static ES_Event DuringRequesting_t( ES_Event Event);
 
-void initializeHEInterrupts();
-void enableHEInterrupts();
-void disableHEInterrupts();
+void initializeHEInterrupts(void);
+void enableHEInterrupts(void);
+void disableHEInterrupts(void);
 
 void updatePeriodArrays(uint8_t sensor_index, uint32_t CurrentPeriod);
 void detectPollingStation(uint8_t sensor_index);
@@ -303,7 +303,7 @@ static ES_Event DuringRequesting_t( ES_Event Event)
 Interrupt Helper Functinos
  ***************************************************************************/
 //Initializes all the Hall Effect Sensor Interrupts
-void initializeHEInterrupts(){
+void initializeHEInterrupts(void){
 		InitInputCapture(HALLSENSOR_OUTER_LEFT_INTERRUPT_PARAMATERS);
 		InitInputCapture(HALLSENSOR_INNER_LEFT_INTERRUPT_PARAMATERS);
 		InitInputCapture(HALLSENSOR_INNER_RIGHT_INTERRUPT_PARAMATERS);
@@ -311,7 +311,7 @@ void initializeHEInterrupts(){
 }
 
 //Enables all the Hall Effect Sensor Interrupts
-void enableHEInterrupts(){
+void enableHEInterrupts(void){
 		enableCaptureInterrupt(HALLSENSOR_OUTER_LEFT_INTERRUPT_PARAMATERS);
 		enableCaptureInterrupt(HALLSENSOR_INNER_LEFT_INTERRUPT_PARAMATERS);
 		enableCaptureInterrupt(HALLSENSOR_INNER_RIGHT_INTERRUPT_PARAMATERS);
@@ -319,7 +319,7 @@ void enableHEInterrupts(){
 }
 
 //Disables all the Hall Effect Sensor Interrupts
-void disableHEInterrupts(){
+void disableHEInterrupts(void){
 		disableCaptureInterrupt(HALLSENSOR_OUTER_LEFT_INTERRUPT_PARAMATERS);
 		disableCaptureInterrupt(HALLSENSOR_INNER_LEFT_INTERRUPT_PARAMATERS);
 		disableCaptureInterrupt(HALLSENSOR_INNER_RIGHT_INTERRUPT_PARAMATERS);
@@ -438,7 +438,6 @@ Detect Polling Stations
  ***************************************************************************/
 void detectPollingStation(uint8_t sensor_index){
 	//set boolean signaling variable PS_detected = false
-	bool PS_Detected = false;
 
 	//first check if the last period is within the tolerance of anything we care about
 	uint32_t periodMatchIndex = PS_Period_Comparison(HallSensor_LastPeriods[0][sensor_index]);

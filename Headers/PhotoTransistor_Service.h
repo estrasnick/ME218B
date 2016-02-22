@@ -29,7 +29,7 @@ void PhotoTransistor_InterruptResponse(void);
 
 uint32_t GetLastUpdateTime(uint8_t beaconIndex);
 float GetBeaconAngle(uint8_t beaconIndex);
-void ResetNewData(void);
+void ResetUpdateTimes(void);
 
 #endif 
 

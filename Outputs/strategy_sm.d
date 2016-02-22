@@ -37,3 +37,4 @@
 .\outputs\strategy_sm.o: .\Headers\GameInfo.h
 .\outputs\strategy_sm.o: .\Headers\EnemyCaptureQueue.h
 .\outputs\strategy_sm.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\string.h
+.\outputs\strategy_sm.o: .\Headers\DriveTrainControl_Service.h

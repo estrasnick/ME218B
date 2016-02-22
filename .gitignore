@@ -1,0 +1,4 @@
+*.crf
+*.htm
+*.o
+.gitignore

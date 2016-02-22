@@ -39,7 +39,7 @@ static float ToRadians(float degrees);
 static float ToDegrees(float radians);
 //static float ToAppropriateRange_R(float angle);
 static uint32_t EncoderTicksForGivenAngle(float angle);
-static float DetermineDistanceToTarget();
+static float DetermineDistanceToTarget(void);
 static float DetermineAngleToTarget(float distanceToTarget);
 static void AlignToTarget(void);
 static void DriveToTarget(void);
@@ -56,6 +56,8 @@ static float TargetX;
 static float TargetY;
 
 static bool AbsolutePosition = false;
+
+static float AngleToRotate;
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -190,7 +192,17 @@ float DistanceToPoint(float TargetX, float TargetY)
 	float yDist = TargetY - myY;
 	float xDist = TargetX - myX;
 	
+	printf("Distance to point %f, %f is %f\r\n", TargetX, TargetY, sqrt((yDist * yDist) + (xDist * xDist)));
+	
 	return sqrt((yDist * yDist) + (xDist * xDist));
+}
+
+/***************************************************************************
+ Update position after rotation
+ ***************************************************************************/
+void ApplyRotationAngle(void)
+{
+	myTheta = ToAppropriateRange(myTheta + AngleToRotate);
 }
 
 /***************************************************************************
@@ -224,13 +236,13 @@ static void CalculateAbsolutePosition()
 	
 	myX = 96.0 - (96.0 * sin(gamma) * (sin(PI - gamma - BMinusC)/sin(PI - BMinusC)));
 	myY = 96.0 - (96.0 * sin(delta) * (sin(PI - delta - AMinusB)/sin(PI - AMinusB)));
-	
+
 	myTheta = ToAppropriateRange(ToDegrees(ToRadians(360 - GetBeaconAngle(BEACON_INDEX_NE)) + gamma + BMinusC - (.5f * PI)));
 	
 	//print our absolute position
 	printf("ABSOLUTE POSITION: X: %f, Y: %f, theta: %f\n\r", myX, myY, myTheta);	
-	printf("A was: %f, B was: %f, C was: %f, gamma was: %f\r\n", 360 -  GetBeaconAngle(BEACON_INDEX_NW), 360 -  GetBeaconAngle(BEACON_INDEX_NE),360 -  GetBeaconAngle(BEACON_INDEX_SE), ToDegrees(gamma));
-	
+	printf("A was: %f, B was: %f, C was: %f, gamma was: %f\r\n", GetBeaconAngle(BEACON_INDEX_NW), GetBeaconAngle(BEACON_INDEX_NE), GetBeaconAngle(BEACON_INDEX_SE), ToDegrees(gamma));
+	  
 	AbsolutePosition = true;
 	
 	// Reenable the phototransistor interrupts
@@ -287,6 +299,7 @@ static void CalculateRelativePosition()
 	myX += displacement * cos(displacementAngle);
 	myY += displacement * sin(displacementAngle);
 	myTheta = myNewTheta;
+	AbsolutePosition = false;
 }
 
 // Convert Encoder ticks to linear distance measurement
@@ -348,7 +361,7 @@ static uint32_t EncoderTicksForGivenAngle(float angle)
 	return (ToRadians(angle) * DISTANCE_BETWEEN_WHEELS * DRIVE_GEAR_RATIO * ENCODER_PULSES_PER_REV) / (2 * WHEEL_CIRCUMFERENCE);
 }
 
-static float DetermineDistanceToTarget()
+static float DetermineDistanceToTarget(void)
 {
 	printf("Target x: %f, Target y: %f, My x: %f, My y: %f\r\n", TargetX, TargetY, myX, myY);
 	float yDist = TargetY - myY;
@@ -365,8 +378,11 @@ static float DetermineAngleToTarget(float distanceToTarget)
 		printf("less than 0\r\n");
 		theta = ToAppropriateRange(180 - theta);
 	}
+	
+	AngleToRotate = ToAppropriateRange(myTheta - theta);
+	
 	//printf("theta is: %f\r\n", ToAppropriateRange(theta));
-	return ToAppropriateRange(myTheta - theta);
+	return AngleToRotate;
 }
 
 static void AlignToTarget(void)
@@ -380,6 +396,7 @@ static void AlignToTarget(void)
  
 static void DriveToTarget(void)
 {
+	printf("Driving to target: myx: %f, myy: %f, mytheta: %f\r\n", myX, myY, myTheta);
 	uint32_t ticks = ConvertInchesToEncoderTicks(DetermineDistanceToTarget());
 	setTargetEncoderTicks(ticks, ticks, false, false);
 }

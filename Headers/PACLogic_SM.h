@@ -21,7 +21,7 @@ uint8_t ReadDataRegister(void);
 void WriteDataRegister(uint8_t data);
 void SSI_InterruptResponse(void);
 
-uint8_t GetTargetFrequencyIndex();
+uint8_t GetTargetFrequencyIndex(void);
 void SetTargetFrequencyIndex(uint8_t index);
 
 #endif /*SHMTemplate_H */

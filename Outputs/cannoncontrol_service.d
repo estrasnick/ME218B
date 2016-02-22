@@ -32,3 +32,4 @@
 .\outputs\cannoncontrol_service.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/interrupt.h
 .\outputs\cannoncontrol_service.o: .\Headers\PWM_Service.h
 .\outputs\cannoncontrol_service.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\Math.h
+.\outputs\cannoncontrol_service.o: .\Headers\Master_SM.h

@@ -27,6 +27,7 @@
 #include "PeriscopeControl_Service.h"
 #include "GameInfo.h"
 #include "EnemyCaptureQueue.h"
+#include "DriveTrainControl_Service.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 // define constants for the states for this machine
@@ -131,12 +132,10 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 						//Check for Specific Events
 						if (CurrentEvent.EventType == ES_NEW_DESTINATION)
 						{
-							if (!checkResponseReadyByte()){
-								PausePositioning();
-								NextState = FaceTarget_t; //ie. we want to exit and reenter
-								MakeTransition = true;
-								printf("Transitioning to FaceTarget_t\r\n");
-							}
+							PausePositioning();
+							NextState = FaceTarget_t; //ie. we want to exit and reenter
+							MakeTransition = true;
+							printf("Transitioning to FaceTarget_t\r\n");
 						}
 				 }
 				 break;
@@ -156,6 +155,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 							printf("ES_Arrived in FaceTarget\r\n");
 							NextState = Travel_t; //ie. we want to exit and reenter
 							MakeTransition = true;
+							ApplyRotationAngle();
 						}
 						else if (CurrentEvent.EventType == ES_PS_DETECTED)
 						{
@@ -188,7 +188,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 						{
 							ResumePositioning();
 							printf("Arrived at target\r\n");
-							NextState = FaceTarget_t;
+							NextState = ChooseDestination_t;
 							MakeTransition = true;
 						}
 				 }
@@ -438,6 +438,7 @@ static ES_Event DuringTravel_t( ES_Event Event)
 				NewEvent.EventType = ES_DRIVE_TO_TARGET;
 				PostPositionLogicService(NewEvent);
 			
+				ES_Timer_InitTimer(RELATIVE_POSITION_TIMER, RELATIVE_POSITION_T);
         // after that start any lower level machines that run in this state
         
         // repeat the StartxxxSM() functions for concurrent state machines
@@ -451,7 +452,7 @@ static ES_Event DuringTravel_t( ES_Event Event)
         
         // repeat for any concurrently running state machines
         // now do any local exit functionality
-      
+				ResetEncoderTicks(); 
     }else
     // do the 'during' function for this state
     {
@@ -524,7 +525,9 @@ static void ChooseDestination(void)
 		}*/
 		else
 		{
-			priority = (PRI_CAPTURE_HISTORY_MULTIPLIER * ((PositionInQueue(i) != NOT_IN_QUEUE) ? NOT_IN_QUEUE - PositionInQueue(i) : 0)) 
+			printf("position in queue: %d\r\n", PositionInQueue(i));
+			
+			priority = (PRI_CAPTURE_HISTORY_MULTIPLIER * PositionInQueue(i))
 			+ (PRI_DISTANCE_MULTIPLIER * DistanceToPoint(GetStationX(i), GetStationY(i)));
 		}
 		
@@ -533,6 +536,8 @@ static void ChooseDestination(void)
 			bestPriority = priority;
 			bestStation = i;
 		}
+		
+		printf("Location: %d, priority: %d\r\n", i , priority);
 	}
 	
 	TargetStation = bestStation;
@@ -542,38 +547,47 @@ static void ChooseDestination(void)
 		case (0):
 		{
 			printf("Choosing Destination: Sacramento\r\n");
+			break;
 		}
 		case (1):
 		{
 			printf("Choosing Destination: Seattle\r\n");
+			break;
 		}
 		case (2):
 		{
 			printf("Choosing Destination: Billings\r\n");
+			break;
 		}
 		case (3):
 		{
 			printf("Choosing Destination: Denver\r\n");
+			break;
 		}
 		case (4):
 		{
 			printf("Choosing Destination: Dallas\r\n");
+			break;
 		}
 		case (5):
 		{
 			printf("Choosing Destination: Chicago\r\n");
+			break;
 		}
 		case (6):
 		{
 			printf("Choosing Destination: Miami\r\n");
+			break;
 		}
 		case (7):
 		{
 			printf("Choosing Destination: Washington\r\n");
+			break;
 		}
 		case (8):
 		{
 			printf("Choosing Destination: Concord\r\n");
+			break;
 		}
 	}
 	ES_Event NewEvent;
@@ -586,14 +600,16 @@ uint8_t GetTargetStation(void)
 	return TargetStation;
 }
 
-void PausePosition(void)
+static void PausePositioning(void)
 {
+	printf("Disabling positioning\r\n");
 	LatchPeriscope();
 	disableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 }
 
-void ResumePosition(void)
+static void ResumePositioning(void)
 {
+	printf("Enabling positioning\r\n");
 	enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 	UnlatchPeriscope();
 }

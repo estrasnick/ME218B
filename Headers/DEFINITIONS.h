@@ -238,7 +238,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define	CANNON_PWM						M0PWM2
 #define	PERISCOPE_PWM 				M0PWM3
 #define	HOPPER_PWM 						M0PWM0
-#define PERISCOPE_LATCH_WPM   M0PWM1
+#define PERISCOPE_LATCH_PWM   M0PWM1
 
 //PERIODS ARE IN MICROSECONDS
 //ASSIGN THE PERIODS
@@ -286,10 +286,10 @@ Definitions header file for any definitiosn taht should be included throughout e
 //Acknowledged
 typedef enum { NACK_b, ACK_b, Blocked_b, Busy_b } Acknowledge_b ;
 //Red Blue None
-typedef enum { Unclaimed_b, BLUE_b, RED_b, Undefined_b} Claimed_b ;
+typedef enum { RED_b, BLUE_b, Unclaimed_b, Undefined_b} Claimed_b ;
 
 //Acknowledged Structure
-typedef struct {
+typedef struct { 
 	Acknowledge_b state;
 	uint8_t	bits;
 } Acknowledge_st;
@@ -399,11 +399,11 @@ static uint8_t PS_Frequency_Codes[] = {
 	
 #define NULL_STATION 10
 	
-#define DEFAULT_DRIVE_RPM 60.0
-#define NOT_IN_QUEUE 0xff
+#define DEFAULT_DRIVE_RPM 60.0f
+#define NOT_IN_QUEUE 0x30
 
 #define PRI_DISTANCE_MULTIPLIER 1
-#define PRI_CAPTURE_HISTORY_MULTIPLIER 2000
+#define PRI_CAPTURE_HISTORY_MULTIPLIER 20
 
 #define NULL_BEACON 5
 	

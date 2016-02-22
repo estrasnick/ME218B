@@ -79,12 +79,6 @@ static bool isMoving = false; //initialize to false
 
 
 
-static bool displayinfo = false;
-
-static int testvar;
-
-
-
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
  Function
@@ -165,7 +159,6 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 	//If we are in testing mode
 	if(TESTING_MODE){
 		
-		static bool forward = true;
 		//If we received a timeout from our rotate timer post a ES_STOP_DRIVE event
 		if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == ROTATE_TESTING_TIMER)){
 			ES_Event NewEvent;
@@ -184,7 +177,6 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 				printf("Driving forward half speed\r\n");
 				setTargetEncoderTicks(250, 250, 0, 0);
 				//setTargetDriveSpeed(80, 80);
-				displayinfo = true;
 				//SetPWM_DriveLeft(HALF_SPEED_L, LEFT_DRIVE_FORWARD_PIN_DIRECTION);
 				//SetPWM_DriveRight(HALF_SPEED_R, RIGHT_DRIVE_FORWARD_PIN_DIRECTION);		
 				
