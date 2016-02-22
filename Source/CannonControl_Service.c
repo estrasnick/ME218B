@@ -16,6 +16,7 @@
 #include "Definitions.h"
 #include "PWM_Service.h"
 #include "Math.h"
+#include "Master_SM.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 //Define Gains
@@ -24,7 +25,7 @@
 #define I_GAIN .45f
 
 //Cannon Test Speeds in RPM
-#define CANNON_SHOOT_SPEED 30
+#define CANNON_SHOOT_SPEED 30 //change this target to create a map of how far we shoot with different Cannon Speeds
 #define CANNON_STOP_SPEED 0
 
 /*---------------------------- Module Functions ---------------------------*/
@@ -134,10 +135,23 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
 			case (ES_STOP_CANNON):
 				{
 					setTargetCannonSpeed(CANNON_STOP_SPEED);
-					puts("n");
 				}
 				break;
 		}
+	} 	else { //if we are not in testing mode
+			switch (ThisEvent.EventType){
+			case (ES_START_CANNON):
+				{
+					//For Actual Implementation
+					setTargetCannonSpeed(ThisEvent.EventParam); //getting passed the value as a paramater
+				}
+				break;
+			case (ES_STOP_CANNON):
+				{
+					setTargetCannonSpeed(CANNON_STOP_SPEED);
+				}
+				break;
+			}
 	}
 	
   return ReturnEvent;
@@ -185,6 +199,13 @@ static void calculateControlResponse(uint32_t ThisPeriod, float integralTerm, ui
 	//Calculate Error (absolute)
 	RPMError = fabs(targetSpeed) - currentRPM; //fabs is absolute value
 	
+	//If the RPM error is zero and hasn't been before then post that we are at the correct speed
+	if ((RPMError == 0) & (LastError != 0)){
+		ES_Event ThisEvent;
+		ThisEvent.EventType = ES_CANNON_READY;
+		PostMasterSM(ThisEvent);
+	}
+
 	/*
 	printf("\n\r period %d", ThisPeriod);
 	printf("\n\r targetSpeed %d", targetSpeed);
@@ -199,8 +220,11 @@ static void calculateControlResponse(uint32_t ThisPeriod, float integralTerm, ui
 	//Calculate Desired Duty Cycle
 	uint8_t RequestedDuty = (P_GAIN * ((RPMError)+integralTerm+(D_GAIN * (RPMError-LastError))));
 	
-	//Call the Swet PWM Function
-	SetPWM_Cannon(RequestedDuty);
+	//Save the Last Error
+	LastError = RPMError;
+		
+	//Call the Set PWM Function on the clamped RequestedDuty Value
+	SetPWM_Cannon(clamp(RequestedDuty, 0, 100));
 }
 
 
@@ -212,7 +236,8 @@ void setTargetCannonSpeed(uint32_t newCannonRPM){
 	RPMTarget = newCannonRPM;
 }
 
+//Returns the RPM
 static float CalculateRPM(uint32_t period) 
 {
-	return ((TICKS_PER_MS * SECS_PER_MIN * MS_PER_SEC * FLYWHEEL_GEAR_RATIO) / ((float) period * ENCODER_PULSES_PER_REV));
+	return ((TICKS_PER_MS * SECS_PER_MIN * MS_PER_SEC) / ((float) period * FLYWHEEL_GEAR_RATIO * ENCODER_PULSES_PER_REV));
 }
