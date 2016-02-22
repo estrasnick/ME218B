@@ -24,6 +24,7 @@
 */
 #include "Strategy_SM.h"
 #include "PositionLogic_Service.h"
+#include "PeriscopeControl_Service.h"
 #include "GameInfo.h"
 #include "EnemyCaptureQueue.h"
 
@@ -52,6 +53,9 @@ static ES_Event DuringTravel_t( ES_Event Event);
 static ES_Event DuringStationCapture_t( ES_Event Event);
 
 static void ChooseDestination(void);
+
+static void PausePositioning(void);
+static void ResumePositioning(void);
 
 /*---------------------------- Module Variables ---------------------------*/
 // everybody needs a state variable, you may need others as well
@@ -128,7 +132,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 						if (CurrentEvent.EventType == ES_NEW_DESTINATION)
 						{
 							if (!checkResponseReadyByte()){
-								disableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
+								PausePositioning();
 								NextState = FaceTarget_t; //ie. we want to exit and reenter
 								MakeTransition = true;
 								printf("Transitioning to FaceTarget_t\r\n");
@@ -156,7 +160,8 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 						else if (CurrentEvent.EventType == ES_PS_DETECTED)
 						{
 							printf("ES_PS_DETECTED in FaceTarget\r\n");
-							enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
+							ResumePositioning();
+							
 							NextState = StationCapture_t; //ie. we want to exit and reenter
 							MakeTransition = true;
 						}
@@ -177,11 +182,11 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 						{
 							NextState = StationCapture_t; //ie. we want to exit and reenter
 							MakeTransition = true;
-							enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
+							ResumePositioning();
 						}
 						else if (CurrentEvent.EventType == ES_ARRIVED)
 						{
-							enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
+							ResumePositioning();
 							printf("Arrived at target\r\n");
 							NextState = FaceTarget_t;
 							MakeTransition = true;
@@ -579,4 +584,16 @@ static void ChooseDestination(void)
 uint8_t GetTargetStation(void)
 {
 	return TargetStation;
+}
+
+void PausePosition(void)
+{
+	LatchPeriscope();
+	disableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
+}
+
+void ResumePosition(void)
+{
+	enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
+	UnlatchPeriscope();
 }

@@ -33,6 +33,7 @@
 .\outputs\strategy_sm.o: .\Headers\Helpers.h
 .\outputs\strategy_sm.o: .\Headers\Strategy_SM.h
 .\outputs\strategy_sm.o: .\Headers\PositionLogic_Service.h
+.\outputs\strategy_sm.o: .\Headers\PeriscopeControl_Service.h
 .\outputs\strategy_sm.o: .\Headers\GameInfo.h
 .\outputs\strategy_sm.o: .\Headers\EnemyCaptureQueue.h
 .\outputs\strategy_sm.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\string.h

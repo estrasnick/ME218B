@@ -265,6 +265,8 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define PERISCOPE_LATCH_PWM_PARAMATERS    PERISCOPE_LATCH_PWM, PERISCOPE_LATCH_PERIOD
 
 #define PERISCOPE_PWM_DUTY 30 //45
+#define PERISCOPE_LATCH_DUTY 75
+#define PERISCOPE_UNLATCH_DUTY 25
 
 //*******************************************************************************************
 //--------------------------------- SPI COMMANDS --------------------------------------

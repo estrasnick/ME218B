@@ -21,6 +21,7 @@ void SetPWM_DriveRight(float duty, uint32_t direction);
 void SetPWM_Periscope(float duty);
 void SetPWM_Hopper(float duty);
 void SetPWM_Cannon(float duty);
+void SetPWM_PeriscopeLatch(float duty);
 
 #endif 
 
