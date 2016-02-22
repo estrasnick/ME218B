@@ -702,7 +702,7 @@ I (C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib\timer.h)(0x541C60B5)
 I (C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib\interrupt.h)(0x541C60B5)
 I (.\Headers\EnemyCaptureQueue.h)(0x56CA5968)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5346FF24)
-F (.\Source\Strategy_SM.c)(0x56CA596B)(-c --cpu Cortex-M4.fp -g -O2 --apcs=interwork --split_sections -IC:\ti\TivaWare_C_Series-2.1.0.12573 -I.\Headers --c99-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include-I Device\Include\TM4C123-Drvmdk -DPART_TM4C123GH6PM -DTARGET_IS_TM4C123_RB1-o .\outputs\strategy_sm.o --omf_browse .\outputs\strategy_sm.crf --depend .\outputs\strategy_sm.d)
+F (.\Source\Strategy_SM.c)(0x56CA6521)(-c --cpu Cortex-M4.fp -g -O2 --apcs=interwork --split_sections -IC:\ti\TivaWare_C_Series-2.1.0.12573 -I.\Headers --c99-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include-I Device\Include\TM4C123-Drvmdk -DPART_TM4C123GH6PM -DTARGET_IS_TM4C123_RB1-o .\outputs\strategy_sm.o --omf_browse .\outputs\strategy_sm.crf --depend .\outputs\strategy_sm.d)
 I (.\Headers\ES_Configure.h)(0x56CA5968)
 I (.\Headers\ES_Framework.h)(0x56CA5968)
 I (.\Headers\ES_Port.h)(0x56CA5968)
@@ -736,6 +736,7 @@ I (C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib\interrupt.h)(0x541C60B5)
 I (.\Headers\Master_SM.h)(0x56CA5968)
 I (.\Headers\Strategy_SM.h)(0x56CA5968)
 I (.\Headers\PositionLogic_Service.h)(0x56CA5968)
+I (.\Headers\PeriscopeControl_Service.h)(0x56CA5E9E)
 I (.\Headers\GameInfo.h)(0x56CA5968)
 I (.\Headers\EnemyCaptureQueue.h)(0x56CA5968)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5346FF24)
