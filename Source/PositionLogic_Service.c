@@ -19,7 +19,7 @@
 #include "DEFINITIONS.h"
 #include "DriveTrainControl_Service.h"
 #include "PeriscopeControl_Service.h"
-#include "GameInfo.c"
+#include "GameInfo.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 
@@ -158,11 +158,6 @@ ES_Event RunPositionLogicService( ES_Event ThisEvent )
 		case ES_ALIGN_TO_BUCKET:
 		{
 			AlignToBucket();
-			break;
-		}
-		case ES_REALIGN_AFTER_SHOT:
-		{
-			RealignAfterShot();
 			break;
 		}
 		default:

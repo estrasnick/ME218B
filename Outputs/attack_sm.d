@@ -24,3 +24,14 @@
 .\outputs\attack_sm.o: .\Headers\SendingByte_SM.h
 .\outputs\attack_sm.o: .\Headers\CannonControl_Service.h
 .\outputs\attack_sm.o: .\Headers\PositionLogic_Service.h
+.\outputs\attack_sm.o: .\Headers\PWM_Service.h
+.\outputs\attack_sm.o: .\Headers\DEFINITIONS.h
+.\outputs\attack_sm.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_memmap.h
+.\outputs\attack_sm.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_types.h
+.\outputs\attack_sm.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_gpio.h
+.\outputs\attack_sm.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_sysctl.h
+.\outputs\attack_sm.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/sysctl.h
+.\outputs\attack_sm.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/pin_map.h
+.\outputs\attack_sm.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/gpio.h
+.\outputs\attack_sm.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/timer.h
+.\outputs\attack_sm.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/interrupt.h

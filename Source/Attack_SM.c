@@ -23,6 +23,8 @@
 #include "SendingByte_SM.h"
 #include "CannonControl_Service.h"
 #include "PositionLogic_Service.h"
+#include "PWM_Service.h"
+#include "DEFINITIONS.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 // define constants for the states for this machine
@@ -39,6 +41,8 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event);
 static ES_Event DuringAligned_t( ES_Event Event);
 static ES_Event DuringCannonReady_t( ES_Event Event);
 static ES_Event DuringFire_t( ES_Event Event);
+static void LoadChamber(void);
+static void DriveHammer(void);
 
 /*---------------------------- Module Variables ---------------------------*/
 // everybody needs a state variable, you may need others as well
@@ -65,6 +69,11 @@ ES_Event RunAttackSM( ES_Event CurrentEvent )
    ES_Event EntryEventKind = { ES_ENTRY, 0 };// default to normal entry to new state
    ES_Event ReturnEvent = CurrentEvent; // assume we are not consuming event
 
+	 if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == HOPPER_LOAD_TIMER))
+	 {
+		 DriveHammer();
+	 }
+	 
    switch ( CurrentState )
    {
        case Align_and_StartCannon_t :     
@@ -75,10 +84,16 @@ ES_Event RunAttackSM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
-            if (CurrentEvent.EventType == 0)
+            if (CurrentEvent.EventType == ES_CANNON_READY)
             {
-
+							NextState = CannonReady_t;
+							MakeTransition = true;
             }
+						else if (CurrentEvent.EventType == ES_ALIGNED_TO_BUCKET)
+						{
+							NextState = Aligned_t;
+							MakeTransition = true;
+						}
          }
          break;
         
@@ -90,9 +105,10 @@ ES_Event RunAttackSM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
-            if (CurrentEvent.EventType == 0)
+            if (CurrentEvent.EventType == ES_CANNON_READY)
             {
-
+							NextState = Fire_t;
+							MakeTransition = true;
             }
          }
          break;
@@ -105,10 +121,11 @@ ES_Event RunAttackSM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
-            if (CurrentEvent.EventType == 0)
-            {
-
-            }
+            if (CurrentEvent.EventType == ES_ALIGNED_TO_BUCKET)
+						{
+							NextState = Fire_t;
+							MakeTransition = true;
+						}
          }
          break;
  			
@@ -120,10 +137,7 @@ ES_Event RunAttackSM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
-            if (CurrentEvent.EventType == 0)
-            {
-
-            }
+            
          }
          break;     
 				 
@@ -321,7 +335,8 @@ static ES_Event DuringFire_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-        
+        ES_Timer_InitTimer(ATTACK_COMPLETE_TIMER, ATTACK_COMPLETE_T);
+				LoadChamber();
         // after that start any lower level machines that run in this state
         //StartLowerLevelSM( Event );
         // repeat the StartxxxSM() functions for concurrent state machines
@@ -333,7 +348,6 @@ static ES_Event DuringFire_t( ES_Event Event)
         //RunLowerLevelSM(Event);
         // repeat for any concurrently running state machines
         // now do any local exit functionality
-      
     }else
     // do the 'during' function for this state
     {
@@ -347,4 +361,15 @@ static ES_Event DuringFire_t( ES_Event Event)
     // return either Event, if you don't want to allow the lower level machine
     // to remap the current event, or ReturnEvent if you do want to allow it.
     return(ReturnEvent);
+}
+
+static void LoadChamber(void)
+{
+	SetPWM_Hopper(HOPPER_LOAD_DUTY);
+	ES_Timer_InitTimer(HOPPER_LOAD_TIMER, HOPPER_LOAD_T);
+}
+
+static void DriveHammer(void)
+{
+	SetPWM_Hopper(HOPPER_DEFAULT_DUTY);
 }

@@ -25,8 +25,5 @@ uint32_t GetRightEncoderTicks(void);
 void ResetEncoderTicks(void);
 bool IsMoving(void);
 
-void StoreDrive(void);
-void RestoreDrive(void);
-
 #endif 
 

@@ -107,6 +107,12 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 			 timePeriod = 0;
 		 }
 	 }
+	 else if (CurrentEvent.EventType == ES_RESET_DESTINATION)
+	 {
+		 NextState = ChooseDestination_t;
+		 MakeTransition = true;
+	 }
+	 else
 	 {
 		 switch ( CurrentState )
 		 {
@@ -230,9 +236,8 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 				 }
 				 break;
 			 }
-			 
 		 }
-	 }			
+	 }
 	//   If we are making a state transition
 	if (MakeTransition == true)
 	{

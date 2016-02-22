@@ -267,6 +267,8 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define PERISCOPE_PWM_DUTY 30 //45
 #define PERISCOPE_LATCH_DUTY 75
 #define PERISCOPE_UNLATCH_DUTY 25
+#define HOPPER_LOAD_DUTY 35
+#define HOPPER_DEFAULT_DUTY 50
 
 //*******************************************************************************************
 //--------------------------------- SPI COMMANDS --------------------------------------

@@ -113,7 +113,7 @@
 // the name of the run function
 #define SERV_5_RUN RunPhotoTransistorService
 // How big should this services Queue be?
-#define SERV_5_QUEUE_SIZE 3
+#define SERV_5_QUEUE_SIZE 5
 #endif
 
 /****************************************************************************/
@@ -126,7 +126,7 @@
 // the name of the run function
 #define SERV_6_RUN RunPeriscopeControlService
 // How big should this services Queue be?
-#define SERV_6_QUEUE_SIZE 3
+#define SERV_6_QUEUE_SIZE 4
 #endif
 
 /****************************************************************************/
@@ -301,7 +301,9 @@ typedef enum {  ES_NO_EVENT = 0,
 								ES_MANUAL_START,
 								ES_ATTACK_COMPLETE,
 								
-								ES_ALIGN_TO_BUCKET
+								ES_ALIGN_TO_BUCKET,
+								ES_RESET_DESTINATION,
+								ES_ALIGNED_TO_BUCKET
 								
 								} ES_EventTyp_t ;
 
@@ -369,6 +371,8 @@ typedef enum {  ES_NO_EVENT = 0,
 #define TIMER7_RESP_FUNC PostDriveTrainControlService
 		#define MOTOR_STOPPED_R 7
 #define TIMER8_RESP_FUNC PostMasterSM
+		#define HOPPER_LOAD_TIMER 8
+		#define HOPPER_LOAD_T 1000
 #define TIMER9_RESP_FUNC PostDriveTrainControlService
 		#define ROTATE_TESTING_TIMER	9
 #define TIMER10_RESP_FUNC PostDriveTrainControlService
@@ -382,8 +386,10 @@ typedef enum {  ES_NO_EVENT = 0,
 		#define NEXT_SHOT_T 10000
 #define TIMER13_RESP_FUNC PostPeriscopeControlService
 		#define PERISCOPE_STOPPED_TIMER 13
-		#define PERISCOPE_STOPPED_T
-#define TIMER14_RESP_FUNC TIMER_UNUSED
+		#define PERISCOPE_STOPPED_T 100
+#define TIMER14_RESP_FUNC PostMasterSM
+		#define ATTACK_COMPLETE_TIMER 14
+		#define ATTACK_COMPLETE_T 1500
 #define TIMER15_RESP_FUNC TIMER_UNUSED
 
 

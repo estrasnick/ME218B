@@ -22,6 +22,7 @@
 #include "SendingCMD_SM.h"
 #include "SendingByte_SM.h"
 #include "DriveTrainControl_Service.h"
+#include "Master_SM.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 // define constants for the states for this machine
@@ -36,7 +37,6 @@
 */
 static ES_Event DuringWait4AttackPhase_t( ES_Event Event);
 static ES_Event DuringAttack_t( ES_Event Event);
-static ES_Event DuringWait4Realign_t( ES_Event Event);
 static ES_Event DuringWait4NextAttack_t( ES_Event Event);
 
 
@@ -91,7 +91,7 @@ ES_Event RunAttackStrategySM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
-            if (CurrentEvent.EventType == ES_ATTACK_COMPLETE)
+					 if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == ATTACK_COMPLETE_TIMER))
             {
 							NextState = Wait4NextAttack_t;
 							MakeTransition = true;
@@ -230,19 +230,23 @@ static ES_Event DuringAttack_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-			StoreDrive();
+			
         // after that start any lower level machines that run in this state
         //StartLowerLevelSM( Event );
         // repeat the StartxxxSM() functions for concurrent state machines
         // on the lower level
     }
     else if ( Event.EventType == ES_EXIT )
-    {
-        // on exit, give the lower levels a chance to clean up first
-        //RunLowerLevelSM(Event);
-        // repeat for any concurrently running state machines
-        // now do any local exit functionality
-				ES_Timer_InitTimer(ATTACK_PHASE_TIMER, NEXT_SHOT_T);
+		{
+			// on exit, give the lower levels a chance to clean up first
+			//RunLowerLevelSM(Event);
+			// repeat for any concurrently running state machines
+			// now do any local exit functionality
+			ES_Timer_InitTimer(ATTACK_PHASE_TIMER, NEXT_SHOT_T);
+			
+			ES_Event ResetEvent;
+			ResetEvent.EventType = ES_RESET_DESTINATION;
+			PostMasterSM(ResetEvent);
     }else
     // do the 'during' function for this state
     {
@@ -252,7 +256,7 @@ static ES_Event DuringAttack_t( ES_Event Event)
         // repeat for any concurrent lower level machines
       
         // do any activity that is repeated as long as we are in this state
-			RestoreDrive();
+			
     }
     // return either Event, if you don't want to allow the lower level machine
     // to remap the current event, or ReturnEvent if you do want to allow it.

@@ -34,11 +34,4 @@
 .\outputs\positionlogic_service.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/interrupt.h
 .\outputs\positionlogic_service.o: .\Headers\DriveTrainControl_Service.h
 .\outputs\positionlogic_service.o: .\Headers\PeriscopeControl_Service.h
-.\outputs\positionlogic_service.o: Source\GameInfo.c
-.\outputs\positionlogic_service.o: .\Headers\ES_DeferRecall.h
-.\outputs\positionlogic_service.o: .\Headers\ES_Queue.h
-.\outputs\positionlogic_service.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_timer.h
-.\outputs\positionlogic_service.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_nvic.h
-.\outputs\positionlogic_service.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_pwm.h
-.\outputs\positionlogic_service.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\string.h
-.\outputs\positionlogic_service.o: .\Headers\Helpers.h
+.\outputs\positionlogic_service.o: .\Headers\GameInfo.h

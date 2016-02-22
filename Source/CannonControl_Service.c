@@ -79,6 +79,9 @@ bool InitCannonControlService ( uint8_t Priority )
 	
 	//Initialize Periodic Interrupt for Control Laws
 	InitPeriodic(CANNON_CONTROL_INTERRUPT_PARAMATERS);
+	
+	//Set Hopper to proper position
+	SetPWM_Hopper(HOPPER_DEFAULT_DUTY);
   
 	printf("Cannon Service Initialized \n\r");
 	
