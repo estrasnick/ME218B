@@ -177,6 +177,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 							printf("ES_Arrived in FaceTarget\r\n");
 							NextState = Travel_t; //ie. we want to exit and reenter
 							MakeTransition = true;
+							ApplyRotationAngle();
 						}
 						else if (CurrentEvent.EventType == ES_PS_DETECTED)
 						{
@@ -620,14 +621,22 @@ uint8_t GetTargetStation(void)
 	return TargetStation;
 }
 
+<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 static void PausePositioning(void)
+=======
+void PausePositioning(void)
+>>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 {
 	printf("Disabling positioning\r\n");
 	LatchPeriscope();
 	disableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 }
 
+<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 static void ResumePositioning(void)
+=======
+void ResumePositioning(void)
+>>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 {
 	printf("Enabling positioning\r\n");
 	enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);

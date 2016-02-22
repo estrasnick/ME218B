@@ -1,4 +1,10 @@
 *.crf
 *.htm
 *.o
-
+*.d
+*.axf
+*.bin
+*.map
+*.dep
+*.uvopt
+*.uvgui*
