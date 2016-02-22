@@ -275,6 +275,9 @@ typedef enum {  ES_NO_EVENT = 0,
 								ES_SEND_CMD,					//tells the PAC to send a command
 								ES_SEND_BYTE,					//tells the PAC to send a byte
 								ES_EOT,								//receive this when we the byte has been sent
+									
+								ES_START_CANNON,			//commands the cannon to start spinning at the speed that has been set
+								ES_STOP_CANNON,				//commands 
 								
 								//The Following Are Events solely for testing purposes
 								ES_DRIVE_FULL_SPEED,
@@ -284,9 +287,7 @@ typedef enum {  ES_NO_EVENT = 0,
 								ES_STOP_DRIVE,
 								ES_ROTATE_45,
 								ES_ROTATE_90,
-								
-								ES_START_CANNON,
-								ES_STOP_CANNON,
+
 								
 								ES_FACE_TARGET,
 								ES_DRIVE_TO_TARGET,
