@@ -24,8 +24,7 @@
 /*----------------------------- Module Defines ----------------------------*/
 
 #define PERIOD_MEASURING_ERROR_TOLERANCE 25 //in microseconds
-#define NUMBER_CONSECUTIVE_PULSES_2STORE 3
-#define NUMBER_PULSES_TO_BE_ALIGNED 3
+#define NUMBER_PULSES_TO_BE_ALIGNED 4
 #define NUMBER_PHOTOTRANSISTORS 1
 #define NUMBER_BEACON_FREQUENCIES 4
 
@@ -76,10 +75,12 @@ static uint32_t PhotoTransistor_LastPeriods[NUMBER_CONSECUTIVE_PULSES_2STORE];
 static uint32_t LastCapture;
 
 static uint8_t LastBeacon = NULL_BEACON;
+static uint8_t LastStoredBeacon = NULL_BEACON;
 
+static uint32_t LastHighTime;
 static bool AligningToBucket = false;
 
-/*------------------------------ Module Code ------------------------------*/
+
 /****************************************************************************
  Function
      InitPhotoTransistorService
@@ -187,77 +188,100 @@ float GetBeaconAngle(uint8_t beaconIndex)
 //The interrupt response for uor phototransistor
 void PhotoTransistor_InterruptResponse(void)
 {
+	static bool isHigh = false;
+	
 	// Clear Interrupt
 	clearCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 	
 	// Determine Capture time
 	uint32_t ThisCapture = captureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
-	
-	// Calculate period
-	uint32_t Period = ((ThisCapture - LastCapture) * MICROSECONDS_DIVISOR ) / TICKS_PER_MS;
-	
-	/*
-	static int i = 0;
-	static uint32_t lastcap;
-	i++;
-	if (i >= 1000)
+
+	if (isHigh)
 	{
-		printf("The different after 1000 was: %d\r\n", lastcap - ThisCapture);
-		lastcap = ThisCapture;
-		i = 0;
-	}*/
-	
-	//Store the Last Cpature
-	LastCapture = ThisCapture;
-	
-	// Update our knowledge of the most recent periods
-	UpdateLastPeriod(Period);
-	// Check if we have a beacon match
-	uint8_t matchingBeacon = CheckForBeacon();
-	// If so, update the beacon structure
-	if (matchingBeacon != NULL_BEACON)
-	{
-		if (AligningToBucket)
-		{
-			if (((MyColor() == COLOR_BLUE) && (matchingBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (matchingBeacon == BEACON_INDEX_SE)))
-			{
-				setTargetDriveSpeed(0, 0);
-				ES_Event AlignedEvent;
-				AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
-				PostMasterSM(AlignedEvent);
-			}
-			AligningToBucket = false;
-		}
+
+isHigh = false;
+		// Calculate period
+		uint32_t Period = ((ThisCapture - LastCapture) * MICROSECONDS_DIVISOR ) / TICKS_PER_MS;
 		
-		LastBeacon = matchingBeacon;
-		beacons[matchingBeacon].lastUpdateTime = ThisCapture;
-		beacons[matchingBeacon].lastEncoderAngle = GetPeriscopeAngle();
-		/*
-		//Print which Beacon
-		switch (beacons[matchingBeacon].period){
+		//Store the Last Cpature
+		LastCapture = ThisCapture;
+		
+		// Update our knowledge of the most recent periods
+		UpdateLastPeriod(Period);
+		// Check if we have a beacon match
+		LastBeacon = CheckForBeacon();
+				//Print which Beacon
+		switch (beacons[LastBeacon].period){
 			case (BEACON_P_NW):
-				printf("BEACON_P_NW \n\r");
+				printf("STORING!!!!!!!!! BEACON_P_NW \n\r");
 			break;
 			case (BEACON_P_NE):
-				printf("BEACON_P_NE \n\r");
+				printf("STORING!!!!!!!!! BEACON_P_NE \n\r");
 			break;
 			case (BEACON_P_SE):
-				printf("BEACON_P_SE \n\r");
+				printf("STORING!!!!!!!!! BEACON_P_SE \n\r");
 			break;
 			case (BEACON_P_SW):
-				printf("BEACON_P_SW \n\r");
+				printf("STORING!!!!!!!!! BEACON_P_SW \n\r");
 			break;
-		}*/
-	
-	// Determine if we should recalculate our position and angle
-	if (matchingBeacon == BEACON_INDEX_NW && TimeForUpdate())
-	{
-		ResetUpdateTimes();
-		ES_Event NewEvent;
-		NewEvent.EventType = ES_CALCULATE_POSITION;
-		PostPositionLogicService(NewEvent);
+
+
 	}
- }
+	else
+	{
+
+		if (LastBeacon != NULL_BEACON)
+		{
+			uint32_t HighTime = ThisCapture - LastCapture;
+			if (HighTime < LastHighTime && LastBeacon != LastStoredBeacon)
+			{
+				if (AligningToBucket)
+				{
+					if (((MyColor() == COLOR_BLUE) && (matchingBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (matchingBeacon == BEACON_INDEX_SE)))
+					{
+						setTargetDriveSpeed(0, 0);
+						ES_Event AlignedEvent;
+						AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
+						PostMasterSM(AlignedEvent);
+					}
+					AligningToBucket = false;
+				}
+
+				beacons[LastBeacon].lastUpdateTime = ThisCapture;
+				beacons[LastBeacon].lastEncoderAngle = GetPeriscopeAngle();
+				
+				LastStoredBeacon = LastBeacon;
+				
+				//Print which Beacon
+				switch (beacons[LastBeacon].period){
+					case (BEACON_P_NW):
+						printf("BEACON_P_NW \n\r");
+					break;
+					case (BEACON_P_NE):
+						printf("BEACON_P_NE \n\r");
+					break;
+					case (BEACON_P_SE):
+						printf("BEACON_P_SE \n\r");
+					break;
+					case (BEACON_P_SW):
+						printf("BEACON_P_SW \n\r");
+					break;
+					
+				}
+				// Determine if we should recalculate our position and angle
+				if (LastBeacon == BEACON_INDEX_NW && TimeForUpdate())
+				{
+					ResetUpdateTimes();
+					ES_Event NewEvent;
+					NewEvent.EventType = ES_CALCULATE_POSITION;
+					PostPositionLogicService(NewEvent);
+				}
+			}
+			
+			LastHighTime = HighTime;
+		}
+		isHigh = true;
+	}
 }
 
 //Update the Last Period by shiting every value down and ours into the 0th index

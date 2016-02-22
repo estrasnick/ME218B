@@ -3,19 +3,11 @@
 <title>Static Call Graph - [.\Outputs\BaseTarget.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Outputs\BaseTarget.axf</H1><HR>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5040049: Last Updated: Sun Feb 21 22:58:01 2016
-=======
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5040049: Last Updated: Mon Feb 22 15:11:07 2016
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5040049: Last Updated: Sun Feb 21 23:50:59 2016
 <BR><P>
-<H3>Maximum Stack Usage =        352 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        344 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 RunPositionLogicService &rArr; CalculateAbsolutePosition &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_d2iz
-=======
-RunPositionLogicService &rArr; CalculateAbsolutePosition &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dmul
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <P>
 <H3>
 Functions with no stack information
@@ -30,7 +22,6 @@ Functions with no stack information
 <P>
 <H3>
 Mutually Recursive functions
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 </H3> <LI><a href="#[a4]">RunStrategySM</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[a4]">RunStrategySM</a><BR>
  <LI><a href="#[e8]">RunSendingByteSM</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[e8]">RunSendingByteSM</a><BR>
  <LI><a href="#[ae]">RunSendingCMDSM</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[ae]">RunSendingCMDSM</a><BR>
@@ -38,16 +29,6 @@ Mutually Recursive functions
  <LI><a href="#[db]">RunCapturePSSM</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[db]">RunCapturePSSM</a><BR>
  <LI><a href="#[ac]">RunPACLogicSM</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[ac]">RunPACLogicSM</a><BR>
  <LI><a href="#[ab]">RunHallEffectSM</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[ab]">RunHallEffectSM</a><BR>
-=======
-</H3> <LI><a href="#[a2]">RunStrategySM</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[a2]">RunStrategySM</a><BR>
- <LI><a href="#[e8]">RunSendingByteSM</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[e8]">RunSendingByteSM</a><BR>
- <LI><a href="#[ac]">RunSendingCMDSM</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[ac]">RunSendingCMDSM</a><BR>
- <LI><a href="#[db]">RunRequestSM</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[db]">RunRequestSM</a><BR>
- <LI><a href="#[da]">RunCapturePSSM</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[da]">RunCapturePSSM</a><BR>
- <LI><a href="#[aa]">RunPACLogicSM</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[aa]">RunPACLogicSM</a><BR>
- <LI><a href="#[a9]">RunHallEffectSM</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[a9]">RunHallEffectSM</a><BR>
- <LI><a href="#[a3]">RunAttackStrategySM</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[a3]">RunAttackStrategySM</a><BR>
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
  <LI><a href="#[fc]">UARTCharPut</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[fc]">UARTCharPut</a><BR>
  <LI><a href="#[4]">NmiSR</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[4]">NmiSR</a><BR>
  <LI><a href="#[5]">FaultISR</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[5]">FaultISR</a><BR>
@@ -84,8 +65,8 @@ Function Pointers
  <LI><a href="#[c]">PeriscopeEncoder_InterruptResponse_2</a> from periscopecontrol_service.o(i.PeriscopeEncoder_InterruptResponse_2) referenced from startup_rvmdk.o(RESET)
  <LI><a href="#[9]">PhotoTransistor_InterruptResponse</a> from phototransistor_service.o(i.PhotoTransistor_InterruptResponse) referenced from startup_rvmdk.o(RESET)
  <LI><a href="#[29]">PostDriveTrainControlService</a> from drivetraincontrol_service.o(i.PostDriveTrainControlService) referenced 4 times from es_timers.o(.constdata)
- <LI><a href="#[2a]">PostMasterSM</a> from master_sm.o(i.PostMasterSM) referenced 8 times from es_timers.o(.constdata)
- <LI><a href="#[2c]">PostPeriscopeControlService</a> from periscopecontrol_service.o(i.PostPeriscopeControlService) referenced 2 times from es_timers.o(.constdata)
+ <LI><a href="#[2a]">PostMasterSM</a> from master_sm.o(i.PostMasterSM) referenced 6 times from es_timers.o(.constdata)
+ <LI><a href="#[2c]">PostPeriscopeControlService</a> from periscopecontrol_service.o(i.PostPeriscopeControlService) referenced from es_timers.o(.constdata)
  <LI><a href="#[2b]">PostPositionLogicService</a> from positionlogic_service.o(i.PostPositionLogicService) referenced from es_timers.o(.constdata)
  <LI><a href="#[2d]">Reset_Handler</a> from startup_rvmdk.o(RESET) referenced from startup_rvmdk.o(RESET)
  <LI><a href="#[28]">RunCannonControlService</a> from cannoncontrol_service.o(i.RunCannonControlService) referenced from es_framework.o(.constdata)
@@ -336,7 +317,6 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_char_file
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringRequest_t
 <LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringQuery_t
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
@@ -344,48 +324,27 @@ Global Symbols
 <LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
 <LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunHallEffectSM
-=======
-<BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringRequest_t
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringQuery_t
-<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartPACLogicSM
-<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunHallEffectSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[1b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitMasterSM
 <LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringDefault
 <LI><a href="#[1a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunMapKeys
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResumePositioning
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
-=======
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[25]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPeriscopeControlService
 <LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitCannonControlService
 <LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunDriveTrainControlService
 <LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitDriveTrainControlService
 <LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPWMService
 <LI><a href="#[9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PhotoTransistor_InterruptResponse
-<LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetEncoderTicks
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetEncoderTicks
 <LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPositionLogicService
 <LI><a href="#[21]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPositionLogicService
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DistanceToPoint
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveToTarget
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToTarget
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToTarget
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
 <LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AlignToTarget
-=======
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToTarget
-<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToBucket
-<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToTarget
-<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToBucket
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[51]"></a>__printf</STRONG> (Thumb, 104 bytes, Stack size 24 bytes, __printf.o(.text))
@@ -460,19 +419,11 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_errno_addr
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrt
 <LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrt
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-=======
-<BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrt
-<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrt
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[53]"></a>_printf_int_common</STRONG> (Thumb, 178 bytes, Stack size 32 bytes, _printf_intcommon.o(.text))
@@ -655,7 +606,6 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_btod_emul
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[76]"></a>ApplyRotationAngle</STRONG> (Thumb, 26 bytes, Stack size 4 bytes, positionlogic_service.o(i.ApplyRotationAngle))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = ApplyRotationAngle
 </UL>
@@ -685,61 +635,26 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearPeriodicInterrupt
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
-=======
-<P><STRONG><a name="[82]"></a>CPUgetPRIMASK_cpsid</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, es_port.o(i.CPUgetPRIMASK_cpsid))
-<BR><BR>[Called By]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_EnQueueLIFO
-<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_EnQueueFIFO
-<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_DeQueue
-<LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunDriveTrainControlService
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
-</UL>
-
-<P><STRONG><a name="[85]"></a>CPUsetPRIMASK</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, es_port.o(i.CPUsetPRIMASK))
-<BR><BR>[Called By]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_EnQueueLIFO
-<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_EnQueueFIFO
-<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_DeQueue
-<LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunDriveTrainControlService
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
-</UL>
-
-<P><STRONG><a name="[12]"></a>CannonControl_PeriodicInterruptResponse</STRONG> (Thumb, 144 bytes, Stack size 16 bytes, cannoncontrol_service.o(i.CannonControl_PeriodicInterruptResponse))
-<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = CannonControl_PeriodicInterruptResponse &rArr; calculateControlResponse &rArr; __aeabi_dsub
-</UL>
-<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearPeriodicInterrupt
-<LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMasterSM
-<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_rvmdk.o(RESET)
 </UL>
 <P><STRONG><a name="[a]"></a>CannonEncoder_InterruptResponse</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, cannoncontrol_service.o(i.CannonEncoder_InterruptResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = CannonEncoder_InterruptResponse
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
-=======
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
-<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_rvmdk.o(RESET)
 </UL>
 <P><STRONG><a name="[18]"></a>Check4Keystroke</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, eventcheckers.o(i.Check4Keystroke))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Check4Keystroke &rArr; PostMapKeys &rArr; ES_PostToService &rArr; ES_EnQueueFIFO
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kbhit
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMapKeys
-=======
-<BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kbhit
-<LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMapKeys
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getc
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> es_checkevents.o(.constdata)
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[98]"></a>DistanceToPoint</STRONG> (Thumb, 152 bytes, Stack size 56 bytes, positionlogic_service.o(i.DistanceToPoint))
 <BR><BR>[Stack]<UL><LI>Max Depth = 184 + Unknown Stack Size
 <LI>Call Chain = DistanceToPoint &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
@@ -750,47 +665,24 @@ Global Symbols
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 </UL>
 <BR>[Called By]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
-=======
-<P><STRONG><a name="[93]"></a>DistanceToPoint</STRONG> (Thumb, 58 bytes, Stack size 8 bytes, positionlogic_service.o(i.DistanceToPoint))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = DistanceToPoint &rArr; __hardfp_sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
-</UL>
-<BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
-<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrt
-</UL>
-<BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[11]"></a>DriveControl_PeriodicInterruptResponse</STRONG> (Thumb, 128 bytes, Stack size 24 bytes, drivetraincontrol_service.o(i.DriveControl_PeriodicInterruptResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = DriveControl_PeriodicInterruptResponse &rArr; SetPWM_DriveRight &rArr; setPWM_value
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearPeriodicInterrupt
 <LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveRight
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveLeft
-=======
-<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearPeriodicInterrupt
-<LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
-<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveRight
-<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveLeft
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_rvmdk.o(RESET)
 </UL>
 <P><STRONG><a name="[13]"></a>DriveEncoder_Left_InterruptResponse</STRONG> (Thumb, 104 bytes, Stack size 8 bytes, drivetraincontrol_service.o(i.DriveEncoder_Left_InterruptResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = DriveEncoder_Left_InterruptResponse &rArr; PostMasterSM &rArr; ES_PostToService &rArr; ES_EnQueueFIFO
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
-=======
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
-<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMasterSM
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetDriveSpeed
 <LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetEncoderTicks
@@ -800,15 +692,9 @@ Global Symbols
 <P><STRONG><a name="[14]"></a>DriveEncoder_Right_InterruptResponse</STRONG> (Thumb, 104 bytes, Stack size 8 bytes, drivetraincontrol_service.o(i.DriveEncoder_Right_InterruptResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = DriveEncoder_Right_InterruptResponse &rArr; PostMasterSM &rArr; ES_PostToService &rArr; ES_EnQueueFIFO
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
-=======
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
-<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMasterSM
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetDriveSpeed
 <LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetEncoderTicks
@@ -824,13 +710,8 @@ Global Symbols
 <P><STRONG><a name="[b4]"></a>ES_DeQueue</STRONG> (Thumb, 80 bytes, Stack size 16 bytes, es_queue.o(i.ES_DeQueue))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = ES_DeQueue
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUsetPRIMASK
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUgetPRIMASK_cpsid
-=======
-<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUsetPRIMASK
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUgetPRIMASK_cpsid
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_RecallEvents
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Run
@@ -839,13 +720,8 @@ Global Symbols
 <P><STRONG><a name="[b5]"></a>ES_EnQueueFIFO</STRONG> (Thumb, 66 bytes, Stack size 16 bytes, es_queue.o(i.ES_EnQueueFIFO))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = ES_EnQueueFIFO
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUsetPRIMASK
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUgetPRIMASK_cpsid
-=======
-<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUsetPRIMASK
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUgetPRIMASK_cpsid
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_PostToService
 </UL>
@@ -853,13 +729,8 @@ Global Symbols
 <P><STRONG><a name="[b6]"></a>ES_EnQueueLIFO</STRONG> (Thumb, 66 bytes, Stack size 16 bytes, es_queue.o(i.ES_EnQueueLIFO))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = ES_EnQueueLIFO
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUsetPRIMASK
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUgetPRIMASK_cpsid
-=======
-<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUsetPRIMASK
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUgetPRIMASK_cpsid
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
 <LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_PostToServiceLIFO
@@ -895,11 +766,7 @@ Global Symbols
 <LI><a href="#[2c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostPeriscopeControlService
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMasterSM
 <LI><a href="#[29]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostDriveTrainControlService
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMapKeys
-=======
-<LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMapKeys
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[25]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPeriscopeControlService
 <LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitCannonControlService
 <LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitDriveTrainControlService
@@ -944,19 +811,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Initialize
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[a1]"></a>ES_Timer_InitTimer</STRONG> (Thumb, 44 bytes, Stack size 0 bytes, es_timers.o(i.ES_Timer_InitTimer))
 <BR><BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingByteSM
 <LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
 <LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
-=======
-<P><STRONG><a name="[a0]"></a>ES_Timer_InitTimer</STRONG> (Thumb, 44 bytes, Stack size 0 bytes, es_timers.o(i.ES_Timer_InitTimer))
-<BR><BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingByteSM
-<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
-<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunAttackStrategySM
-<LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PeriscopeEncoder_InterruptResponse_1
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[25]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPeriscopeControlService
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetDriveSpeed
 <LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunDriveTrainControlService
@@ -973,7 +831,6 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_HW_Process_Pending_Ints
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[c4]"></a>GPIODirModeSet</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, gpio.o(i.GPIODirModeSet))
 <BR><BR>[Called By]<UL><LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPinTypeGPIOInput
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPinTypeUART
@@ -984,68 +841,34 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPinTypeGPIOInput
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPinTypeUART
-=======
-<P><STRONG><a name="[c3]"></a>GPIODirModeSet</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, gpio.o(i.GPIODirModeSet))
-<BR><BR>[Called By]<UL><LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPinTypeGPIOInput
-<LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPinTypeUART
-</UL>
-
-<P><STRONG><a name="[c4]"></a>GPIOPadConfigSet</STRONG> (Thumb, 314 bytes, Stack size 28 bytes, gpio.o(i.GPIOPadConfigSet))
-<BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = GPIOPadConfigSet
-</UL>
-<BR>[Called By]<UL><LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPinTypeGPIOInput
-<LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPinTypeUART
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[f8]"></a>GPIOPinConfigure</STRONG> (Thumb, 64 bytes, Stack size 0 bytes, gpio.o(i.GPIOPinConfigure))
 <BR><BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TERMIO_Init
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[c3]"></a>GPIOPinTypeGPIOInput</STRONG> (Thumb, 28 bytes, Stack size 12 bytes, gpio.o(i.GPIOPinTypeGPIOInput))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = GPIOPinTypeGPIOInput &rArr; GPIOPadConfigSet
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPadConfigSet
 <LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIODirModeSet
-=======
-<P><STRONG><a name="[c2]"></a>GPIOPinTypeGPIOInput</STRONG> (Thumb, 28 bytes, Stack size 12 bytes, gpio.o(i.GPIOPinTypeGPIOInput))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = GPIOPinTypeGPIOInput &rArr; GPIOPadConfigSet
-</UL>
-<BR>[Calls]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPadConfigSet
-<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIODirModeSet
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortFunctionInit
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[c6]"></a>GPIOPinTypeUART</STRONG> (Thumb, 28 bytes, Stack size 12 bytes, gpio.o(i.GPIOPinTypeUART))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = GPIOPinTypeUART &rArr; GPIOPadConfigSet
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPadConfigSet
 <LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIODirModeSet
-=======
-<P><STRONG><a name="[c5]"></a>GPIOPinTypeUART</STRONG> (Thumb, 28 bytes, Stack size 12 bytes, gpio.o(i.GPIOPinTypeUART))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = GPIOPinTypeUART &rArr; GPIOPadConfigSet
-</UL>
-<BR>[Calls]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPadConfigSet
-<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIODirModeSet
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TERMIO_Init
 </UL>
 
 <P><STRONG><a name="[ec]"></a>GPIO_Clear</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, helpers.o(i.GPIO_Clear))
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR><BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveRight
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveLeft
-=======
-<BR><BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
-<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveRight
-<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveLeft
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[cd]"></a>GPIO_Init</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, helpers.o(i.GPIO_Init))
@@ -1056,7 +879,6 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[ed]"></a>GPIO_Set</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, helpers.o(i.GPIO_Set))
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR><BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveRight
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveLeft
@@ -1077,28 +899,6 @@ Global Symbols
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-=======
-<BR><BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
-<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveRight
-<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveLeft
-</UL>
-
-<P><STRONG><a name="[72]"></a>GetBeaconAngle</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, phototransistor_service.o(i.GetBeaconAngle))
-<BR><BR>[Called By]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-</UL>
-
-<P><STRONG><a name="[83]"></a>GetLeftEncoderTicks</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, drivetraincontrol_service.o(i.GetLeftEncoderTicks))
-<BR><BR>[Called By]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
-</UL>
-
-<P><STRONG><a name="[c6]"></a>GetPeriscopeAngle</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, periscopecontrol_service.o(i.GetPeriscopeAngle))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = GetPeriscopeAngle &rArr; __aeabi_dmul
-</UL>
-<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PhotoTransistor_InterruptResponse
 </UL>
@@ -1107,7 +907,6 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringRequest_t
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[89]"></a>GetRightEncoderTicks</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, drivetraincontrol_service.o(i.GetRightEncoderTicks))
 <BR><BR>[Called By]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
 </UL>
@@ -1122,22 +921,6 @@ Global Symbols
 
 <P><STRONG><a name="[96]"></a>GetStationY</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, gameinfo.o(i.GetStationY))
 <BR><BR>[Called By]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
-=======
-<P><STRONG><a name="[84]"></a>GetRightEncoderTicks</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, drivetraincontrol_service.o(i.GetRightEncoderTicks))
-<BR><BR>[Called By]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
-</UL>
-
-<P><STRONG><a name="[8e]"></a>GetStationOwner</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, gameinfo.o(i.GetStationOwner))
-<BR><BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
-</UL>
-
-<P><STRONG><a name="[92]"></a>GetStationX</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, gameinfo.o(i.GetStationX))
-<BR><BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
-</UL>
-
-<P><STRONG><a name="[91]"></a>GetStationY</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, gameinfo.o(i.GetStationY))
-<BR><BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[b2]"></a>GetTargetFrequencyIndex</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, paclogic_sm.o(i.GetTargetFrequencyIndex))
@@ -1147,85 +930,50 @@ Global Symbols
 <P><STRONG><a name="[e]"></a>HE_InnerLeft_InterruptResponse</STRONG> (Thumb, 64 bytes, Stack size 8 bytes, halleffect_sm.o(i.HE_InnerLeft_InterruptResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = HE_InnerLeft_InterruptResponse &rArr; detectPollingStation &rArr; PostMasterSM &rArr; ES_PostToService &rArr; ES_EnQueueFIFO
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePeriodArrays
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
-=======
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
-<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
-<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePeriodArrays
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_rvmdk.o(RESET)
 </UL>
 <P><STRONG><a name="[f]"></a>HE_InnerRight_InterruptResponse</STRONG> (Thumb, 64 bytes, Stack size 8 bytes, halleffect_sm.o(i.HE_InnerRight_InterruptResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = HE_InnerRight_InterruptResponse &rArr; detectPollingStation &rArr; PostMasterSM &rArr; ES_PostToService &rArr; ES_EnQueueFIFO
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePeriodArrays
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
-=======
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
-<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
-<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePeriodArrays
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_rvmdk.o(RESET)
 </UL>
 <P><STRONG><a name="[d]"></a>HE_OuterLeft_InterruptResponse</STRONG> (Thumb, 64 bytes, Stack size 8 bytes, halleffect_sm.o(i.HE_OuterLeft_InterruptResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = HE_OuterLeft_InterruptResponse &rArr; detectPollingStation &rArr; PostMasterSM &rArr; ES_PostToService &rArr; ES_EnQueueFIFO
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePeriodArrays
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
-=======
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
-<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
-<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePeriodArrays
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_rvmdk.o(RESET)
 </UL>
 <P><STRONG><a name="[10]"></a>HE_OuterRight_InterruptResponse</STRONG> (Thumb, 64 bytes, Stack size 8 bytes, halleffect_sm.o(i.HE_OuterRight_InterruptResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = HE_OuterRight_InterruptResponse &rArr; detectPollingStation &rArr; PostMasterSM &rArr; ES_PostToService &rArr; ES_EnQueueFIFO
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePeriodArrays
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
-=======
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
-<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
-<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePeriodArrays
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_rvmdk.o(RESET)
 </UL>
-<P><STRONG><a name="[27]"></a>InitCannonControlService</STRONG> (Thumb, 74 bytes, Stack size 8 bytes, cannoncontrol_service.o(i.InitCannonControlService))
+<P><STRONG><a name="[27]"></a>InitCannonControlService</STRONG> (Thumb, 66 bytes, Stack size 8 bytes, cannoncontrol_service.o(i.InitCannonControlService))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136 + Unknown Stack Size
 <LI>Call Chain = InitCannonControlService &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPeriodic
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitInputCapture
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_PostToService
-=======
-<BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPeriodic
-<LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitInputCapture
-<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_PostToService
-<LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_Hopper
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> es_framework.o(.constdata)
@@ -1234,31 +982,18 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 152 + Unknown Stack Size
 <LI>Call Chain = InitDriveTrainControlService &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPeriodic
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitInputCapture
 <LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_PostToService
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveRight
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveLeft
-=======
-<BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPeriodic
-<LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitInputCapture
-<LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
-<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_PostToService
-<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveRight
-<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveLeft
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> es_framework.o(.constdata)
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
-<P><STRONG><a name="[cb]"></a>InitInputCapture</STRONG> (Thumb, 266 bytes, Stack size 36 bytes, helpers.o(i.InitInputCapture))
-=======
-<P><STRONG><a name="[ca]"></a>InitInputCapture</STRONG> (Thumb, 266 bytes, Stack size 36 bytes, helpers.o(i.InitInputCapture))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
-<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = InitInputCapture
+<P><STRONG><a name="[cb]"></a>InitInputCapture</STRONG> (Thumb, 300 bytes, Stack size 52 bytes, helpers.o(i.InitInputCapture))
+<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = InitInputCapture
 </UL>
 <BR>[Called By]<UL><LI><a href="#[25]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPeriscopeControlService
 <LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitCannonControlService
@@ -1291,20 +1026,12 @@ Global Symbols
 <LI>Call Chain = InitPWMService &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPWM
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_PostToService
-=======
-<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_PostToService
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> es_framework.o(.constdata)
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[cc]"></a>InitPeriodic</STRONG> (Thumb, 192 bytes, Stack size 28 bytes, helpers.o(i.InitPeriodic))
-=======
-<P><STRONG><a name="[cb]"></a>InitPeriodic</STRONG> (Thumb, 192 bytes, Stack size 28 bytes, helpers.o(i.InitPeriodic))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = InitPeriodic
 </UL>
 <BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitCannonControlService
@@ -1315,29 +1042,18 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 136 + Unknown Stack Size
 <LI>Call Chain = InitPeriscopeControlService &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitInputCapture
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_PostToService
-=======
-<BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitInputCapture
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
-<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_PostToService
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> es_framework.o(.constdata)
 </UL>
 <P><STRONG><a name="[23]"></a>InitPhotoTransistorService</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, phototransistor_service.o(i.InitPhotoTransistorService))
-<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = InitPhotoTransistorService &rArr; InitInputCapture
+<BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = InitPhotoTransistorService &rArr; InitInputCapture
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitInputCapture
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_PostToService
-=======
-<BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitInputCapture
-<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_PostToService
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> es_framework.o(.constdata)
 </UL>
@@ -1359,11 +1075,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[ef]"></a>IsAbsolutePosition</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, positionlogic_service.o(i.IsAbsolutePosition))
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR><BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
-=======
-<BR><BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[e7]"></a>IsMoving</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, drivetraincontrol_service.o(i.IsMoving))
@@ -1375,23 +1087,12 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_PeriscopeLatch
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
 </UL>
 
 <P><STRONG><a name="[94]"></a>MyColor</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, gameinfo.o(i.MyColor))
 <BR><BR>[Called By]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringRequest_t
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
-=======
-<BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
-</UL>
-
-<P><STRONG><a name="[8f]"></a>MyColor</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, gameinfo.o(i.MyColor))
-<BR><BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringRequest_t
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
-<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToBucket
-<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToBucket
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[d4]"></a>PS_Period_Comparison</STRONG> (Thumb, 38 bytes, Stack size 20 bytes, halleffect_sm.o(i.PS_Period_Comparison))
@@ -1399,52 +1100,32 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;toleranceCheck
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
-=======
-<BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
-<P><STRONG><a name="[b]"></a>PeriscopeEncoder_InterruptResponse_1</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, periscopecontrol_service.o(i.PeriscopeEncoder_InterruptResponse_1))
+<P><STRONG><a name="[b]"></a>PeriscopeEncoder_InterruptResponse_1</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, periscopecontrol_service.o(i.PeriscopeEncoder_InterruptResponse_1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = PeriscopeEncoder_InterruptResponse_1
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
-=======
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_rvmdk.o(RESET)
 </UL>
 <P><STRONG><a name="[c]"></a>PeriscopeEncoder_InterruptResponse_2</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, periscopecontrol_service.o(i.PeriscopeEncoder_InterruptResponse_2))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = PeriscopeEncoder_InterruptResponse_2
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
-=======
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_rvmdk.o(RESET)
 </UL>
-<P><STRONG><a name="[9]"></a>PhotoTransistor_InterruptResponse</STRONG> (Thumb, 264 bytes, Stack size 24 bytes, phototransistor_service.o(i.PhotoTransistor_InterruptResponse))
+<P><STRONG><a name="[9]"></a>PhotoTransistor_InterruptResponse</STRONG> (Thumb, 352 bytes, Stack size 24 bytes, phototransistor_service.o(i.PhotoTransistor_InterruptResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152 + Unknown Stack Size
 <LI>Call Chain = PhotoTransistor_InterruptResponse &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
 <LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostPositionLogicService
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetPeriscopeAngle
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetUpdateTimes
-=======
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearCaptureInterrupt
-<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;captureInterrupt
-<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostPositionLogicService
-<LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetPeriscopeAngle
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_rvmdk.o(RESET)
@@ -1452,28 +1133,16 @@ Global Symbols
 <P><STRONG><a name="[a6]"></a>PortFunctionInit</STRONG> (Thumb, 132 bytes, Stack size 8 bytes, enablepa25_pb23_pd7_pf0.o(i.PortFunctionInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = PortFunctionInit &rArr; GPIOPinTypeGPIOInput &rArr; GPIOPadConfigSet
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysCtlPeripheralEnable
 <LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPinTypeGPIOInput
-=======
-<BR>[Calls]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysCtlPeripheralEnable
-<LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPinTypeGPIOInput
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringDefault
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[95]"></a>PositionInQueue</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, enemycapturequeue.o(i.PositionInQueue))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = PositionInQueue
 </UL>
 <BR>[Called By]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
-=======
-<P><STRONG><a name="[90]"></a>PositionInQueue</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, enemycapturequeue.o(i.PositionInQueue))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = PositionInQueue
-</UL>
-<BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[29]"></a>PostDriveTrainControlService</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, drivetraincontrol_service.o(i.PostDriveTrainControlService))
@@ -1486,11 +1155,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> es_timers.o(.constdata)
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[91]"></a>PostMapKeys</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, mapkeys.o(i.PostMapKeys))
-=======
-<P><STRONG><a name="[8c]"></a>PostMapKeys</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, mapkeys.o(i.PostMapKeys))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = PostMapKeys &rArr; ES_PostToService &rArr; ES_EnQueueFIFO
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_PostToService
@@ -1507,7 +1172,6 @@ Global Symbols
 <LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringQuery_t
 <LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingCMDSM
 <LI><a href="#[8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSI_InterruptResponse
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
 <LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
 <LI><a href="#[1a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunMapKeys
@@ -1516,18 +1180,6 @@ Global Symbols
 <LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveEncoder_Right_InterruptResponse
 <LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveEncoder_Left_InterruptResponse
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
-=======
-<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
-<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunAttackStrategySM
-<LI><a href="#[1a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunMapKeys
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
-<LI><a href="#[12]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CannonControl_PeriodicInterruptResponse
-<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
-<LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveEncoder_Right_InterruptResponse
-<LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveEncoder_Left_InterruptResponse
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> es_timers.o(.constdata)
 </UL>
@@ -1552,11 +1204,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> es_timers.o(.constdata)
 </UL>
 <P><STRONG><a name="[eb]"></a>ReadDataRegister</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, paclogic_sm.o(i.ReadDataRegister))
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR><BR>[Called By]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingCMDSM
-=======
-<BR><BR>[Called By]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingCMDSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[a0]"></a>ResetEncoderTicks</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, drivetraincontrol_service.o(i.ResetEncoderTicks))
@@ -1565,7 +1213,6 @@ Global Symbols
 <LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveEncoder_Left_InterruptResponse
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[d6]"></a>ResetUpdateTimes</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, phototransistor_service.o(i.ResetUpdateTimes))
 <BR><BR>[Called By]<UL><LI><a href="#[9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PhotoTransistor_InterruptResponse
 </UL>
@@ -1573,67 +1220,32 @@ Global Symbols
 <P><STRONG><a name="[a5]"></a>RunAttackStrategySM</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, attackstrategy_sm.o(i.RunAttackStrategySM))
 <BR><BR>[Called By]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartAttackStrategySM
 <LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringDefault
-=======
-<P><STRONG><a name="[a3]"></a>RunAttackStrategySM</STRONG> (Thumb, 132 bytes, Stack size 24 bytes, attackstrategy_sm.o(i.RunAttackStrategySM))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48 + In Cycle
-<LI>Call Chain = RunAttackStrategySM &rArr;  RunAttackStrategySM (Cycle)
-</UL>
-<BR>[Calls]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
-<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunAttackStrategySM
-<LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMasterSM
-</UL>
-<BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartAttackStrategySM
-<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunAttackStrategySM
-<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringDefault
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
-<P><STRONG><a name="[28]"></a>RunCannonControlService</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, cannoncontrol_service.o(i.RunCannonControlService))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = RunCannonControlService
+<P><STRONG><a name="[28]"></a>RunCannonControlService</STRONG> (Thumb, 34 bytes, Stack size 4 bytes, cannoncontrol_service.o(i.RunCannonControlService))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = RunCannonControlService
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetCannonSpeed
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> es_framework.o(.constdata)
 </UL>
 <P><STRONG><a name="[db]"></a>RunCapturePSSM</STRONG> (Thumb, 320 bytes, Stack size 32 bytes, captureps_sm.o(i.RunCapturePSSM))
-=======
-<BR>[Calls]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetCannonSpeed
-</UL>
-<BR>[Address Reference Count : 1]<UL><LI> es_framework.o(.constdata)
-</UL>
-<P><STRONG><a name="[da]"></a>RunCapturePSSM</STRONG> (Thumb, 320 bytes, Stack size 32 bytes, captureps_sm.o(i.RunCapturePSSM))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <BR><BR>[Stack]<UL><LI>Max Depth = 216 + Unknown Stack Size
  + In Cycle
 <LI>Call Chain = RunCapturePSSM &rArr;  RunCapturePSSM (Cycle)
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkResponseReadyByte
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkLocation
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkAcknowledged
 <LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartRequestSM
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunRequestSM
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
-=======
-<BR>[Calls]<UL><LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkResponseReadyByte
-<LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkLocation
-<LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkAcknowledged
-<LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartRequestSM
-<LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunRequestSM
-<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMasterSM
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartCapturePSSM
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
 <LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
-=======
-<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[20]"></a>RunDriveTrainControlService</STRONG> (Thumb, 266 bytes, Stack size 32 bytes, drivetraincontrol_service.o(i.RunDriveTrainControlService))
@@ -1642,21 +1254,12 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
 <LI><a href="#[29]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostDriveTrainControlService
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetDriveSpeed
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveRight
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveLeft
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetEncoderTicks
 <LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUsetPRIMASK
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUgetPRIMASK_cpsid
-=======
-<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetDriveSpeed
-<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveRight
-<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveLeft
-<LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetEncoderTicks
-<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUsetPRIMASK
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUgetPRIMASK_cpsid
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> es_framework.o(.constdata)
@@ -1666,11 +1269,7 @@ Global Symbols
  + In Cycle
 <LI>Call Chain = RunHallEffectSM &rArr;  RunHallEffectSM (Cycle)
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunHallEffectSM
-=======
-<BR>[Calls]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunHallEffectSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enableHEInterrupts
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disableHEInterrupts
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
@@ -1710,7 +1309,6 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePSStatuses
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UpdateADStatus
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartSendingCMDSM
 <LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingCMDSM
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
@@ -1719,16 +1317,6 @@ Global Symbols
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartCapturePSSM
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
 <LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
-=======
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartSendingCMDSM
-<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingCMDSM
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
-<LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_RecallEvents
-<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_EnQueueLIFO
-<LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartCapturePSSM
-<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMasterSM
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
@@ -1740,8 +1328,8 @@ Global Symbols
 <P><STRONG><a name="[1e]"></a>RunPWMService</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, pwm_service.o(i.RunPWMService))
 <BR>[Address Reference Count : 1]<UL><LI> es_framework.o(.constdata)
 </UL>
-<P><STRONG><a name="[26]"></a>RunPeriscopeControlService</STRONG> (Thumb, 80 bytes, Stack size 24 bytes, periscopecontrol_service.o(i.RunPeriscopeControlService))
-<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = RunPeriscopeControlService &rArr; SetPWM_Periscope &rArr; setPWM_value
+<P><STRONG><a name="[26]"></a>RunPeriscopeControlService</STRONG> (Thumb, 56 bytes, Stack size 16 bytes, periscopecontrol_service.o(i.RunPeriscopeControlService))
+<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = RunPeriscopeControlService &rArr; SetPWM_Periscope &rArr; setPWM_value
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_Periscope
 </UL>
@@ -1750,7 +1338,6 @@ Global Symbols
 <P><STRONG><a name="[24]"></a>RunPhotoTransistorService</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, phototransistor_service.o(i.RunPhotoTransistorService))
 <BR>[Address Reference Count : 1]<UL><LI> es_framework.o(.constdata)
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[22]"></a>RunPositionLogicService</STRONG> (Thumb, 78 bytes, Stack size 8 bytes, positionlogic_service.o(i.RunPositionLogicService))
 <BR><BR>[Stack]<UL><LI>Max Depth = 344 + Unknown Stack Size
 <LI>Call Chain = RunPositionLogicService &rArr; CalculateAbsolutePosition &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_d2iz
@@ -1761,37 +1348,15 @@ Global Symbols
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
 <LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AlignToTarget
-=======
-<P><STRONG><a name="[22]"></a>RunPositionLogicService</STRONG> (Thumb, 238 bytes, Stack size 16 bytes, positionlogic_service.o(i.RunPositionLogicService))
-<BR><BR>[Stack]<UL><LI>Max Depth = 352 + Unknown Stack Size
-<LI>Call Chain = RunPositionLogicService &rArr; CalculateAbsolutePosition &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dmul
-</UL>
-<BR>[Calls]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
-<LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetEncoderTicks
-<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IsMoving
-<LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EncoderTicksForGivenAngle
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToTarget
-<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToBucket
-<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToTarget
-<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToBucket
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> es_framework.o(.constdata)
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[dc]"></a>RunRequestSM</STRONG> (Thumb, 94 bytes, Stack size 24 bytes, request_sm.o(i.RunRequestSM))
-=======
-<P><STRONG><a name="[db]"></a>RunRequestSM</STRONG> (Thumb, 94 bytes, Stack size 24 bytes, request_sm.o(i.RunRequestSM))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <BR><BR>[Stack]<UL><LI>Max Depth = 184 + Unknown Stack Size
  + In Cycle
 <LI>Call Chain = RunRequestSM &rArr;  RunRequestSM (Cycle)
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringRequest_t
 <LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringQuery_t
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkResponseReadyByte
@@ -1800,16 +1365,6 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartRequestSM
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunRequestSM
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
-=======
-<BR>[Calls]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringRequest_t
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringQuery_t
-<LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkResponseReadyByte
-<LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunRequestSM
-</UL>
-<BR>[Called By]<UL><LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartRequestSM
-<LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunRequestSM
-<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[e8]"></a>RunSendingByteSM</STRONG> (Thumb, 114 bytes, Stack size 24 bytes, sendingbyte_sm.o(i.RunSendingByteSM))
@@ -1817,20 +1372,12 @@ Global Symbols
 <LI>Call Chain = RunSendingByteSM &rArr;  RunSendingByteSM (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingByteSM
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
-=======
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteDataRegister
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartSendingByteSM
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingByteSM
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingCMDSM
-=======
-<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingCMDSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[ae]"></a>RunSendingCMDSM</STRONG> (Thumb, 474 bytes, Stack size 40 bytes, sendingcmd_sm.o(i.RunSendingCMDSM))
@@ -1839,11 +1386,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartSendingByteSM
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingByteSM
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingCMDSM
-=======
-<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingCMDSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadDataRegister
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMasterSM
 </UL>
@@ -1854,7 +1397,6 @@ Global Symbols
 <LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[a4]"></a>RunStrategySM</STRONG> (Thumb, 396 bytes, Stack size 24 bytes, strategy_sm.o(i.RunStrategySM))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240 + Unknown Stack Size
  + In Cycle
@@ -1874,25 +1416,6 @@ Global Symbols
 <LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResetEncoderTicks
 <LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IsAbsolutePosition
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ApplyRotationAngle
-=======
-<P><STRONG><a name="[a2]"></a>RunStrategySM</STRONG> (Thumb, 430 bytes, Stack size 32 bytes, strategy_sm.o(i.RunStrategySM))
-<BR><BR>[Stack]<UL><LI>Max Depth = 192 + Unknown Stack Size
- + In Cycle
-<LI>Call Chain = RunStrategySM &rArr;  RunStrategySM (Cycle)
-</UL>
-<BR>[Calls]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disableCaptureInterrupt
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Set
-<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Clear
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Timer_InitTimer
-<LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkResponseReadyByte
-<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
-<LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostPositionLogicService
-<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;isGameStarted
-<LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResumePositioning
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
-<LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LatchPeriscope
-<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IsAbsolutePosition
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartStrategySM
@@ -1901,11 +1424,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[f3]"></a>SPI_Init</STRONG> (Thumb, 192 bytes, Stack size 0 bytes, paclogic_sm.o(i.SPI_Init))
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR><BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartPACLogicSM
-=======
-<BR><BR>[Called By]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartPACLogicSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[8]"></a>SSI_InterruptResponse</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, paclogic_sm.o(i.SSI_InterruptResponse))
@@ -1920,11 +1439,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setPWM_value
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
-=======
-<BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[9d]"></a>SetPWM_DriveLeft</STRONG> (Thumb, 66 bytes, Stack size 16 bytes, pwm_service.o(i.SetPWM_DriveLeft))
@@ -1951,24 +1466,12 @@ Global Symbols
 <LI><a href="#[11]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveControl_PeriodicInterruptResponse
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
-=======
-<P><STRONG><a name="[cc]"></a>SetPWM_Hopper</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, pwm_service.o(i.SetPWM_Hopper))
-<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = SetPWM_Hopper &rArr; setPWM_value
-</UL>
-<BR>[Calls]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setPWM_value
-</UL>
-<BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitCannonControlService
-</UL>
-
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <P><STRONG><a name="[e6]"></a>SetPWM_Periscope</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, pwm_service.o(i.SetPWM_Periscope))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = SetPWM_Periscope &rArr; setPWM_value
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setPWM_value
 </UL>
-<BR>[Called By]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UnlatchPeriscope
-<LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPeriscopeControlService
+<BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPeriscopeControlService
 </UL>
 
 <P><STRONG><a name="[d3]"></a>SetPWM_PeriscopeLatch</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, pwm_service.o(i.SetPWM_PeriscopeLatch))
@@ -1976,7 +1479,6 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setPWM_value
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UnlatchPeriscope
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LatchPeriscope
 </UL>
@@ -1991,24 +1493,6 @@ Global Symbols
 
 <P><STRONG><a name="[a8]"></a>StartAttackStrategySM</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, attackstrategy_sm.o(i.StartAttackStrategySM))
 <BR><BR>[Calls]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunAttackStrategySM
-=======
-<BR>[Called By]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UnlatchPeriscope
-<LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LatchPeriscope
-</UL>
-
-<P><STRONG><a name="[10f]"></a>SetTargetFrequencyIndex</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, paclogic_sm.o(i.SetTargetFrequencyIndex))
-<BR><BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
-</UL>
-
-<P><STRONG><a name="[94]"></a>SetTargetLocation</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, positionlogic_service.o(i.SetTargetLocation))
-<BR><BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ChooseDestination
-</UL>
-
-<P><STRONG><a name="[a6]"></a>StartAttackStrategySM</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, attackstrategy_sm.o(i.StartAttackStrategySM))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = StartAttackStrategySM &rArr; RunAttackStrategySM &rArr;  RunAttackStrategySM (Cycle)
-</UL>
-<BR>[Calls]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunAttackStrategySM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringDefault
 </UL>
@@ -2017,11 +1501,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 216 + Unknown Stack Size
 <LI>Call Chain = StartCapturePSSM &rArr; RunCapturePSSM &rArr;  RunCapturePSSM (Cycle)
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
-=======
-<BR>[Calls]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
 </UL>
@@ -2030,11 +1510,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 160 + Unknown Stack Size
 <LI>Call Chain = StartHallEffectSM &rArr; RunHallEffectSM &rArr;  RunHallEffectSM (Cycle)
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunHallEffectSM
-=======
-<BR>[Calls]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunHallEffectSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initializeHEInterrupts
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringDefault
@@ -2053,21 +1529,14 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 248 + Unknown Stack Size
 <LI>Call Chain = StartPACLogicSM &rArr; RunPACLogicSM &rArr;  RunPACLogicSM (Cycle)
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_InitQueue
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Init
 <LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
-=======
-<BR>[Calls]<UL><LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_InitQueue
-<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Init
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringDefault
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[dd]"></a>StartRequestSM</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, request_sm.o(i.StartRequestSM))
 <BR><BR>[Stack]<UL><LI>Max Depth = 184 + Unknown Stack Size
 <LI>Call Chain = StartRequestSM &rArr; RunRequestSM &rArr;  RunRequestSM (Cycle)
@@ -2075,15 +1544,6 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunRequestSM
 </UL>
 <BR>[Called By]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
-=======
-<P><STRONG><a name="[dc]"></a>StartRequestSM</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, request_sm.o(i.StartRequestSM))
-<BR><BR>[Stack]<UL><LI>Max Depth = 184 + Unknown Stack Size
-<LI>Call Chain = StartRequestSM &rArr; RunRequestSM &rArr;  RunRequestSM (Cycle)
-</UL>
-<BR>[Calls]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunRequestSM
-</UL>
-<BR>[Called By]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[ea]"></a>StartSendingByteSM</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, sendingbyte_sm.o(i.StartSendingByteSM))
@@ -2104,13 +1564,8 @@ Global Symbols
 <LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[a7]"></a>StartStrategySM</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, strategy_sm.o(i.StartStrategySM))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240 + Unknown Stack Size
-=======
-<P><STRONG><a name="[a5]"></a>StartStrategySM</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, strategy_sm.o(i.StartStrategySM))
-<BR><BR>[Stack]<UL><LI>Max Depth = 192 + Unknown Stack Size
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI>Call Chain = StartStrategySM &rArr; RunStrategySM &rArr;  RunStrategySM (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
@@ -2126,41 +1581,24 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[d7]"></a>SysCtlPeripheralEnable</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, sysctl.o(i.SysCtlPeripheralEnable))
 <BR><BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortFunctionInit
-=======
-<P><STRONG><a name="[d6]"></a>SysCtlPeripheralEnable</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, sysctl.o(i.SysCtlPeripheralEnable))
-<BR><BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortFunctionInit
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TERMIO_Init
 </UL>
 
 <P><STRONG><a name="[ff]"></a>SysTickEnable</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, systick.o(i.SysTickEnable))
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR><BR>[Called By]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_HW_Timer_Init
 </UL>
 
 <P><STRONG><a name="[fe]"></a>SysTickIntEnable</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, systick.o(i.SysTickIntEnable))
 <BR><BR>[Called By]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_HW_Timer_Init
-=======
-<BR><BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_HW_Timer_Init
-</UL>
-
-<P><STRONG><a name="[fe]"></a>SysTickIntEnable</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, systick.o(i.SysTickIntEnable))
-<BR><BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_HW_Timer_Init
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[7]"></a>SysTickIntHandler</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, es_port.o(i.SysTickIntHandler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_rvmdk.o(RESET)
 </UL>
 <P><STRONG><a name="[fd]"></a>SysTickPeriodSet</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, systick.o(i.SysTickPeriodSet))
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR><BR>[Called By]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_HW_Timer_Init
-=======
-<BR><BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_HW_Timer_Init
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[f5]"></a>TERMIO_GetChar</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, termio.o(i.TERMIO_GetChar))
@@ -2174,17 +1612,10 @@ Global Symbols
 <P><STRONG><a name="[f7]"></a>TERMIO_Init</STRONG> (Thumb, 62 bytes, Stack size 8 bytes, termio.o(i.TERMIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = TERMIO_Init &rArr; GPIOPinTypeUART &rArr; GPIOPadConfigSet
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysCtlPeripheralEnable
 <LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UARTStdioConfig
 <LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UARTClockSourceSet
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPinTypeUART
-=======
-<BR>[Calls]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysCtlPeripheralEnable
-<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UARTStdioConfig
-<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UARTClockSourceSet
-<LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPinTypeUART
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIOPinConfigure
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -2196,17 +1627,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fputc
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[77]"></a>ToAppropriateRange</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, positionlogic_service.o(i.ToAppropriateRange))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ApplyRotationAngle
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToTarget
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-=======
-<P><STRONG><a name="[73]"></a>ToAppropriateRange</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, positionlogic_service.o(i.ToAppropriateRange))
-<BR><BR>[Called By]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToTarget
-<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToBucket
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[fc]"></a>UARTCharPut</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, uart.o(i.UARTCharPut))
@@ -2232,22 +1656,12 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TERMIO_GetChar
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[d9]"></a>UnlatchPeriscope</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, periscopecontrol_service.o(i.UnlatchPeriscope))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = UnlatchPeriscope &rArr; SetPWM_PeriscopeLatch &rArr; setPWM_value
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_PeriscopeLatch
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResumePositioning
-=======
-<P><STRONG><a name="[d8]"></a>UnlatchPeriscope</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, periscopecontrol_service.o(i.UnlatchPeriscope))
-<BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = UnlatchPeriscope &rArr; SetPWM_PeriscopeLatch &rArr; setPWM_value
-</UL>
-<BR>[Calls]<UL><LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_PeriscopeLatch
-<LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_Periscope
-</UL>
-<BR>[Called By]<UL><LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResumePositioning
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[e3]"></a>UpdateADStatus</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, gameinfo.o(i.UpdateADStatus))
@@ -2284,82 +1698,48 @@ Global Symbols
 <P><STRONG><a name="[61]"></a>__ARM_fpclassify</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, fpclassify.o(i.__ARM_fpclassify))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __ARM_fpclassify
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
-=======
-<BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
 <LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_fp_dec_real
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[9a]"></a>__hardfp_asin</STRONG> (Thumb, 770 bytes, Stack size 88 bytes, asin.o(i.__hardfp_asin))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = __hardfp_asin &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
-=======
-<P><STRONG><a name="[96]"></a>__hardfp_asin</STRONG> (Thumb, 770 bytes, Stack size 88 bytes, asin.o(i.__hardfp_asin))
-<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = __hardfp_asin &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
-</UL>
-<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 <LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrt
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabs
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-=======
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
-<BR>[Called By]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToTarget
-<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToBucket
+<BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToTarget
 </UL>
 
 <P><STRONG><a name="[105]"></a>__hardfp_atan</STRONG> (Thumb, 632 bytes, Stack size 48 bytes, atan.o(i.__hardfp_atan))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = __hardfp_atan &rArr; __kernel_poly &rArr; __aeabi_dmul
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
-=======
-<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabs
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-=======
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atan
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[80]"></a>__hardfp_atan2</STRONG> (Thumb, 426 bytes, Stack size 48 bytes, atan2.o(i.__hardfp_atan2))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = __hardfp_atan2 &rArr; atan &rArr; __hardfp_atan &rArr; __kernel_poly &rArr; __aeabi_dmul
 </UL>
@@ -2378,28 +1758,6 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = __hardfp_cos &rArr; __ieee754_rem_pio2 &rArr; __aeabi_d2iz
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
-=======
-<P><STRONG><a name="[7b]"></a>__hardfp_atan2</STRONG> (Thumb, 426 bytes, Stack size 48 bytes, atan2.o(i.__hardfp_atan2))
-<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = __hardfp_atan2 &rArr; atan &rArr; __hardfp_atan &rArr; __kernel_poly &rArr; __aeabi_dmul
-</UL>
-<BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atan
-<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabs
-</UL>
-<BR>[Called By]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-</UL>
-
-<P><STRONG><a name="[76]"></a>__hardfp_cos</STRONG> (Thumb, 200 bytes, Stack size 40 bytes, cos.o(i.__hardfp_cos))
-<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = __hardfp_cos &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dmul
-</UL>
-<BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
@@ -2407,19 +1765,13 @@ Global Symbols
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-=======
-<BR>[Called By]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[10e]"></a>__hardfp_fabs</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, fabs.o(i.__hardfp_fabs))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __hardfp_fabs
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
 </UL>
 
@@ -2427,17 +1779,6 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_d2iz
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
-=======
-<BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
-</UL>
-
-<P><STRONG><a name="[77]"></a>__hardfp_sin</STRONG> (Thumb, 200 bytes, Stack size 40 bytes, sin.o(i.__hardfp_sin))
-<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dmul
-</UL>
-<BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
@@ -2445,25 +1786,16 @@ Global Symbols
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
 </UL>
 
 <P><STRONG><a name="[9b]"></a>__hardfp_sqrt</STRONG> (Thumb, 122 bytes, Stack size 32 bytes, sqrt.o(i.__hardfp_sqrt))
-=======
-<BR>[Called By]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-</UL>
-
-<P><STRONG><a name="[99]"></a>__hardfp_sqrt</STRONG> (Thumb, 122 bytes, Stack size 32 bytes, sqrt.o(i.__hardfp_sqrt))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = __hardfp_sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dsqrt
 <LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DistanceToPoint
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToTarget
 </UL>
@@ -2483,34 +1815,11 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
-=======
-<BR>[Called By]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DistanceToPoint
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToTarget
-<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToBucket
-</UL>
-
-<P><STRONG><a name="[107]"></a>__ieee754_rem_pio2</STRONG> (Thumb, 938 bytes, Stack size 168 bytes, rred.o(i.__ieee754_rem_pio2))
-<BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = __ieee754_rem_pio2 &rArr; __aeabi_dmul
-</UL>
-<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
-<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
-<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
-<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabs
-</UL>
-<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[109]"></a>__kernel_cos</STRONG> (Thumb, 322 bytes, Stack size 64 bytes, cos_i.o(i.__kernel_cos))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = __kernel_cos &rArr; __kernel_poly &rArr; __aeabi_dmul
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
@@ -2519,22 +1828,11 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
-=======
-<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
-<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
-</UL>
-<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[101]"></a>__kernel_poly</STRONG> (Thumb, 248 bytes, Stack size 24 bytes, poly.o(i.__kernel_poly))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = __kernel_poly &rArr; __aeabi_dmul
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 </UL>
@@ -2542,21 +1840,11 @@ Global Symbols
 <LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-=======
-<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-</UL>
-<BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
-<LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
-<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[108]"></a>__kernel_sin</STRONG> (Thumb, 280 bytes, Stack size 72 bytes, sin_i.o(i.__kernel_sin))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = __kernel_sin &rArr; __kernel_poly &rArr; __aeabi_dmul
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
@@ -2567,36 +1855,16 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
-=======
-<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
-<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
-<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
-</UL>
-<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[100]"></a>__mathlib_dbl_underflow</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, dunder.o(i.__mathlib_dbl_underflow))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = __mathlib_dbl_underflow &rArr; __aeabi_dmul
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 </UL>
 <BR>[Called By]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-=======
-<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-</UL>
-<BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
-<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[4b]"></a>_sys_exit</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, retarget.o(i._sys_exit))
@@ -2611,17 +1879,10 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
 </UL>
 
 <P><STRONG><a name="[8f]"></a>captureInterrupt</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, helpers.o(i.captureInterrupt))
-=======
-<BR>[Called By]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
-</UL>
-
-<P><STRONG><a name="[8a]"></a>captureInterrupt</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, helpers.o(i.captureInterrupt))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <BR><BR>[Called By]<UL><LI><a href="#[a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CannonEncoder_InterruptResponse
 <LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveEncoder_Right_InterruptResponse
 <LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveEncoder_Left_InterruptResponse
@@ -2632,16 +1893,11 @@ Global Symbols
 <LI><a href="#[e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HE_InnerLeft_InterruptResponse
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[df]"></a>checkAcknowledged</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, helpers.o(i.checkAcknowledged))
-=======
-<P><STRONG><a name="[de]"></a>checkAcknowledged</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, helpers.o(i.checkAcknowledged))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = checkAcknowledged
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getResponseArray
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
 </UL>
 
@@ -2650,21 +1906,10 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[de]"></a>checkResponseReadyByte</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, helpers.o(i.checkResponseReadyByte))
-=======
-<BR>[Called By]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
-</UL>
-
-<P><STRONG><a name="[df]"></a>checkLocation</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, helpers.o(i.checkLocation))
-<BR><BR>[Called By]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
-</UL>
-
-<P><STRONG><a name="[dd]"></a>checkResponseReadyByte</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, helpers.o(i.checkResponseReadyByte))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = checkResponseReadyByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getResponseArray
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunRequestSM
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
 <LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
@@ -2676,19 +1921,6 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[8e]"></a>clearCaptureInterrupt</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, helpers.o(i.clearCaptureInterrupt))
-=======
-<BR>[Called By]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunRequestSM
-<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCapturePSSM
-<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
-</UL>
-
-<P><STRONG><a name="[10d]"></a>clamp</STRONG> (Thumb, 52 bytes, Stack size 0 bytes, helpers.o(i.clamp))
-<BR><BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
-<LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
-</UL>
-
-<P><STRONG><a name="[89]"></a>clearCaptureInterrupt</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, helpers.o(i.clearCaptureInterrupt))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <BR><BR>[Called By]<UL><LI><a href="#[c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PeriscopeEncoder_InterruptResponse_2
 <LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PeriscopeEncoder_InterruptResponse_1
 <LI><a href="#[a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CannonEncoder_InterruptResponse
@@ -2701,20 +1933,12 @@ Global Symbols
 <LI><a href="#[e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HE_InnerLeft_InterruptResponse
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[8c]"></a>clearPeriodicInterrupt</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, helpers.o(i.clearPeriodicInterrupt))
-=======
-<P><STRONG><a name="[87]"></a>clearPeriodicInterrupt</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, helpers.o(i.clearPeriodicInterrupt))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <BR><BR>[Called By]<UL><LI><a href="#[12]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CannonControl_PeriodicInterruptResponse
 <LI><a href="#[11]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveControl_PeriodicInterruptResponse
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[ca]"></a>detectPollingStation</STRONG> (Thumb, 110 bytes, Stack size 32 bytes, halleffect_sm.o(i.detectPollingStation))
-=======
-<P><STRONG><a name="[c9]"></a>detectPollingStation</STRONG> (Thumb, 110 bytes, Stack size 32 bytes, halleffect_sm.o(i.detectPollingStation))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = detectPollingStation &rArr; PostMasterSM &rArr; ES_PostToService &rArr; ES_EnQueueFIFO
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTargetFrequencyIndex
@@ -2729,22 +1953,15 @@ Global Symbols
 <LI><a href="#[e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HE_InnerLeft_InterruptResponse
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[79]"></a>disableCaptureInterrupt</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, helpers.o(i.disableCaptureInterrupt))
 <BR><BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-=======
-<P><STRONG><a name="[71]"></a>disableCaptureInterrupt</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, helpers.o(i.disableCaptureInterrupt))
-<BR><BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disableHEInterrupts
 </UL>
 
 <P><STRONG><a name="[e2]"></a>disableHEInterrupts</STRONG> (Thumb, 54 bytes, Stack size 8 bytes, halleffect_sm.o(i.disableHEInterrupts))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = disableHEInterrupts
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disableCaptureInterrupt
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunHallEffectSM
@@ -2754,28 +1971,13 @@ Global Symbols
 <P><STRONG><a name="[85]"></a>enableCaptureInterrupt</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, helpers.o(i.enableCaptureInterrupt))
 <BR><BR>[Called By]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResumePositioning
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-=======
-<BR>[Calls]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disableCaptureInterrupt
-</UL>
-<BR>[Called By]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunHallEffectSM
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
-</UL>
-
-<P><STRONG><a name="[80]"></a>enableCaptureInterrupt</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, helpers.o(i.enableCaptureInterrupt))
-<BR><BR>[Called By]<UL><LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ResumePositioning
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enableHEInterrupts
 </UL>
 
 <P><STRONG><a name="[e1]"></a>enableHEInterrupts</STRONG> (Thumb, 54 bytes, Stack size 8 bytes, halleffect_sm.o(i.enableHEInterrupts))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = enableHEInterrupts
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enableCaptureInterrupt
-=======
-<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enableCaptureInterrupt
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunHallEffectSM
 </UL>
@@ -2783,17 +1985,10 @@ Global Symbols
 <P><STRONG><a name="[102]"></a>fabs</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, fabs.o(i.fabs))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = fabs
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-=======
-<BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
-<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
-<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[67]"></a>ferror</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, retarget.o(i.ferror))
@@ -2817,7 +2012,6 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> _printf_char_file.o(.text)
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[b0]"></a>getResponseArray</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, sendingcmd_sm.o(i.getResponseArray))
 <BR><BR>[Called By]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringRequest_t
 <LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringQuery_t
@@ -2825,26 +2019,13 @@ Global Symbols
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UpdateADStatus
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkResponseReadyByte
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkAcknowledged
-=======
-<P><STRONG><a name="[ae]"></a>getResponseArray</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, sendingcmd_sm.o(i.getResponseArray))
-<BR><BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringRequest_t
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DuringQuery_t
-<LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updatePSStatuses
-<LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UpdateADStatus
-<LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkResponseReadyByte
-<LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkAcknowledged
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;isGameStarted
 </UL>
 
 <P><STRONG><a name="[f2]"></a>initializeHEInterrupts</STRONG> (Thumb, 54 bytes, Stack size 8 bytes, halleffect_sm.o(i.initializeHEInterrupts))
-<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = initializeHEInterrupts &rArr; InitInputCapture
+<BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = initializeHEInterrupts &rArr; InitInputCapture
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitInputCapture
-=======
-<BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitInputCapture
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartHallEffectSM
 </UL>
@@ -2857,11 +2038,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[90]"></a>kbhit</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, termio.o(i.kbhit))
-=======
-<P><STRONG><a name="[8b]"></a>kbhit</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, termio.o(i.kbhit))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <BR><BR>[Called By]<UL><LI><a href="#[18]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Check4Keystroke
 </UL>
 
@@ -2871,13 +2048,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TERMIO_Init
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysCtlClockSet
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Run
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Initialize
-=======
-<LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Run
-<LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ES_Initialize
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;puts
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
@@ -2889,22 +2061,12 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_PeriscopeLatch
 <LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_Periscope
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveRight
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveLeft
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_Cannon
 </UL>
 
 <P><STRONG><a name="[da]"></a>setTargetCannonSpeed</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, cannoncontrol_service.o(i.setTargetCannonSpeed))
-=======
-<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveRight
-<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_DriveLeft
-<LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_Cannon
-<LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_Hopper
-</UL>
-
-<P><STRONG><a name="[d9]"></a>setTargetCannonSpeed</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, cannoncontrol_service.o(i.setTargetCannonSpeed))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <BR><BR>[Called By]<UL><LI><a href="#[28]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunCannonControlService
 </UL>
 
@@ -2916,10 +2078,9 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunDriveTrainControlService
 <LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveEncoder_Right_InterruptResponse
 <LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveEncoder_Left_InterruptResponse
-<LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetEncoderTicks
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetEncoderTicks
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[75]"></a>setTargetEncoderTicks</STRONG> (Thumb, 114 bytes, Stack size 24 bytes, drivetraincontrol_service.o(i.setTargetEncoderTicks))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152 + Unknown Stack Size
 <LI>Call Chain = setTargetEncoderTicks &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
@@ -2930,18 +2091,6 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunDriveTrainControlService
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveToTarget
 <LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AlignToTarget
-=======
-<P><STRONG><a name="[e0]"></a>setTargetEncoderTicks</STRONG> (Thumb, 170 bytes, Stack size 48 bytes, drivetraincontrol_service.o(i.setTargetEncoderTicks))
-<BR><BR>[Stack]<UL><LI>Max Depth = 176 + Unknown Stack Size
-<LI>Call Chain = setTargetEncoderTicks &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
-</UL>
-<BR>[Calls]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetDriveSpeed
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-</UL>
-<BR>[Called By]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunDriveTrainControlService
-<LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPositionLogicService
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[103]"></a>sqrt</STRONG> (Thumb, 110 bytes, Stack size 32 bytes, sqrt.o(i.sqrt))
@@ -2950,19 +2099,11 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dsqrt
 <LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
 </UL>
 
 <P><STRONG><a name="[d5]"></a>toleranceCheck</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, halleffect_sm.o(i.toleranceCheck))
 <BR><BR>[Called By]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
-=======
-<BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-</UL>
-
-<P><STRONG><a name="[d5]"></a>toleranceCheck</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, halleffect_sm.o(i.toleranceCheck))
-<BR><BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectPollingStation
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PS_Period_Comparison
 </UL>
 
@@ -2974,11 +2115,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPACLogicSM
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[c9]"></a>updatePeriodArrays</STRONG> (Thumb, 36 bytes, Stack size 12 bytes, halleffect_sm.o(i.updatePeriodArrays))
-=======
-<P><STRONG><a name="[c8]"></a>updatePeriodArrays</STRONG> (Thumb, 36 bytes, Stack size 12 bytes, halleffect_sm.o(i.updatePeriodArrays))
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = updatePeriodArrays
 </UL>
 <BR>[Called By]<UL><LI><a href="#[10]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HE_OuterRight_InterruptResponse
@@ -3004,7 +2141,6 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_lib_init_lc_numeric_2
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[7f]"></a>__aeabi_dneg</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, basic.o(x$fpl$basic))
 <BR><BR>[Called By]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
 <LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
@@ -3013,16 +2149,6 @@ Global Symbols
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-=======
-<P><STRONG><a name="[7a]"></a>__aeabi_dneg</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, basic.o(x$fpl$basic))
-<BR><BR>[Called By]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
-<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
-<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[152]"></a>_dneg</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, basic.o(x$fpl$basic), UNUSED)
@@ -3035,7 +2161,6 @@ Global Symbols
 
 <P><STRONG><a name="[156]"></a>_fabs</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, basic.o(x$fpl$basic), UNUSED)
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[81]"></a>__aeabi_d2f</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, d2f.o(x$fpl$d2f))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_d2f
 </UL>
@@ -3046,21 +2171,6 @@ Global Symbols
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToTarget
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-=======
-<P><STRONG><a name="[7c]"></a>__aeabi_d2f</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, d2f.o(x$fpl$d2f))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_d2f
-</UL>
-<BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
-<LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetPeriscopeAngle
-<LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetEncoderTicks
-<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DistanceToPoint
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToTarget
-<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToBucket
-<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToTarget
-<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToBucket
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[111]"></a>_d2f</STRONG> (Thumb, 98 bytes, Stack size 32 bytes, d2f.o(x$fpl$d2f), UNUSED)
@@ -3068,25 +2178,15 @@ Global Symbols
 <LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[7e]"></a>__aeabi_dadd</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, daddsub_clz.o(x$fpl$dadd))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_dadd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-=======
-<P><STRONG><a name="[79]"></a>__aeabi_dadd</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, daddsub_clz.o(x$fpl$dadd))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_dadd
-</UL>
-<BR>[Called By]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
@@ -3109,29 +2209,6 @@ Global Symbols
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-=======
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
-<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
-</UL>
-
-<P><STRONG><a name="[114]"></a>_dadd</STRONG> (Thumb, 332 bytes, Stack size 16 bytes, daddsub_clz.o(x$fpl$dadd), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dsub1
-<LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dretinf
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
-</UL>
-
-<P><STRONG><a name="[78]"></a>__aeabi_ddiv</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, ddiv.o(x$fpl$ddiv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_ddiv
-</UL>
-<BR>[Called By]<UL><LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetPeriscopeAngle
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
-<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[117]"></a>_ddiv</STRONG> (Thumb, 552 bytes, Stack size 32 bytes, ddiv.o(x$fpl$ddiv), UNUSED)
@@ -3156,46 +2233,27 @@ Global Symbols
 
 <P><STRONG><a name="[157]"></a>_dflt</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dflt), UNUSED)
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[c8]"></a>__aeabi_ui2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dfltu))
 <BR><BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetPeriscopeAngle
-=======
-<P><STRONG><a name="[c7]"></a>__aeabi_ui2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dfltu))
-<BR><BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
-<LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetPeriscopeAngle
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 </UL>
 
 <P><STRONG><a name="[158]"></a>_dfltu</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dfltu), UNUSED)
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[82]"></a>__aeabi_dmul</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_dmul
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetPeriscopeAngle
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-=======
-<P><STRONG><a name="[7d]"></a>__aeabi_dmul</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_dmul
-</UL>
-<BR>[Called By]<UL><LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetPeriscopeAngle
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-=======
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[119]"></a>_dmul</STRONG> (Thumb, 332 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul), UNUSED)
@@ -3206,7 +2264,6 @@ Global Symbols
 <P><STRONG><a name="[113]"></a>__fpl_dnaninf</STRONG> (Thumb, 156 bytes, Stack size 16 bytes, dnaninf.o(x$fpl$dnaninf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __fpl_dnaninf
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_d2f
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dfix
 <LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dsqrt
@@ -3214,15 +2271,6 @@ Global Symbols
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_ddiv
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dsub
 <LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dadd
-=======
-<BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dmul
-<LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_ddiv
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dsub
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dadd
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_d2f
-<LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dfix
-<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dsqrt
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[116]"></a>__fpl_dretinf</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, dretinf.o(x$fpl$dretinf), UNUSED)
@@ -3232,28 +2280,16 @@ Global Symbols
 <LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dadd
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[83]"></a>__aeabi_drsub</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, daddsub_clz.o(x$fpl$drsb))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_drsub
 </UL>
 <BR>[Called By]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-=======
-<P><STRONG><a name="[7e]"></a>__aeabi_drsub</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, daddsub_clz.o(x$fpl$drsb))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_drsub
-</UL>
-<BR>[Called By]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-=======
-<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[11a]"></a>_drsb</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, daddsub_clz.o(x$fpl$drsb), UNUSED)
@@ -3267,27 +2303,17 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrt
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrt
-=======
-<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrt
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[104]"></a>__aeabi_dsub</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, daddsub_clz.o(x$fpl$dsub))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_dsub
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
-=======
-<BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
-<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
 </UL>
@@ -3295,20 +2321,11 @@ Global Symbols
 <P><STRONG><a name="[11c]"></a>_dsub</STRONG> (Thumb, 464 bytes, Stack size 32 bytes, daddsub_clz.o(x$fpl$dsub), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
 <LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dadd1
-=======
-<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
 </UL>
 
-<P><STRONG><a name="[11c]"></a>_dsub</STRONG> (Thumb, 464 bytes, Stack size 32 bytes, daddsub_clz.o(x$fpl$dsub), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dadd1
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
-</UL>
-
-<P><STRONG><a name="[75]"></a>__aeabi_f2d</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, f2d.o(x$fpl$f2d))
+<P><STRONG><a name="[73]"></a>__aeabi_f2d</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, f2d.o(x$fpl$f2d))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_f2d
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DistanceToPoint
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveToTarget
@@ -3317,17 +2334,6 @@ Global Symbols
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
 <LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AlignToTarget
-=======
-<BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calculateControlResponse
-<LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPositionLogicService
-<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DistanceToPoint
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToTarget
-<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToBucket
-<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToTarget
-<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToBucket
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[11d]"></a>_f2d</STRONG> (Thumb, 86 bytes, Stack size 16 bytes, f2d.o(x$fpl$f2d), UNUSED)
@@ -3390,18 +2396,13 @@ Local Symbols
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMasterSM
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Called By]<UL><LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunRequestSM
-=======
-<BR>[Called By]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunRequestSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[b1]"></a>DuringRequest_t</STRONG> (Thumb, 146 bytes, Stack size 32 bytes, request_sm.o(i.DuringRequest_t))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160 + Unknown Stack Size
 <LI>Call Chain = DuringRequest_t &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getResponseArray
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MyColor
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetRequestCommand
@@ -3412,53 +2413,22 @@ Local Symbols
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunRequestSM
-=======
-<BR>[Calls]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getResponseArray
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MyColor
-<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetRequestCommand
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartSendingCMDSM
-<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunSendingCMDSM
-<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetTargetFrequencyIndex
-<LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMasterSM
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-</UL>
-<BR>[Called By]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunRequestSM
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
-<P><STRONG><a name="[70]"></a>CalculateAbsolutePosition</STRONG> (Thumb, 744 bytes, Stack size 96 bytes, positionlogic_service.o(i.CalculateAbsolutePosition))
-<BR><BR>[Stack]<UL><LI>Max Depth = 336 + Unknown Stack Size
-<LI>Call Chain = CalculateAbsolutePosition &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dmul
+<P><STRONG><a name="[70]"></a>AlignToTarget</STRONG> (Thumb, 106 bytes, Stack size 16 bytes, positionlogic_service.o(i.AlignToTarget))
+<BR><BR>[Stack]<UL><LI>Max Depth = 200 + Unknown Stack Size
+<LI>Call Chain = AlignToTarget &rArr; DetermineDistanceToTarget &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enableCaptureInterrupt
-<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disableCaptureInterrupt
-<LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetBeaconAngle
-<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ToAppropriateRange
+<BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTargetEncoderTicks
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ToRadians
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToTarget
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToTarget
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-=======
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ToDegrees
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
-<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPositionLogicService
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[78]"></a>CalculateAbsolutePosition</STRONG> (Thumb, 732 bytes, Stack size 96 bytes, positionlogic_service.o(i.CalculateAbsolutePosition))
 <BR><BR>[Stack]<UL><LI>Max Depth = 336 + Unknown Stack Size
 <LI>Call Chain = CalculateAbsolutePosition &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_d2iz
@@ -3480,29 +2450,10 @@ Local Symbols
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_drsub
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-=======
-<P><STRONG><a name="[81]"></a>CalculateRelativePosition</STRONG> (Thumb, 490 bytes, Stack size 48 bytes, positionlogic_service.o(i.CalculateRelativePosition))
-<BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = CalculateRelativePosition &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dmul
-</UL>
-<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetRightEncoderTicks
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetLeftEncoderTicks
-<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUsetPRIMASK
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPUgetPRIMASK_cpsid
-<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ToRadians
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ToDegrees
-<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ConvertEncoderTicksToInches
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPositionLogicService
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[86]"></a>CalculateRelativePosition</STRONG> (Thumb, 494 bytes, Stack size 48 bytes, positionlogic_service.o(i.CalculateRelativePosition))
 <BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = CalculateRelativePosition &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_d2iz
 </UL>
@@ -3519,28 +2470,10 @@ Local Symbols
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-=======
-<P><STRONG><a name="[86]"></a>ConvertEncoderTicksToInches</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, positionlogic_service.o(i.ConvertEncoderTicksToInches))
-<BR><BR>[Called By]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
-</UL>
-
-<P><STRONG><a name="[95]"></a>DetermineAngleToBucket</STRONG> (Thumb, 160 bytes, Stack size 16 bytes, positionlogic_service.o(i.DetermineAngleToBucket))
-<BR><BR>[Stack]<UL><LI>Max Depth = 176 + Unknown Stack Size
-<LI>Call Chain = DetermineAngleToBucket &rArr; __hardfp_asin &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
-</UL>
-<BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MyColor
-<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ToAppropriateRange
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ToDegrees
-<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPositionLogicService
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[8b]"></a>ConvertEncoderTicksToInches</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, positionlogic_service.o(i.ConvertEncoderTicksToInches))
 <BR><BR>[Called By]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
 </UL>
@@ -3555,40 +2488,14 @@ Local Symbols
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-=======
-<P><STRONG><a name="[97]"></a>DetermineAngleToTarget</STRONG> (Thumb, 128 bytes, Stack size 16 bytes, positionlogic_service.o(i.DetermineAngleToTarget))
-<BR><BR>[Stack]<UL><LI>Max Depth = 176 + Unknown Stack Size
-<LI>Call Chain = DetermineAngleToTarget &rArr; __hardfp_asin &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ToAppropriateRange
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ToDegrees
-<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-</UL>
-<BR>[Called By]<UL><LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPositionLogicService
+<BR>[Called By]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AlignToTarget
 </UL>
 
-<P><STRONG><a name="[98]"></a>DetermineDistanceToBucket</STRONG> (Thumb, 176 bytes, Stack size 64 bytes, positionlogic_service.o(i.DetermineDistanceToBucket))
-<BR><BR>[Stack]<UL><LI>Max Depth = 192 + Unknown Stack Size
-<LI>Call Chain = DetermineDistanceToBucket &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
-</UL>
-<BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MyColor
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrt
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
-</UL>
-<BR>[Called By]<UL><LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPositionLogicService
-</UL>
-
-<P><STRONG><a name="[9a]"></a>DetermineDistanceToTarget</STRONG> (Thumb, 128 bytes, Stack size 56 bytes, positionlogic_service.o(i.DetermineDistanceToTarget))
+<P><STRONG><a name="[71]"></a>DetermineDistanceToTarget</STRONG> (Thumb, 128 bytes, Stack size 56 bytes, positionlogic_service.o(i.DetermineDistanceToTarget))
 <BR><BR>[Stack]<UL><LI>Max Depth = 184 + Unknown Stack Size
 <LI>Call Chain = DetermineDistanceToTarget &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrt
@@ -3606,25 +2513,10 @@ Local Symbols
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineDistanceToTarget
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-=======
-<BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-<LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrt
 </UL>
 <BR>[Called By]<UL><LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPositionLogicService
 </UL>
 
-<P><STRONG><a name="[c1]"></a>EncoderTicksForGivenAngle</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, positionlogic_service.o(i.EncoderTicksForGivenAngle))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = EncoderTicksForGivenAngle
-</UL>
-<BR>[Calls]<UL><LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ToRadians
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
-</UL>
-<BR>[Called By]<UL><LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunPositionLogicService
-</UL>
-
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[84]"></a>ToDegrees</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, positionlogic_service.o(i.ToDegrees))
 <BR><BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToTarget
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
@@ -3635,19 +2527,6 @@ Local Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
 <LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AlignToTarget
-=======
-<P><STRONG><a name="[7f]"></a>ToDegrees</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, positionlogic_service.o(i.ToDegrees))
-<BR><BR>[Called By]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToTarget
-<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetermineAngleToBucket
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
-</UL>
-
-<P><STRONG><a name="[74]"></a>ToRadians</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, positionlogic_service.o(i.ToRadians))
-<BR><BR>[Called By]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EncoderTicksForGivenAngle
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateRelativePosition
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalculateAbsolutePosition
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 
 <P><STRONG><a name="[9c]"></a>calculateControlResponse</STRONG> (Thumb, 154 bytes, Stack size 16 bytes, drivetraincontrol_service.o(i.calculateControlResponse))
@@ -3658,35 +2537,21 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[11]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriveControl_PeriodicInterruptResponse
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[8d]"></a>calculateControlResponse</STRONG> (Thumb, 248 bytes, Stack size 32 bytes, cannoncontrol_service.o(i.calculateControlResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = calculateControlResponse &rArr; __aeabi_d2f
-=======
-<P><STRONG><a name="[88]"></a>calculateControlResponse</STRONG> (Thumb, 212 bytes, Stack size 24 bytes, cannoncontrol_service.o(i.calculateControlResponse))
-<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = calculateControlResponse &rArr; __aeabi_dsub
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clamp
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMasterSM
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM_Cannon
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_fabs
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
 <LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
-=======
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
-<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_fabs
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CannonControl_PeriodicInterruptResponse
 </UL>
 
-<<<<<<< 064b86b6c99be3da2745a33cbf2408bc75f1f28f
 <P><STRONG><a name="[92]"></a>ChooseDestination</STRONG> (Thumb, 242 bytes, Stack size 32 bytes, strategy_sm.o(i.ChooseDestination))
 <BR><BR>[Stack]<UL><LI>Max Depth = 216 + Unknown Stack Size
 <LI>Call Chain = ChooseDestination &rArr; DistanceToPoint &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
@@ -3710,32 +2575,9 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enableCaptureInterrupt
 <LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UnlatchPeriscope
-=======
-<P><STRONG><a name="[8d]"></a>ChooseDestination</STRONG> (Thumb, 240 bytes, Stack size 32 bytes, strategy_sm.o(i.ChooseDestination))
-<BR><BR>[Stack]<UL><LI>Max Depth = 160 + Unknown Stack Size
-<LI>Call Chain = ChooseDestination &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
-</UL>
-<BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MyColor
-<LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PostMasterSM
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetStationY
-<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetStationX
-<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetStationOwner
-<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PositionInQueue
-<LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetTargetLocation
-<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DistanceToPoint
->>>>>>> Main functionality complete. Added hopper control, post-shot destination reset.
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
-</UL>
-
-<P><STRONG><a name="[d7]"></a>ResumePositioning</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, strategy_sm.o(i.ResumePositioning))
-<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = ResumePositioning &rArr; UnlatchPeriscope &rArr; SetPWM_PeriscopeLatch &rArr; setPWM_value
-</UL>
-<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enableCaptureInterrupt
-<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UnlatchPeriscope
-</UL>
-<BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RunStrategySM
 </UL>
 
 <P><STRONG><a name="[4]"></a>NmiSR</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, startup_rvmdk.o(RESET))

@@ -334,7 +334,7 @@ void InitInputCapture(
   // Then, map bit 4's alternate function to WT0CCP0
   // 7 is the mux value to select WT0CCP0, 16 to shift it over to the
   // right nibble for bit 4 (4 bits/nibble * 4 bits)
-  HWREG(TimerInfo[(timer_num * 2) + timer_letter].base+GPIO_O_PCTL) =(HWREG(TimerInfo[(timer_num * 2) + timer_letter].base+GPIO_O_PCTL) & TimerInfo[(timer_num * 2) + timer_letter].clear_mask) + TimerInfo[(timer_num * 2) + timer_letter].newval;
+  HWREG(TimerInfo[(timer_num * 2) + timer_letter].base+GPIO_O_PCTL) =(HWREG(TimerInfo[(timer_num * 2) + timer_letter].base+GPIO_O_PCTL) & TimerInfo[(timer_num * 2) + timer_letter].clear_mask) + TimerInfo[(timer_num * 2) + timer_letter].newval + (timer_num == 0 ? (timer_letter == 0 ? TIMER_CTL_TBEVENT_BOTH : 0) : 0);
 
   // Enable pin on Port for digital I/O
   HWREG(TimerInfo[(timer_num * 2) + timer_letter].base+GPIO_O_DEN) |= TimerInfo[(timer_num * 2) + timer_letter].pin;
@@ -343,7 +343,7 @@ void InitInputCapture(
   HWREG(TimerInfo[(timer_num * 2) + timer_letter].base+GPIO_O_DIR) &= ~TimerInfo[(timer_num * 2) + timer_letter].pin;
 
   // back to the timer to enable a local capture interrupt
- HWREG(timerpairs[timer_num].base+TIMER_O_IMR) |= timers[timer_letter].eim; //~TIMER_IMR_CAEIM; 
+	HWREG(timerpairs[timer_num].base+TIMER_O_IMR) |= timers[timer_letter].eim; //~TIMER_IMR_CAEIM; 
 
   //Set Priority to higher than zero (1) so that it does not conflict with our other interrupt. 
 	//Interrupt 94 is INTC, hence BIT21 will set the priority to 1 (page 155 of Tiva Datasheet)
