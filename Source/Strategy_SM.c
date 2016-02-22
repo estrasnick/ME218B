@@ -328,7 +328,6 @@ static ES_Event DuringWait4Start_t( ES_Event Event)
         // now do any local exit functionality
 				GPIO_Set(GAME_BASE, GAME_STATUS_PIN);
 				ES_Timer_InitTimer(GAME_TIMER, GAME_TIMER_T);
-				ES_Timer_InitTimer(
     }else
     // do the 'during' function for this state
     {

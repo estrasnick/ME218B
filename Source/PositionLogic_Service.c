@@ -19,6 +19,7 @@
 #include "DEFINITIONS.h"
 #include "DriveTrainControl_Service.h"
 #include "PeriscopeControl_Service.h"
+#include "GameInfo.c"
 
 /*----------------------------- Module Defines ----------------------------*/
 
@@ -41,8 +42,11 @@ static float ToDegrees(float radians);
 static uint32_t EncoderTicksForGivenAngle(float angle);
 static float DetermineDistanceToTarget(void);
 static float DetermineAngleToTarget(float distanceToTarget);
+static float DetermineDistanceToBucket(void);
+static float DetermineAngleToBucket(float distanceToBucket);
 static void AlignToTarget(void);
 static void DriveToTarget(void);
+static void AlignToBucket(void);
 
 /*---------------------------- Module Variables ---------------------------*/
 // with the introduction of Gen2, we need a module level Priority variable
@@ -57,7 +61,7 @@ static float TargetY;
 
 static bool AbsolutePosition = false;
 
-static float AngleToRotate;
+static float storedTheta;
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -151,6 +155,12 @@ ES_Event RunPositionLogicService( ES_Event ThisEvent )
 			DriveToTarget();
 			break;
 		}
+		case ES_ALIGN_TO_BUCKET:
+		{
+			storedTheta = myTheta;
+			AlignToBucket();
+			break;
+		}
 		default:
 			break;
 	}
@@ -192,17 +202,7 @@ float DistanceToPoint(float TargetX, float TargetY)
 	float yDist = TargetY - myY;
 	float xDist = TargetX - myX;
 	
-	printf("Distance to point %f, %f is %f\r\n", TargetX, TargetY, sqrt((yDist * yDist) + (xDist * xDist)));
-	
 	return sqrt((yDist * yDist) + (xDist * xDist));
-}
-
-/***************************************************************************
- Update position after rotation
- ***************************************************************************/
-void ApplyRotationAngle(void)
-{
-	myTheta = ToAppropriateRange(myTheta + AngleToRotate);
 }
 
 /***************************************************************************
@@ -236,13 +236,13 @@ static void CalculateAbsolutePosition()
 	
 	myX = 96.0 - (96.0 * sin(gamma) * (sin(PI - gamma - BMinusC)/sin(PI - BMinusC)));
 	myY = 96.0 - (96.0 * sin(delta) * (sin(PI - delta - AMinusB)/sin(PI - AMinusB)));
-
+	
 	myTheta = ToAppropriateRange(ToDegrees(ToRadians(360 - GetBeaconAngle(BEACON_INDEX_NE)) + gamma + BMinusC - (.5f * PI)));
 	
 	//print our absolute position
 	printf("ABSOLUTE POSITION: X: %f, Y: %f, theta: %f\n\r", myX, myY, myTheta);	
-	printf("A was: %f, B was: %f, C was: %f, gamma was: %f\r\n", GetBeaconAngle(BEACON_INDEX_NW), GetBeaconAngle(BEACON_INDEX_NE), GetBeaconAngle(BEACON_INDEX_SE), ToDegrees(gamma));
-	  
+	printf("A was: %f, B was: %f, C was: %f, gamma was: %f\r\n", 360 -  GetBeaconAngle(BEACON_INDEX_NW), 360 -  GetBeaconAngle(BEACON_INDEX_NE),360 -  GetBeaconAngle(BEACON_INDEX_SE), ToDegrees(gamma));
+	
 	AbsolutePosition = true;
 	
 	// Reenable the phototransistor interrupts
@@ -299,7 +299,6 @@ static void CalculateRelativePosition()
 	myX += displacement * cos(displacementAngle);
 	myY += displacement * sin(displacementAngle);
 	myTheta = myNewTheta;
-	AbsolutePosition = false;
 }
 
 // Convert Encoder ticks to linear distance measurement
@@ -361,6 +360,15 @@ static uint32_t EncoderTicksForGivenAngle(float angle)
 	return (ToRadians(angle) * DISTANCE_BETWEEN_WHEELS * DRIVE_GEAR_RATIO * ENCODER_PULSES_PER_REV) / (2 * WHEEL_CIRCUMFERENCE);
 }
 
+static float DetermineDistanceToBucket(void)
+{
+	printf("Target x: %f, Target y: %f, My x: %f, My y: %f\r\n", TargetX, TargetY, myX, myY);
+	float yDist = (MyColor() ? 96 : 0) - myY;
+	float xDist = (MyColor() ? 0 : 96) - myX;
+	
+	return sqrt((yDist * yDist) + (xDist * xDist));
+}
+
 static float DetermineDistanceToTarget(void)
 {
 	printf("Target x: %f, Target y: %f, My x: %f, My y: %f\r\n", TargetX, TargetY, myX, myY);
@@ -378,11 +386,20 @@ static float DetermineAngleToTarget(float distanceToTarget)
 		printf("less than 0\r\n");
 		theta = ToAppropriateRange(180 - theta);
 	}
-	
-	AngleToRotate = ToAppropriateRange(myTheta - theta);
-	
 	//printf("theta is: %f\r\n", ToAppropriateRange(theta));
-	return AngleToRotate;
+	return ToAppropriateRange(myTheta - theta);
+}
+
+static float DetermineAngleToBucket(float distanceToBucket)
+{
+	float theta = ToAppropriateRange(ToDegrees(asin(((MyColor() ? 96 : 0) - myY)/distanceToBucket)));
+	if (((MyColor() ? 0 : 96) - myX) < 0)
+	{
+		printf("less than 0\r\n");
+		theta = ToAppropriateRange(180 - theta);
+	}
+	//printf("theta is: %f\r\n", ToAppropriateRange(theta));
+	return ToAppropriateRange(myTheta - theta);
 }
 
 static void AlignToTarget(void)
@@ -396,7 +413,15 @@ static void AlignToTarget(void)
  
 static void DriveToTarget(void)
 {
-	printf("Driving to target: myx: %f, myy: %f, mytheta: %f\r\n", myX, myY, myTheta);
 	uint32_t ticks = ConvertInchesToEncoderTicks(DetermineDistanceToTarget());
 	setTargetEncoderTicks(ticks, ticks, false, false);
+}
+
+static void AlignToBucket(void)
+{
+	//printf("Distance to Target: %f\r\n", DetermineDistanceToTarget());
+	float angle = DetermineAngleToBucket(DetermineDistanceToBucket());
+	printf("Angle to Target: %f\r\n", angle);
+	uint32_t ticks = EncoderTicksForGivenAngle(angle);
+	setTargetEncoderTicks(ticks, ticks, false, true);
 }

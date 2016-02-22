@@ -28,13 +28,16 @@
 #define CANNON_SHOOT_SPEED 30 //change this target to create a map of how far we shoot with different Cannon Speeds
 #define CANNON_STOP_SPEED 0
 
+#define CANNON_RPM_TOLERANCE 2
+
 /*---------------------------- Module Functions ---------------------------*/
 /* prototypes for private functions for this service.They should be functions
    relevant to the behavior of this service
 */
 
-static void calculateControlResponse(uint32_t ThisPeriod, float integralTerm, uint32_t targetSpeed);
+static void calculateControlResponse(float currentRPM, float integralTerm, uint32_t targetSpeed);
 static float CalculateRPM(uint32_t period);
+static bool SpeedCheck(float rpm);
 
 /*---------------------------- Module Variables ---------------------------*/
 // with the introduction of Gen2, we need a module level Priority variable
@@ -49,6 +52,8 @@ static float RPMTarget;
 
 //Controls
 float integralTerm = 0.0; /* integrator control effort */
+
+bool Revving = false;
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -127,6 +132,7 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
 			case (ES_START_CANNON):
 				{
 					//For Testing
+					Revving = true;
 					setTargetCannonSpeed(CANNON_SHOOT_SPEED);
 					//For Actual Implementation
 					//setTargetCannonSpeed(RPMTarget);
@@ -135,6 +141,7 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
 			case (ES_STOP_CANNON):
 				{
 					setTargetCannonSpeed(CANNON_STOP_SPEED);
+					Revving = false;
 				}
 				break;
 		}
@@ -143,12 +150,14 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
 			case (ES_START_CANNON):
 				{
 					//For Actual Implementation
+					Revving = true;
 					setTargetCannonSpeed(ThisEvent.EventParam); //getting passed the value as a paramater
 				}
 				break;
 			case (ES_STOP_CANNON):
 				{
 					setTargetCannonSpeed(CANNON_STOP_SPEED);
+					Revving = false;
 				}
 				break;
 			}
@@ -181,20 +190,29 @@ void CannonControl_PeriodicInterruptResponse(void){
 	// start by clearing the source of the interrupt
 	clearPeriodicInterrupt(CANNON_CONTROL_INTERRUPT_PARAMATERS);
 	
+	float rpm = CalculateRPM(Period);
+	
+	if (Revving)
+	{
+		if (SpeedCheck(rpm))
+		{
+			ES_Event NewEvent;
+			NewEvent.EventType = ES_CANNON_READY;
+			PostMasterSM(NewEvent);
+			Revving = false;
+		}
+	}
+	
 	//Calculate Control Response individually
-	calculateControlResponse(Period, integralTerm, RPMTarget);
+	calculateControlResponse(rpm, integralTerm, RPMTarget);
 }
 
 /***************************************************************************
 Control Law
  ***************************************************************************/
-static void calculateControlResponse(uint32_t ThisPeriod, float integralTerm, uint32_t targetSpeed){
+static void calculateControlResponse(float currentRPM, float integralTerm, uint32_t targetSpeed){
 	static float RPMError; /* make static for speed */
 	static float LastError; /* for Derivative Control */
-	static float currentRPM;
-	
-	//Calculate RPM (Need new formula
-	currentRPM = CalculateRPM(ThisPeriod);
 	
 	//Calculate Error (absolute)
 	RPMError = fabs(targetSpeed) - currentRPM; //fabs is absolute value
@@ -240,4 +258,10 @@ void setTargetCannonSpeed(uint32_t newCannonRPM){
 static float CalculateRPM(uint32_t period) 
 {
 	return ((TICKS_PER_MS * SECS_PER_MIN * MS_PER_SEC) / ((float) period * FLYWHEEL_GEAR_RATIO * ENCODER_PULSES_PER_REV));
+}
+
+// Return true if the cannon has reached its target RPM
+static bool SpeedCheck(float rpm)
+{
+	return (rpm <= RPMTarget + CANNON_RPM_TOLERANCE) && (rpm >= RPMTarget - CANNON_RPM_TOLERANCE);
 }

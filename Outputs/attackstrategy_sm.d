@@ -22,3 +22,4 @@
 .\outputs\attackstrategy_sm.o: .\Headers\Request_SM.h
 .\outputs\attackstrategy_sm.o: .\Headers\SendingCMD_SM.h
 .\outputs\attackstrategy_sm.o: .\Headers\SendingByte_SM.h
+.\outputs\attackstrategy_sm.o: .\Headers\DriveTrainControl_Service.h

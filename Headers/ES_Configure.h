@@ -298,7 +298,10 @@ typedef enum {  ES_NO_EVENT = 0,
 								ES_START_PERISCOPE,
 								ES_STOP_PERISCOPE,
 								
-								ES_MANUAL_START
+								ES_MANUAL_START,
+								ES_ATTACK_COMPLETE,
+								
+								ES_ALIGN_TO_BUCKET
 								
 								} ES_EventTyp_t ;
 
@@ -376,6 +379,7 @@ typedef enum {  ES_NO_EVENT = 0,
 #define TIMER12_RESP_FUNC PostMasterSM
 		#define ATTACK_PHASE_TIMER 12
 		#define ATTACK_PHASE_T 32000  // Note: the attack phase triggers after this timeout + 2 * GAME_TIMER_T
+		#define NEXT_SHOT_T 10000
 #define TIMER13_RESP_FUNC TIMER_UNUSED
 #define TIMER14_RESP_FUNC TIMER_UNUSED
 #define TIMER15_RESP_FUNC TIMER_UNUSED

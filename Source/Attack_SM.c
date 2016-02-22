@@ -21,6 +21,8 @@
 #include "Request_SM.h"
 #include "SendingCMD_SM.h"
 #include "SendingByte_SM.h"
+#include "CannonControl_Service.h"
+#include "PositionLogic_Service.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 // define constants for the states for this machine
@@ -201,12 +203,19 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event)
     // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
-        // implement any entry actions required for this state machine
-        
-        // after that start any lower level machines that run in this state
-        //StartLowerLevelSM( Event );
-        // repeat the StartxxxSM() functions for concurrent state machines
-        // on the lower level
+			// implement any entry actions required for this state machine
+			ES_Event AlignEvent;
+			AlignEvent.EventType = ES_ALIGN_TO_BUCKET;
+			PostPositionLogicService(AlignEvent);
+			
+			ES_Event StartCannonEvent;
+			StartCannonEvent.EventType = ES_START_CANNON;
+			PostCannonControlService(StartCannonEvent);
+			
+			// after that start any lower level machines that run in this state
+			//StartLowerLevelSM( Event );
+			// repeat the StartxxxSM() functions for concurrent state machines
+			// on the lower level
     }
     else if ( Event.EventType == ES_EXIT )
     {
