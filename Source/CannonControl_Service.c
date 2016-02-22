@@ -134,6 +134,7 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
 			case (ES_STOP_CANNON):
 				{
 					setTargetCannonSpeed(CANNON_STOP_SPEED);
+					puts("n");
 				}
 				break;
 		}
