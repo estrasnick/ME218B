@@ -53,6 +53,7 @@ bool InitPWMService ( uint8_t Priority )
 	InitPWM(PERISCOPE_PWM_PARAMATERS);
 	InitPWM(CANNON_PWM_PARAMATERS);
 	InitPWM(HOPPER_PWM_PARAMATERS);
+	InitPWM(PERISCOPE_LATCH_PWM_PARAMATERS);
 	
 	printf("PWM Initialized \n\r");
 
@@ -149,4 +150,9 @@ void SetPWM_Hopper(float duty){
 //Cannon Duty Cycle
 void SetPWM_Cannon(float duty){
 	setPWM_value(duty, CANNON_PWM_PARAMATERS);
+}
+
+//Periscope Latch Duty Cycle
+void SetPWM_PeriscopeLatch(float duty){
+	setPWM_value(duty, PERISCOPE_LATCH_PWM_PARAMATERS);
 }

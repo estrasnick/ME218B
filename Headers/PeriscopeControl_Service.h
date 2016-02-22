@@ -16,6 +16,8 @@ ES_Event RunPeriscopeControlService( ES_Event ThisEvent );
 float GetPeriscopeAngle(void);
 void PeriscopeEncoder_InterruptResponse(void);
 void ResetPeriscopeEncoderTicks(void);
+void LatchPeriscope(void);
+void UnlatchPeriscope(void);
 
 #endif 
 

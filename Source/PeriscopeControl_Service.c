@@ -56,8 +56,7 @@ bool InitPeriscopeControlService ( uint8_t Priority )
 	//Initialize Our Input Captures for Encoder
 	InitInputCapture(PERISCOPE_ENCODER_INTERRUPT_PARAMATERS_1);
 	InitInputCapture(PERISCOPE_ENCODER_INTERRUPT_PARAMATERS_2);
-  
-
+	
 	/*
 	//Start the Periscope
 	printf("Initialize the Periscope as Not Spinning\r\n");
@@ -171,4 +170,14 @@ float GetPeriscopeAngle(void)
 void ResetPeriscopeEncoderTicks(void)
 {
 	numTicks = 0;
+}
+
+void LatchPeriscope(void)
+{
+	SetPWM_PeriscopeLatch(PERISCOPE_LATCH_DUTY);
+}
+
+void UnlatchPeriscope(void)
+{
+	SetPWM_PeriscopeLatch(PERISCOPE_UNLATCH_DUTY);
 }

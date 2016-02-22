@@ -3,11 +3,11 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
-U:\_ME218bTeams\Team 3\_CODE\UVFrameworkHSMTemplate.uvproj
-Project File Date:  02/19/2016
+U:\estrasni\project\UVFrameworkHSMTemplate.uvproj
+Project File Date:  02/21/2016
 
 <h2>Output:</h2>
-Rebuild target 'BaseFrameworkTarget'
+Build target 'BaseFrameworkTarget'
 compiling HSMTemplateMain.c...
 compiling EventCheckers.c...
 compiling MapKeys.c...
@@ -65,6 +65,17 @@ Source\PhotoTransistor_Service.c(317): warning:  #1-D: last line of file ends wi
   }
 Source\PhotoTransistor_Service.c: 1 warning, 0 errors
 compiling PWM_Service.c...
+Source\PWM_Service.c(56): error:  #20: identifier "PERISCOPE_LATCH_PWM" is undefined
+        InitPWM(PERISCOPE_LATCH_PWM_PARAMATERS);
+Source\PWM_Service.c(56): error:  #165: too few arguments in function call
+        InitPWM(PERISCOPE_LATCH_PWM_PARAMATERS);
+Source\PWM_Service.c(157): error:  #20: identifier "PERISCOPE_LATCH_PWM" is undefined
+        setPWM_value(duty, PERISCOPE_LATCH_PWM_PARAMATERS);
+Source\PWM_Service.c(157): error:  #165: too few arguments in function call
+        setPWM_value(duty, PERISCOPE_LATCH_PWM_PARAMATERS);
+Source\PWM_Service.c(158): warning:  #1-D: last line of file ends without a newline
+  }
+Source\PWM_Service.c: 1 warning, 4 errors
 compiling DriveTrainControl_Service.c...
 Source\DriveTrainControl_Service.c(168): warning:  #177-D: variable "forward" was declared but never referenced
                 static bool forward = true;
@@ -79,7 +90,7 @@ Source\DriveTrainControl_Service.c(84): warning:  #177-D: variable "testvar" was
 Source\DriveTrainControl_Service.c: 5 warnings, 0 errors
 compiling CannonControl_Service.c...
 compiling PeriscopeControl_Service.c...
-Source\PeriscopeControl_Service.c(174): warning:  #1-D: last line of file ends without a newline
+Source\PeriscopeControl_Service.c(183): warning:  #1-D: last line of file ends without a newline
   }
 Source\PeriscopeControl_Service.c: 1 warning, 0 errors
 compiling EnemyCaptureQueue.c...
@@ -109,7 +120,5 @@ compiling ES_Timers.c...
 compiling retarget.c...
 compiling termio.c...
 compiling uartstdio.c...
-linking...
-Program Size: Code=28800 RO-data=1900 RW-data=1824 ZI-data=2568  
-After Build - User command #1: fromelf --bin --output .\Outputs\BaseTarget.bin .\Outputs\BaseTarget.axf
-".\Outputs\BaseTarget.axf" - 0 Error(s), 25 Warning(s).
+".\Outputs\BaseTarget.axf" - 4 Error(s), 26 Warning(s).
+Target not created
