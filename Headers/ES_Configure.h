@@ -360,7 +360,7 @@ typedef enum {  ES_NO_EVENT = 0,
 		#define SSI_TIMER	4
 #define TIMER5_RESP_FUNC PostMasterSM
 		#define GAME_TIMER	5
-		#define GAME_TIMER_T 138000
+		#define GAME_TIMER_T 46000 // Note, the total game time is 3x this value
 #define TIMER6_RESP_FUNC PostPositionLogicService
 		#define RELATIVE_POSITION_TIMER 6
 #define TIMER7_RESP_FUNC PostDriveTrainControlService
@@ -373,7 +373,9 @@ typedef enum {  ES_NO_EVENT = 0,
 #define TIMER11_RESP_FUNC PostPeriscopeControlService
 		#define START_PERISCOPE_TIMER 11
 		#define START_PERISCOPE_T 100
-#define TIMER12_RESP_FUNC TIMER_UNUSED
+#define TIMER12_RESP_FUNC PostMasterSM
+		#define ATTACK_PHASE_TIMER 12
+		#define ATTACK_PHASE_T 32000  // Note: the attack phase triggers after this timeout + 2 * GAME_TIMER_T
 #define TIMER13_RESP_FUNC TIMER_UNUSED
 #define TIMER14_RESP_FUNC TIMER_UNUSED
 #define TIMER15_RESP_FUNC TIMER_UNUSED

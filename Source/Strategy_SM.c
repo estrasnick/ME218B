@@ -64,6 +64,8 @@ static StrategyState_t CurrentState;
 
 static uint8_t TargetStation;
 
+static uint8_t timePeriod = 0;
+
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
  Function
@@ -87,10 +89,24 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 
 	 if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == GAME_TIMER))
 	 {
-		 NextState = Wait4Start_t;
-		 MakeTransition = true;
+		 if (timePeriod == 0)
+		 {
+			 ES_Timer_InitTimer(GAME_TIMER, GAME_TIMER_T);
+			 ES_Timer_InitTimer(ATTACK_PHASE_TIMER, ATTACK_PHASE_T);
+			 timePeriod = 1;
+		 }
+		 else if (timePeriod == 1)
+		 {
+			 ES_Timer_InitTimer(GAME_TIMER, GAME_TIMER_T);
+			 timePeriod = 2;
+		 }
+		 else
+		 {
+			 NextState = Wait4Start_t;
+			 MakeTransition = true;
+			 timePeriod = 0;
+		 }
 	 }
-	 else
 	 {
 		 switch ( CurrentState )
 		 {
@@ -312,6 +328,7 @@ static ES_Event DuringWait4Start_t( ES_Event Event)
         // now do any local exit functionality
 				GPIO_Set(GAME_BASE, GAME_STATUS_PIN);
 				ES_Timer_InitTimer(GAME_TIMER, GAME_TIMER_T);
+				ES_Timer_InitTimer(
     }else
     // do the 'during' function for this state
     {

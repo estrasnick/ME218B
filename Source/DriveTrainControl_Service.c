@@ -52,10 +52,16 @@ static uint32_t Left_Period;
 static uint32_t Left_LastCapture;
 static uint32_t Right_Period;
 static uint32_t Right_LastCapture;
+static uint32_t Stored_Left_Period;
+static uint32_t Stored_Left_LastCapture;
+static uint32_t Stored_Right_Period;
+static uint32_t Stored_Right_LastCapture;
 
 //Encoder Tick Counters
 static uint32_t LeftEncoderTicks;
 static uint32_t RightEncoderTicks;
+static uint32_t Stored_LeftEncoderTicks;
+static uint32_t Stored_RightEncoderTicks;
 
 //Motor Stopped Timer (milliseconds)
 static uint8_t motor_stopped_timer = 150; //ie, if no encoder ticks received within this amount we post an event
@@ -63,16 +69,24 @@ static uint8_t motor_stopped_timer = 150; //ie, if no encoder ticks received wit
 //Target RPM (negative implies backwards)
 static float RPMTarget_Left;
 static float RPMTarget_Right;
+static float Stored_RPMTarget_Left;
+static float Stored_RPMTarget_Right;
 
 //TargetTicks
 static uint32_t TargetTicks_Left;
 static uint32_t TargetTicks_Right;
+static uint32_t Stored_TargetTicks_Left;
+static uint32_t Stored_TargetTicks_Right;
 
 //Controls
 static float integralTerm_Left = 0.0; /* integrator control effort */
 static float integralTerm_Right = 0.0; /* integrator control effort */
 static float LastError_Left = 0;
 static float LastError_Right = 0;
+static float Stored_integralTerm_Left = 0.0; /* integrator control effort */
+static float Stored_integralTerm_Right = 0.0; /* integrator control effort */
+static float Stored_LastError_Left = 0;
+static float Stored_LastError_Right = 0;
 
 static bool isMoving = false; //initialize to false
 
@@ -495,4 +509,48 @@ void ResetEncoderTicks()
 bool IsMoving(void)
 {
 	return isMoving;
+}
+
+/****************************************************************************
+ Function
+     Store the current drive instruction/progress
+****************************************************************************/
+void StoreDrive(void)
+{
+	Stored_Left_Period = Left_Period;
+	Stored_Left_LastCapture = Left_LastCapture;
+	Stored_Right_Period = Right_Period;
+	Stored_Right_LastCapture = Right_LastCapture;
+	Stored_LeftEncoderTicks = LeftEncoderTicks;
+	Stored_RightEncoderTicks = RightEncoderTicks;
+	Stored_RPMTarget_Left = RPMTarget_Left;
+	Stored_RPMTarget_Right = RPMTarget_Right;
+	Stored_TargetTicks_Left = TargetTicks_Left;
+	Stored_TargetTicks_Right = TargetTicks_Right;
+	Stored_integralTerm_Left = integralTerm_Left; 
+	Stored_integralTerm_Right = integralTerm_Right;
+	Stored_LastError_Left = LastError_Left;
+	Stored_LastError_Right = LastError_Right;
+}
+
+/****************************************************************************
+ Function
+     Restore the current drive instruction/progress
+****************************************************************************/
+void RestoreDrive(void)
+{
+	Left_Period = Stored_Left_Period;
+	Left_LastCapture = Stored_Left_LastCapture;
+	Right_Period = Stored_Right_Period;
+	Right_LastCapture = Stored_Right_LastCapture;
+	LeftEncoderTicks = Stored_LeftEncoderTicks;
+	RightEncoderTicks = Stored_RightEncoderTicks;
+	RPMTarget_Left = Stored_RPMTarget_Left;
+	RPMTarget_Right = Stored_RPMTarget_Right;
+	TargetTicks_Left = Stored_TargetTicks_Left;
+	TargetTicks_Right = Stored_TargetTicks_Right;
+	integralTerm_Left = Stored_integralTerm_Left; 
+	integralTerm_Right = Stored_integralTerm_Right;
+	LastError_Left = Stored_LastError_Left;
+	LastError_Right = Stored_LastError_Right;
 }
