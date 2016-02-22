@@ -61,7 +61,7 @@ static float TargetY;
 
 static bool AbsolutePosition = false;
 
-static float storedTheta;
+static float StoredRotationTicks;
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -157,8 +157,12 @@ ES_Event RunPositionLogicService( ES_Event ThisEvent )
 		}
 		case ES_ALIGN_TO_BUCKET:
 		{
-			storedTheta = myTheta;
 			AlignToBucket();
+			break;
+		}
+		case ES_REALIGN_AFTER_SHOT:
+		{
+			RealignAfterShot();
 			break;
 		}
 		default:
@@ -423,5 +427,6 @@ static void AlignToBucket(void)
 	float angle = DetermineAngleToBucket(DetermineDistanceToBucket());
 	printf("Angle to Target: %f\r\n", angle);
 	uint32_t ticks = EncoderTicksForGivenAngle(angle);
+	StoredRotationTicks = ticks;
 	setTargetEncoderTicks(ticks, ticks, false, true);
 }

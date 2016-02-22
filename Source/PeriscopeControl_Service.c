@@ -113,6 +113,10 @@ ES_Event RunPeriscopeControlService( ES_Event ThisEvent )
 	{
 		SetPWM_Periscope(PERISCOPE_PWM_DUTY);
 	}
+	else if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == PERISCOPE_STOPPED_TIMER))
+	{
+		SetPWM_Periscope(0);
+	}
 
 	//If we are in testing mode
 	if(TESTING_MODE){
@@ -138,6 +142,7 @@ void PeriscopeEncoder_InterruptResponse_1(void){
 	// start by clearing the source of the interrupt, the input capture event
 	clearCaptureInterrupt(PERISCOPE_ENCODER_INTERRUPT_PARAMATERS_1);
 	numTicks++;
+	ES_Timer_InitTimer(PERISCOPE_STOPPED_TIMER, PERISCOPE_STOPPED_T);
 	if (numTicks >= 1000)
 	{
 		numTicks = 0;
@@ -180,4 +185,5 @@ void LatchPeriscope(void)
 void UnlatchPeriscope(void)
 {
 	SetPWM_PeriscopeLatch(PERISCOPE_UNLATCH_DUTY);
+	SetPWM_Periscope(PERISCOPE_PWM_DUTY);
 }

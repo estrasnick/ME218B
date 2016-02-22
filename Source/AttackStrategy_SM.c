@@ -36,6 +36,7 @@
 */
 static ES_Event DuringWait4AttackPhase_t( ES_Event Event);
 static ES_Event DuringAttack_t( ES_Event Event);
+static ES_Event DuringWait4Realign_t( ES_Event Event);
 static ES_Event DuringWait4NextAttack_t( ES_Event Event);
 
 

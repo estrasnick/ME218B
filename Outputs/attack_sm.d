@@ -22,3 +22,5 @@
 .\outputs\attack_sm.o: .\Headers\Request_SM.h
 .\outputs\attack_sm.o: .\Headers\SendingCMD_SM.h
 .\outputs\attack_sm.o: .\Headers\SendingByte_SM.h
+.\outputs\attack_sm.o: .\Headers\CannonControl_Service.h
+.\outputs\attack_sm.o: .\Headers\PositionLogic_Service.h
