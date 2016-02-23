@@ -187,6 +187,14 @@ bool IsAbsolutePosition(void)
 }
 
 /***************************************************************************
+ Mark that we no longer know our absolute position
+ ***************************************************************************/
+void ResetAbsolutePosition(void)
+{
+	AbsolutePosition = 0;
+}
+
+/***************************************************************************
  Return the distance to the given point
  ***************************************************************************/
 float DistanceToPoint(float TargetX, float TargetY)
@@ -406,5 +414,14 @@ static void AlignToTarget(void)
 static void DriveToTarget(void)
 {
 	uint32_t ticks = ConvertInchesToEncoderTicks(DetermineDistanceToTarget());
-	setTargetEncoderTicks(ticks, ticks, false, false);
+	if (ticks >= HALL_SENSOR_OFFSET_IN_TICKS)
+	{
+		ticks -= HALL_SENSOR_OFFSET_IN_TICKS;
+		setTargetEncoderTicks(ticks, ticks, false, false);
+	}
+	else
+	{
+		ticks = HALL_SENSOR_OFFSET_IN_TICKS - ticks;
+		setTargetEncoderTicks(ticks, ticks, true, true);
+	}
 }

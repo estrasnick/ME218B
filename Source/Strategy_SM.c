@@ -544,9 +544,7 @@ static void ChooseDestination(void)
 			priority = 0xffffffff - 1;
 		}*/
 		else
-		{
-			printf("position in queue: %d\r\n", PositionInQueue(i));
-			
+		{			
 			priority = (PRI_CAPTURE_HISTORY_MULTIPLIER * PositionInQueue(i))
 			+ (RETRY_MULTIPLIER * ((i == TargetStation) ? retryCount : 0))
 			+ (PRI_DISTANCE_MULTIPLIER * DistanceToPoint(GetStationX(i), GetStationY(i)));
@@ -559,6 +557,7 @@ static void ChooseDestination(void)
 		}
 		
 		printf("Location: %d, priority: %d\r\n", i , priority);
+		printf("position in queue: %d ownership: %d\r\n", PositionInQueue(i), GetStationOwner(i));
 	}
 	
 	if (bestStation == TargetStation)

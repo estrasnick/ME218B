@@ -19,6 +19,7 @@
 #include "Master_SM.h"
 
 #include "inc/hw_timer.h"
+#include "PositionLogic_Service.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 //Define Gains
@@ -434,8 +435,13 @@ void setTargetDriveSpeed(float newRPMTarget_left, float newRPMTarget_right){
 	//printf("Setting drive speed to: %f, %f\r\n", newRPMTarget_left, newRPMTarget_right);
 	RPMTarget_Left = newRPMTarget_left;
 	RPMTarget_Right = newRPMTarget_right;
-	ES_Timer_InitTimer(MOTOR_STOPPED_L, motor_stopped_timer);
-	ES_Timer_InitTimer(MOTOR_STOPPED_R, motor_stopped_timer);
+	
+	if (newRPMTarget_left != 0 && newRPMTarget_right != 0)
+	{
+		ES_Timer_InitTimer(MOTOR_STOPPED_L, motor_stopped_timer);
+		ES_Timer_InitTimer(MOTOR_STOPPED_R, motor_stopped_timer);
+		ResetAbsolutePosition();
+	}
 }
 
 /****************************************************************************

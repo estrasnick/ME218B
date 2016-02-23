@@ -110,7 +110,7 @@ bool IsEnemyBlocked(void)
 	return EnemyBlockStatus;
 }
 
-uint8_t GetStationOwner(Claimed_b which)
+uint8_t GetStationOwner(uint8_t which)
 {
 	return PS_Array[which].claimed_status;
 }

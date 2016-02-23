@@ -409,5 +409,7 @@ static uint8_t PS_Frequency_Codes[] = {
 #define RETRY_MULTIPLIER 15
 
 #define NULL_BEACON 5
+
+#define HALL_SENSOR_OFFSET_IN_TICKS 104
 	
 #endif

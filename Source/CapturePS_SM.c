@@ -238,7 +238,7 @@ static ES_Event DuringMeasuring1_t( ES_Event Event)
         //RunLowerLevelSM(Event);
         // repeat for any concurrently running state machines
         // now do any local exit functionality
-      
+				ES_Timer_StopTimer(MEASURING_TIMEOUT_TIMER);
     }else
     // do the 'during' function for this state
     {
@@ -317,7 +317,7 @@ static ES_Event DuringMeasuring2_t( ES_Event Event)
         //RunLowerLevelSM(Event);
         // repeat for any concurrently running state machines
         // now do any local exit functionality
-      
+				ES_Timer_StopTimer(MEASURING_TIMEOUT_TIMER);
     }else
     // do the 'during' function for this state
     {

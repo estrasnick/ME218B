@@ -232,7 +232,7 @@ void PhotoTransistor_InterruptResponse(void)
 		LastBeacon = matchingBeacon;
 		beacons[matchingBeacon].lastUpdateTime = ThisCapture;
 		beacons[matchingBeacon].lastEncoderAngle = GetPeriscopeAngle();
-		
+		/*
 		//Print which Beacon
 		switch (beacons[matchingBeacon].period){
 			case (BEACON_P_NW):
@@ -247,7 +247,7 @@ void PhotoTransistor_InterruptResponse(void)
 			case (BEACON_P_SW):
 				printf("BEACON_P_SW \n\r");
 			break;
-		}
+		}*/
 	
 	// Determine if we should recalculate our position and angle
 	if (matchingBeacon == BEACON_INDEX_NW && TimeForUpdate())
