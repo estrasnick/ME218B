@@ -227,10 +227,13 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 						//Check for Specific Events
 						if (CurrentEvent.EventType == ES_PS_CAPTURED)
 						{
-							if (!checkResponseReadyByte()){
-								NextState = ChooseDestination_t; //ie. we want to exit and reenter
-								MakeTransition = true;
-							}
+							NextState = ChooseDestination_t; //ie. we want to exit and reenter
+							MakeTransition = true;
+						}
+						else if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == CAPTURE_TIMEOUT_TIMER))
+						{
+						  NextState = ChooseDestination_t;
+						  MakeTransition = true;
 						}
 				 }
 				 break;
@@ -496,7 +499,8 @@ static ES_Event DuringStationCapture_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-        
+        setTargetDriveSpeed(0.0, 0.0);
+				ResetEncoderTicks();
         // after that start any lower level machines that run in this state
         
         // repeat the StartxxxSM() functions for concurrent state machines

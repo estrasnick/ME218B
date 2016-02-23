@@ -20,6 +20,7 @@ float getTheta(void);
 void SetTargetLocation(float x, float y);
 void SetMyLocation(float x, float y, float theta);
 bool IsAbsolutePosition(void);
+void ResetAbsolutePosition(void);
 float DistanceToPoint(float TargetX, float TargetY);
 float ToAppropriateRange(float angle);
 

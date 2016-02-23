@@ -82,6 +82,13 @@ ES_Event RunPACLogicSM( ES_Event CurrentEvent )
 	 //If we are in our testing mode then we are going to ignore everything from the PAC
 	// if (TESTING_MODE == false){	 
 	 
+	 if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == CAPTURE_TIMEOUT_TIMER))
+	 {
+		 NextState = Waiting4Command_t;
+		 MakeTransition = true;
+	 }
+	 else
+	 {
 		 switch ( CurrentState )
 		 {
 				 case Waiting4Command_t :     
@@ -99,7 +106,6 @@ ES_Event RunPACLogicSM( ES_Event CurrentEvent )
 							//If we detect a polling station move to the request state
 							} else if (CurrentEvent.EventType == ES_PS_DETECTED){
 									TargetFrequencyIndex = CurrentEvent.EventParam;
-									printf("New Target Frequency Index - set in Waiting4Command_t: %x, \n\r",  TargetFrequencyIndex);
 									NextState = Capture_t;
 									MakeTransition = true;
 							}
@@ -122,7 +128,6 @@ ES_Event RunPACLogicSM( ES_Event CurrentEvent )
 							} else if (CurrentEvent.EventType == ES_PS_DETECTED)
 							{
 								TargetFrequencyIndex = CurrentEvent.EventParam;
-								printf("New Target Frequency Index - set in CampaignStatus_t: %x, \n\r",  TargetFrequencyIndex);
 								//Defer the Event
 								ES_DeferEvent(DeferralQueue, CurrentEvent); 
 							}
@@ -154,7 +159,7 @@ ES_Event RunPACLogicSM( ES_Event CurrentEvent )
 					 }
 					 break;
 				
-					 
+				 }
 			}
 		//}
     //   If we are making a state transition
@@ -324,9 +329,9 @@ static ES_Event DuringCapture_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         printf("Entering DuringCapture_t \n\r");
-			
+				
 				// implement any entry actions required for this state machine
-        
+        ES_Timer_InitTimer(CAPTURE_TIMEOUT_TIMER, CAPTURE_TIMEOUT_T);
         // after that start any lower level machines that run in this state
         StartCapturePSSM(Event);
 			

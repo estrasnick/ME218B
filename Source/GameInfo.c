@@ -158,6 +158,7 @@ static void updateClaimedStatus(uint8_t index){
 
 //Update our Owned Frequencies
 void updateCapturedFrequency(uint8_t station, uint8_t f_index){
+	printf("Updating Captured Frequency Table. Station: %d,     Frequency Index: %d" , station, f_index);
 	PS_Array[station].f_index = f_index;
 }
 

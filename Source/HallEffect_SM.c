@@ -474,6 +474,9 @@ void detectPollingStation(uint8_t sensor_index){
 					//Disable the Interrupts
 					disableHEInterrupts();
 					
+					
+					printf("Checked own frequency table, didn't match. Post that new PS was detected: %d \n\r", periodMatchIndex);
+					
 					//Post to master that we detected a polling station
 					ES_Event ThisEvent;
 					ThisEvent.EventType = ES_PS_DETECTED;

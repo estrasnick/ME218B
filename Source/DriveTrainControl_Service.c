@@ -166,13 +166,6 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 	//If we are in testing mode
 	if(TESTING_MODE){
 		
-		//If we received a timeout from our rotate timer post a ES_STOP_DRIVE event
-		if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == ROTATE_TESTING_TIMER)){
-			ES_Event NewEvent;
-			NewEvent.EventType = ES_STOP_DRIVE;
-			PostDriveTrainControlService(NewEvent); //post to stop driving
-		}
-		
 		//If we receive any of these events (from keyboard presses)
 		switch (ThisEvent.EventType){
 			case (ES_DRIVE_FULL_SPEED):
@@ -198,16 +191,6 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 				//SetPWM_DriveLeft(STOP_SPEED, LEFT_DRIVE_FORWARD_PIN_DIRECTION);
 				//SetPWM_DriveRight(STOP_SPEED, RIGHT_DRIVE_FORWARD_PIN_DIRECTION);
 				break;
-			case (ES_ROTATE_45):
-				SetPWM_DriveLeft(HALF_SPEED_L, LEFT_DRIVE_FORWARD_PIN_DIRECTION);
-				SetPWM_DriveRight(HALF_SPEED_R, RIGHT_DRIVE_BACKWARD_PIN_DIRECTION);
-				ES_Timer_InitTimer(ROTATE_TESTING_TIMER, ROTATE_45_TIME);
-				break;
-			case (ES_ROTATE_90):
-				SetPWM_DriveLeft(HALF_SPEED_L, LEFT_DRIVE_FORWARD_PIN_DIRECTION);
-				SetPWM_DriveRight(HALF_SPEED_R, RIGHT_DRIVE_BACKWARD_PIN_DIRECTION);
-				ES_Timer_InitTimer(ROTATE_TESTING_TIMER, ROTATE_90_TIME);
-				break;	
 			default:
 				break;
 		}

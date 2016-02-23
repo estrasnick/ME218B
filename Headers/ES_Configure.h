@@ -375,8 +375,9 @@ typedef enum {  ES_NO_EVENT = 0,
 #define TIMER8_RESP_FUNC PostMasterSM
 		#define HOPPER_LOAD_TIMER 8
 		#define HOPPER_LOAD_T 1000
-#define TIMER9_RESP_FUNC PostDriveTrainControlService
-		#define ROTATE_TESTING_TIMER	9
+#define TIMER9_RESP_FUNC PostMasterSM
+		#define CAPTURE_TIMEOUT_TIMER	9
+		#define CAPTURE_TIMEOUT_T 1000
 #define TIMER10_RESP_FUNC PostDriveTrainControlService
 		#define TEST_TIMER 10
 #define TIMER11_RESP_FUNC PostPeriscopeControlService
@@ -392,7 +393,9 @@ typedef enum {  ES_NO_EVENT = 0,
 #define TIMER14_RESP_FUNC PostMasterSM
 		#define ATTACK_COMPLETE_TIMER 14
 		#define ATTACK_COMPLETE_T 1500
-#define TIMER15_RESP_FUNC TIMER_UNUSED
+#define TIMER15_RESP_FUNC PostPhotoTransistorService
+		#define AVERAGE_BEACONS_TIMER 15
+		#define AVERAGE_BEACONS_T 15
 
 
 /****************************************************************************/

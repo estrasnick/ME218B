@@ -363,8 +363,8 @@ static uint32_t EncoderTicksForGivenAngle(float angle)
 static float DetermineDistanceToBucket(void)
 {
 	printf("Target x: %f, Target y: %f, My x: %f, My y: %f\r\n", TargetX, TargetY, myX, myY);
-	float yDist = (MyColor() ? 96 : 0) - myY;
-	float xDist = (MyColor() ? 0 : 96) - myX;
+	float yDist = (MyColor() ? 102.3 : -6.3) - myY;
+	float xDist = (MyColor() ? -6.3 : 102) - myX;
 	
 	return sqrt((yDist * yDist) + (xDist * xDist));
 }

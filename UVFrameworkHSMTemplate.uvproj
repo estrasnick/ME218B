@@ -810,6 +810,11 @@
               <FileType>5</FileType>
               <FilePath>.\Headers\Strategy_SM.h</FilePath>
             </File>
+            <File>
+              <FileName>GameInfo.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Headers\GameInfo.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

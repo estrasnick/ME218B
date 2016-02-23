@@ -235,21 +235,12 @@ static ES_Event DuringDefault( ES_Event Event)
         // ReturnEvent = RunLowerLevelSM(Event);
         ReturnEvent = RunStrategySM(Event);
 				ReturnEvent = RunAttackStrategySM(Event);
-			  if (Event.EventType == ES_PS_DETECTED)
-            {
-							printf("Master SM - Before HE SM:%d !\r\n", Event.EventParam);
-            }
+
 				ReturnEvent = RunHallEffectSM(Event);
 				//Check for Specific Events
-            if (Event.EventType == ES_PS_DETECTED)
-            {
-							printf("Master SM - After HE SM:%d !\r\n", Event.EventParam);
-            }
+
 				ReturnEvent = RunPACLogicSM(Event);
-				    if (Event.EventType == ES_PS_DETECTED)
-            {
-							printf("Master SM - After PAC Logic SM:%d !\r\n", Event.EventParam);
-            }
+
         // repeat for any concurrent lower level machines
       
         // do any activity that is repeated as long as we are in this state
