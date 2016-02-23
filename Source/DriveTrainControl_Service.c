@@ -69,24 +69,16 @@ static uint8_t motor_stopped_timer = 150; //ie, if no encoder ticks received wit
 //Target RPM (negative implies backwards)
 static float RPMTarget_Left;
 static float RPMTarget_Right;
-static float Stored_RPMTarget_Left;
-static float Stored_RPMTarget_Right;
 
 //TargetTicks
 static uint32_t TargetTicks_Left;
 static uint32_t TargetTicks_Right;
-static uint32_t Stored_TargetTicks_Left;
-static uint32_t Stored_TargetTicks_Right;
 
 //Controls
 static float integralTerm_Left = 0.0; /* integrator control effort */
 static float integralTerm_Right = 0.0; /* integrator control effort */
 static float LastError_Left = 0;
 static float LastError_Right = 0;
-static float Stored_integralTerm_Left = 0.0; /* integrator control effort */
-static float Stored_integralTerm_Right = 0.0; /* integrator control effort */
-static float Stored_LastError_Left = 0;
-static float Stored_LastError_Right = 0;
 
 static bool isMoving = false; //initialize to false
 

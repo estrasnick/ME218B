@@ -55,9 +55,6 @@ static ES_Event DuringStationCapture_t( ES_Event Event);
 
 static void ChooseDestination(void);
 
-static void PausePositioning(void);
-static void ResumePositioning(void);
-
 /*---------------------------- Module Variables ---------------------------*/
 // everybody needs a state variable, you may need others as well
 static StrategyState_t CurrentState;
@@ -109,6 +106,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 	 }
 	 else if (CurrentEvent.EventType == ES_RESET_DESTINATION)
 	 {
+		 ResumePositioning();
 		 NextState = ChooseDestination_t;
 		 MakeTransition = true;
 	 }
@@ -620,14 +618,14 @@ uint8_t GetTargetStation(void)
 	return TargetStation;
 }
 
-static void PausePositioning(void)
+void PausePositioning(void)
 {
 	printf("Disabling positioning\r\n");
 	LatchPeriscope();
 	disableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 }
 
-static void ResumePositioning(void)
+void ResumePositioning(void)
 {
 	printf("Enabling positioning\r\n");
 	enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);

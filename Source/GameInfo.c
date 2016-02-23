@@ -107,11 +107,6 @@ bool IsEnemyBlocked(void)
 	return EnemyBlockStatus;
 }
 
-void SetStationOwner(uint8_t which, Claimed_b owner)
-{
-	PS_Array[which].claimed_status = owner;
-}
-
 uint8_t GetStationOwner(Claimed_b which)
 {
 	return PS_Array[which].claimed_status;
@@ -126,8 +121,6 @@ float GetStationY(uint8_t which)
 {
 	return PS_Array[which].location_y;
 }
-
-
 
 //Update Location Statuses
 void updatePSStatuses(){

@@ -17,6 +17,9 @@
 #include "DriveTrainControl_Service.h"
 #include "Helpers.h"
 #include "DEFINITIONS.h"
+#include "DriveTrainControl_Service.h"
+#include "GameInfo.h"
+#include "Master_SM.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 
@@ -38,8 +41,6 @@
 
 #define DIRECTION 1 //(use 1 if CW and -1 if CCW)
 	
-//Index in Array Corresponding to Phototransistor
-#define PHOTOTRANSISTOR
 
 
 
@@ -75,6 +76,8 @@ static uint32_t PhotoTransistor_LastPeriods[NUMBER_CONSECUTIVE_PULSES_2STORE];
 static uint32_t LastCapture;
 
 static uint8_t LastBeacon = NULL_BEACON;
+
+static bool AligningToBucket = false;
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -137,10 +140,12 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 {
   ES_Event ReturnEvent;
   ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
-  /********************************************
   
+	if (ThisEvent.EventType == ES_ALIGN_TO_BUCKET)
+	{
+		AligningToBucket = true;
+	}
 	
-   *******************************************/
   return ReturnEvent;
 }
 
@@ -212,6 +217,18 @@ void PhotoTransistor_InterruptResponse(void)
 	// If so, update the beacon structure
 	if (matchingBeacon != NULL_BEACON)
 	{
+		if (AligningToBucket)
+		{
+			if (((MyColor() == COLOR_BLUE) && (matchingBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (matchingBeacon == BEACON_INDEX_SE)))
+			{
+				setTargetDriveSpeed(0, 0);
+				ES_Event AlignedEvent;
+				AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
+				PostMasterSM(AlignedEvent);
+			}
+			AligningToBucket = false;
+		}
+		
 		LastBeacon = matchingBeacon;
 		beacons[matchingBeacon].lastUpdateTime = ThisCapture;
 		beacons[matchingBeacon].lastEncoderAngle = GetPeriscopeAngle();

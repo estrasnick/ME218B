@@ -25,6 +25,8 @@
 #include "PositionLogic_Service.h"
 #include "PWM_Service.h"
 #include "DEFINITIONS.h"
+#include "Strategy_SM.h"
+#include "PeriscopeControl_Service.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 // define constants for the states for this machine
@@ -218,9 +220,10 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
 			// implement any entry actions required for this state machine
+			PausePositioning();
 			ES_Event AlignEvent;
 			AlignEvent.EventType = ES_ALIGN_TO_BUCKET;
-			PostPositionLogicService(AlignEvent);
+			PostPeriscopeControlService(AlignEvent);
 			
 			ES_Event StartCannonEvent;
 			StartCannonEvent.EventType = ES_START_CANNON;
@@ -348,6 +351,9 @@ static ES_Event DuringFire_t( ES_Event Event)
         //RunLowerLevelSM(Event);
         // repeat for any concurrently running state machines
         // now do any local exit functionality
+				ES_Event StopCannonEvent;
+				StopCannonEvent.EventType = ES_STOP_CANNON;
+				PostCannonControlService(StopCannonEvent);
     }else
     // do the 'during' function for this state
     {

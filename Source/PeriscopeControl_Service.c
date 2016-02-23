@@ -16,6 +16,8 @@
 #include "Definitions.h"
 #include "PWM_Service.h"
 #include "PositionLogic_Service.h"
+#include "DriveTrainControl_Service.h"
+#include "PhotoTransistor_Service.h"
 #include <Math.h>
 
 /*----------------------------- Module Defines ----------------------------*/
@@ -33,6 +35,8 @@ static uint8_t MyPriority;
 
 //Encoder Input Capture Variables
 static uint32_t numTicks;
+
+static bool AligningToBucket = false;
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -116,6 +120,18 @@ ES_Event RunPeriscopeControlService( ES_Event ThisEvent )
 	else if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == PERISCOPE_STOPPED_TIMER))
 	{
 		SetPWM_Periscope(0);
+		if (AligningToBucket)
+		{
+			ES_Event RotateEvent;
+			RotateEvent.EventType = ES_ALIGN_TO_BUCKET;
+			setTargetDriveSpeed(DEFAULT_DRIVE_RPM, -DEFAULT_DRIVE_RPM);
+			PostPhotoTransistorService(RotateEvent);
+			AligningToBucket = false;
+		}
+	}
+	else if (ThisEvent.EventType == ES_ALIGN_TO_BUCKET)
+	{
+		AligningToBucket = true;
 	}
 
 	//If we are in testing mode

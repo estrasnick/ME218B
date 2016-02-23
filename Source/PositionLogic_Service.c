@@ -20,6 +20,7 @@
 #include "DriveTrainControl_Service.h"
 #include "PeriscopeControl_Service.h"
 #include "GameInfo.h"
+#include "Strategy_SM.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 
@@ -46,7 +47,6 @@ static float DetermineDistanceToBucket(void);
 static float DetermineAngleToBucket(float distanceToBucket);
 static void AlignToTarget(void);
 static void DriveToTarget(void);
-static void AlignToBucket(void);
 
 /*---------------------------- Module Variables ---------------------------*/
 // with the introduction of Gen2, we need a module level Priority variable
@@ -60,8 +60,6 @@ static float TargetX;
 static float TargetY;
 
 static bool AbsolutePosition = false;
-
-static float StoredRotationTicks;
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -153,11 +151,6 @@ ES_Event RunPositionLogicService( ES_Event ThisEvent )
 		case ES_DRIVE_TO_TARGET:
 		{
 			DriveToTarget();
-			break;
-		}
-		case ES_ALIGN_TO_BUCKET:
-		{
-			AlignToBucket();
 			break;
 		}
 		default:
@@ -414,14 +407,4 @@ static void DriveToTarget(void)
 {
 	uint32_t ticks = ConvertInchesToEncoderTicks(DetermineDistanceToTarget());
 	setTargetEncoderTicks(ticks, ticks, false, false);
-}
-
-static void AlignToBucket(void)
-{
-	//printf("Distance to Target: %f\r\n", DetermineDistanceToTarget());
-	float angle = DetermineAngleToBucket(DetermineDistanceToBucket());
-	printf("Angle to Target: %f\r\n", angle);
-	uint32_t ticks = EncoderTicksForGivenAngle(angle);
-	StoredRotationTicks = ticks;
-	setTargetEncoderTicks(ticks, ticks, false, true);
 }
