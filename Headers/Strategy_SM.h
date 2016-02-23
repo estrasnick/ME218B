@@ -19,5 +19,8 @@ StrategyState_t QueryStrategySM ( void );
 
 uint8_t GetTargetStation(void);
 
+void PausePositioning(void);
+void ResumePositioning(void);
+
 #endif /*Strategy_H */
 

@@ -14,7 +14,6 @@ void UpdateADStatus(void);
 bool AmIBlocked(void);
 bool IsEnemyBlocked(void);
 
-void SetStationOwner(uint8_t which, uint8_t owner);
 uint8_t GetStationOwner(uint8_t which);
 
 float GetStationX(uint8_t which);
