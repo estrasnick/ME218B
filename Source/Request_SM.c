@@ -260,9 +260,10 @@ static ES_Event DuringQuery_t( ES_Event Event)
         // repeat for any concurrently running state machines
         // now do any local exit functionality
 							//Get the Response Array and print it
-				uint8_t *byte;
+			
+			/*	uint8_t *byte;
 				byte = getResponseArray();
-			/*
+			
 				printf("Querying:  %x, %x, %x, %x, %x \n\r", 
 				*(byte + 0), 
 				*(byte + 1), 

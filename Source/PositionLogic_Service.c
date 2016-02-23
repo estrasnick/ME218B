@@ -43,8 +43,7 @@ static float ToDegrees(float radians);
 static uint32_t EncoderTicksForGivenAngle(float angle);
 static float DetermineDistanceToTarget(void);
 static float DetermineAngleToTarget(float distanceToTarget);
-static float DetermineDistanceToBucket(void);
-static float DetermineAngleToBucket(float distanceToBucket);
+//static float DetermineAngleToBucket(float distanceToBucket);
 static void AlignToTarget(void);
 static void DriveToTarget(void);
 
@@ -360,7 +359,7 @@ static uint32_t EncoderTicksForGivenAngle(float angle)
 	return (ToRadians(angle) * DISTANCE_BETWEEN_WHEELS * DRIVE_GEAR_RATIO * ENCODER_PULSES_PER_REV) / (2 * WHEEL_CIRCUMFERENCE);
 }
 
-static float DetermineDistanceToBucket(void)
+float DetermineDistanceToBucket(void)
 {
 	printf("Target x: %f, Target y: %f, My x: %f, My y: %f\r\n", TargetX, TargetY, myX, myY);
 	float yDist = (MyColor() ? 102.3 : -6.3) - myY;
@@ -389,7 +388,7 @@ static float DetermineAngleToTarget(float distanceToTarget)
 	//printf("theta is: %f\r\n", ToAppropriateRange(theta));
 	return ToAppropriateRange(myTheta - theta);
 }
-
+/*
 static float DetermineAngleToBucket(float distanceToBucket)
 {
 	float theta = ToAppropriateRange(ToDegrees(asin(((MyColor() ? 96 : 0) - myY)/distanceToBucket)));
@@ -400,7 +399,7 @@ static float DetermineAngleToBucket(float distanceToBucket)
 	}
 	//printf("theta is: %f\r\n", ToAppropriateRange(theta));
 	return ToAppropriateRange(myTheta - theta);
-}
+}*/
 
 static void AlignToTarget(void)
 {

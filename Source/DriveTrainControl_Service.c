@@ -53,16 +53,10 @@ static uint32_t Left_Period;
 static uint32_t Left_LastCapture;
 static uint32_t Right_Period;
 static uint32_t Right_LastCapture;
-static uint32_t Stored_Left_Period;
-static uint32_t Stored_Left_LastCapture;
-static uint32_t Stored_Right_Period;
-static uint32_t Stored_Right_LastCapture;
 
 //Encoder Tick Counters
 static uint32_t LeftEncoderTicks;
 static uint32_t RightEncoderTicks;
-static uint32_t Stored_LeftEncoderTicks;
-static uint32_t Stored_RightEncoderTicks;
 
 //Motor Stopped Timer (milliseconds)
 static uint8_t motor_stopped_timer = 150; //ie, if no encoder ticks received within this amount we post an event

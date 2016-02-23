@@ -22,6 +22,7 @@ void SetMyLocation(float x, float y, float theta);
 bool IsAbsolutePosition(void);
 void ResetAbsolutePosition(void);
 float DistanceToPoint(float TargetX, float TargetY);
+float DetermineDistanceToBucket(void);
 float ToAppropriateRange(float angle);
 
 #endif 

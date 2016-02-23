@@ -17,6 +17,7 @@
 #include "PWM_Service.h"
 #include "Math.h"
 #include "Master_SM.h"
+#include "PositionLogic_Service.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 //Define Gains
@@ -25,7 +26,6 @@
 #define I_GAIN .45f
 
 //Cannon Test Speeds in RPM
-#define CANNON_SHOOT_SPEED 30 //change this target to create a map of how far we shoot with different Cannon Speeds
 #define CANNON_STOP_SPEED 0
 
 #define CANNON_RPM_TOLERANCE 2
@@ -38,6 +38,7 @@
 static void calculateControlResponse(float currentRPM, float integralTerm, uint32_t targetSpeed);
 static float CalculateRPM(uint32_t period);
 static bool SpeedCheck(float rpm);
+static float DetermineCannonSpeed(void);
 
 /*---------------------------- Module Variables ---------------------------*/
 // with the introduction of Gen2, we need a module level Priority variable
@@ -136,7 +137,7 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
 				{
 					//For Testing
 					Revving = true;
-					setTargetCannonSpeed(CANNON_SHOOT_SPEED);
+					setTargetCannonSpeed(DetermineCannonSpeed());
 					//For Actual Implementation
 					//setTargetCannonSpeed(RPMTarget);
 				}
@@ -267,4 +268,9 @@ static float CalculateRPM(uint32_t period)
 static bool SpeedCheck(float rpm)
 {
 	return (rpm <= RPMTarget + CANNON_RPM_TOLERANCE) && (rpm >= RPMTarget - CANNON_RPM_TOLERANCE);
+}
+
+static float DetermineCannonSpeed(void)
+{
+	return DetermineDistanceToBucket() * CANNON_DISTANCE_MULTIPLIER;
 }

@@ -411,5 +411,7 @@ static uint8_t PS_Frequency_Codes[] = {
 #define NULL_BEACON 5
 
 #define HALL_SENSOR_OFFSET_IN_TICKS 30
+
+#define CANNON_DISTANCE_MULTIPLIER 5
 	
 #endif
