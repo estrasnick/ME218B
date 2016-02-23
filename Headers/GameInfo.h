@@ -24,6 +24,7 @@ float GetStationY(uint8_t which);
 void updatePSStatuses(void);
 void updateCapturedFrequency(uint8_t station, uint8_t f_index);
 bool checkOwnFrequency(uint8_t f_index);
+bool NotByOurStation(void);
 
 #endif /*GameInfo_H */
 

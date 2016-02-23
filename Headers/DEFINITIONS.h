@@ -413,5 +413,7 @@ static uint8_t PS_Frequency_Codes[] = {
 #define HALL_SENSOR_OFFSET_IN_TICKS 30
 
 #define CANNON_DISTANCE_MULTIPLIER 5
+
+#define PROXIMITY_TO_OUR_STATION_THRESHOLD 5.0
 	
 #endif

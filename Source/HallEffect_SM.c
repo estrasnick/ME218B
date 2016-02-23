@@ -469,8 +469,11 @@ void detectPollingStation(uint8_t sensor_index){
 			if (numGoodPulses >= NUMBER_PULSES_TO_STOP){
 				//printf("Sufficient Pulses Observed, Attempt to Capture the Polling Station \n\r");
 				
-				
-				if (!checkOwnFrequency(periodMatchIndex)){
+				// Check if the station we are measuring is one that we own, by comparing our 
+				// current position to the locations of stations we own
+				if (NotByOurStation())
+				{
+				//if (!checkOwnFrequency(periodMatchIndex)){
 					//Disable the Interrupts
 					disableHEInterrupts();
 					

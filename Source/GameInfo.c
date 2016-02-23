@@ -19,6 +19,7 @@
 
 #include "Helpers.h"
 #include "DEFINITIONS.h"
+#include "PositionLogic_Service.h"
 
 
 /*----------------------------- Module Defines ----------------------------*/
@@ -127,6 +128,7 @@ float GetStationY(uint8_t which)
 	return PS_Array[which].location_y;
 }
 
+
 bool IsObstructed(uint8_t which)
 {
 	return PS_Array[which].obstructed;
@@ -135,6 +137,22 @@ bool IsObstructed(uint8_t which)
 void MarkObstructed(uint8_t which)
 {
 	PS_Array[which].obstructed = true;
+}
+
+// Returns true iff we are not currently near a station that we own
+bool NotByOurStation(void)
+{
+	for (int i = 0; i < NUM_STATIONS; i++)
+	{
+		if (PS_Array[i].claimed_status == MyColor())
+		{
+			if (DistanceToPoint(PS_Array[i].location_x, PS_Array[i].location_y) <= PROXIMITY_TO_OUR_STATION_THRESHOLD)
+			{
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 //Update Location Statuses
