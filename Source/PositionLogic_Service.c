@@ -136,7 +136,10 @@ ES_Event RunPositionLogicService( ES_Event ThisEvent )
 				if (IsMoving())
 				{
 					CalculateRelativePosition();
-					ES_Timer_InitTimer(RELATIVE_POSITION_TIMER, RELATIVE_POSITION_T);
+					if (QueryStrategySM() == Travel_t)
+					{
+						ES_Timer_InitTimer(RELATIVE_POSITION_TIMER, RELATIVE_POSITION_T);
+					}
 				}
 			}
 			break;
@@ -258,7 +261,15 @@ static void CalculateAbsolutePosition()
 	printf("ABSOLUTE POSITION: X: %f, Y: %f, theta: %f\n\r", myX, myY, myTheta);	
 	printf("A was: %f, B was: %f, C was: %f, gamma was: %f\r\n", 360 -  GetBeaconAngle(BEACON_INDEX_NW), 360 -  GetBeaconAngle(BEACON_INDEX_NE),360 -  GetBeaconAngle(BEACON_INDEX_SE), ToDegrees(gamma));
 	
-	AbsolutePosition = true;
+	if ((myX < 0) || (myY < 0) || (myX > 96) || (myY > 96))
+	{
+		printf("Oops. We calculated an invalid position.");
+		setTargetEncoderTicks(BACK_UP_TICKS, BACK_UP_TICKS, true, true);
+	}
+	else
+	{
+		AbsolutePosition = true;
+	}
 	
 	// Reenable the phototransistor interrupts
 	enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
@@ -269,6 +280,7 @@ static void CalculateAbsolutePosition()
 // details
 static void CalculateRelativePosition()
 {
+	printf("RELATIVE POSITION!\r\n");
 	uint32_t leftEncoderTicks;
 	uint32_t rightEncoderTicks;
 	float L1;
