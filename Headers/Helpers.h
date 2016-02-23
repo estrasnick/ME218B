@@ -97,3 +97,4 @@ bool	checkResponseReadyByte(void);
 uint8_t getResponseStatusByte(void);
 Acknowledge_b checkAcknowledged(void);
 bool checkLocation(void);
+uint8_t getLocation(void);

@@ -14,6 +14,7 @@
 #include "ES_Framework.h"
 #include "Helpers.h"
 #include "Definitions.h"
+#include "GameInfo.h"
 
 /* include header files for this state machine as well as any machines at the
    next lower level in the hierarchy that are sub-machines to this machine
@@ -468,17 +469,20 @@ void detectPollingStation(uint8_t sensor_index){
 			if (numGoodPulses >= NUMBER_PULSES_TO_STOP){
 				//printf("Sufficient Pulses Observed, Attempt to Capture the Polling Station \n\r");
 				
-				//Disable the Interrupts
-				disableHEInterrupts();
 				
-				//Post to master that we detected a polling station
-				ES_Event ThisEvent;
-				ThisEvent.EventType = ES_PS_DETECTED;
-				ThisEvent.EventParam = periodMatchIndex; //Pass Index Over
-				//set the target frequency index
-				 SetTargetFrequencyIndex(periodMatchIndex);
-				
-				PostMasterSM(ThisEvent);
+				if (!checkOwnFrequency(periodMatchIndex)){
+					//Disable the Interrupts
+					disableHEInterrupts();
+					
+					//Post to master that we detected a polling station
+					ES_Event ThisEvent;
+					ThisEvent.EventType = ES_PS_DETECTED;
+					ThisEvent.EventParam = periodMatchIndex; //Pass Index Over
+					//set the target frequency index
+					 SetTargetFrequencyIndex(periodMatchIndex);
+					
+					PostMasterSM(ThisEvent);
+				}
 			}	
 	}
 }

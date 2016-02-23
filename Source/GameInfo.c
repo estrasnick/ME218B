@@ -25,6 +25,8 @@
 // define constants for the states for this machine
 // and any other local defines
 
+#define NULL_F 20
+
 //Polling Station Structure
 typedef struct {
 	uint8_t location_code;
@@ -34,6 +36,7 @@ typedef struct {
 	uint8_t byte;
 	uint8_t bit1;
 	uint8_t bit2;	
+	uint8_t f_index;
 } PS_Struct;
 
 /*---------------------------- Module Functions ---------------------------*/
@@ -49,15 +52,15 @@ static bool MyBlockStatus;
 static bool EnemyBlockStatus;
 
 static PS_Struct PS_Array[] = {
-	{.location_code = SACREMENTO_CODE, .location_x = 6.0f, .location_y = 55.8f, 	.claimed_status = Unclaimed_b, .byte = 1, .bit1 = BIT7HI, .bit2 = BIT6HI},
-	{.location_code = SEATTLE_CODE, .location_x = 9.0f, .location_y = 88.5f, 			.claimed_status = Unclaimed_b, .byte = 1, .bit1 = BIT5HI, .bit2 = BIT4HI},
-	{.location_code = BILLINGS_CODE, .location_x = 29.1f, .location_y = 75.8f, 		.claimed_status = Unclaimed_b, .byte = 1, .bit1 = BIT3HI, .bit2 = BIT2HI},
-	{.location_code = DENVER_CODE, .location_x = 33.3f, .location_y = 53.8f, 			.claimed_status = Unclaimed_b, .byte = 1, .bit1 = BIT1HI, .bit2 = BIT0HI},
-	{.location_code = DALLAS_CODE, .location_x = 45.3f, .location_y = 29.4f, 			.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT7HI, .bit2 = BIT6HI},
-	{.location_code = CHICAGO_CODE, .location_x = 61.8f, .location_y = 60.8f, 		.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT5HI, .bit2 = BIT4HI},
-	{.location_code = MIAMI_CODE, .location_x = 80.8f, .location_y = 9.2f, 				.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT3HI, .bit2 = BIT2HI},
-	{.location_code = WASHINGTON_CODE, .location_x = 81.5f, .location_y = 55.2f, 	.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT1HI, .bit2 = BIT0HI},
-	{.location_code = CONCORD_CODE, .location_x = 87.6f, .location_y = 72.6f, 		.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT7HI, .bit2 = BIT6HI}
+	{.location_code = SACREMENTO_CODE, .location_x = 6.0f, .location_y = 55.8f, 	.claimed_status = Unclaimed_b, .byte = 1, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F},
+	{.location_code = SEATTLE_CODE, .location_x = 9.0f, .location_y = 88.5f, 			.claimed_status = Unclaimed_b, .byte = 1, .bit1 = BIT5HI, .bit2 = BIT4HI, .f_index = NULL_F},
+	{.location_code = BILLINGS_CODE, .location_x = 29.1f, .location_y = 75.8f, 		.claimed_status = Unclaimed_b, .byte = 1, .bit1 = BIT3HI, .bit2 = BIT2HI, .f_index = NULL_F},
+	{.location_code = DENVER_CODE, .location_x = 33.3f, .location_y = 53.8f, 			.claimed_status = Unclaimed_b, .byte = 1, .bit1 = BIT1HI, .bit2 = BIT0HI, .f_index = NULL_F},
+	{.location_code = DALLAS_CODE, .location_x = 45.3f, .location_y = 29.4f, 			.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F},
+	{.location_code = CHICAGO_CODE, .location_x = 61.8f, .location_y = 60.8f, 		.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT5HI, .bit2 = BIT4HI, .f_index = NULL_F},
+	{.location_code = MIAMI_CODE, .location_x = 80.8f, .location_y = 9.2f, 				.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT3HI, .bit2 = BIT2HI, .f_index = NULL_F},
+	{.location_code = WASHINGTON_CODE, .location_x = 81.5f, .location_y = 55.2f, 	.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT1HI, .bit2 = BIT0HI, .f_index = NULL_F},
+	{.location_code = CONCORD_CODE, .location_x = 87.6f, .location_y = 72.6f, 		.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F}
 };
 
 /*------------------------------ Module Code ------------------------------*/
@@ -125,7 +128,19 @@ float GetStationY(uint8_t which)
 //Update Location Statuses
 void updatePSStatuses(){
 	for (int i = 0; i < NUM_STATIONS; i++){
+		//Store Last Claimed Status
+		uint8_t lastClaimedStatus = PS_Array[i].claimed_status;
+		
+		//Update the Claimed Status according to new information
 		updateClaimedStatus(i);
+		
+		//Check if it changed to someone else's color
+		if ((PS_Array[i].claimed_status != lastClaimedStatus) && (PS_Array[i].claimed_status != MyColor())){
+			//Set the Frequency to the NUll Frequency
+			PS_Array[i].f_index = NULL_F;
+			
+			//clearObstructions();
+		}
 	}
 }
 
@@ -139,4 +154,21 @@ static void updateClaimedStatus(uint8_t index){
 	uint8_t bit2 = PS_Array[index].bit2;
 	
 	PS_Array[index].claimed_status = (byte & bit1) ? ((byte & bit2) ?  Undefined_b : RED_b ) : ((byte & bit2) ? BLUE_b : Unclaimed_b );
+}
+
+//Update our Owned Frequencies
+void updateCapturedFrequency(uint8_t station, uint8_t f_index){
+	PS_Array[station].f_index = f_index;
+}
+
+//Check if the frequency is owned, returns true if we own the frequency
+bool checkOwnFrequency(uint8_t f_index){
+	for (int i = 0; i < NUM_STATIONS; i++){		
+			//Check if it changed to someone else's color
+			if (PS_Array[i].f_index == f_index){
+					return true;
+			}
+	}	
+	
+	return false;
 }

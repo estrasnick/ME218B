@@ -14,6 +14,7 @@
 #include "ES_Framework.h"
 #include "Definitions.h"
 #include "Helpers.h"
+#include "GameInfo.h"
 
 /* include header files for this state machine as well as any machines at the
    next lower level in the hierarchy that are sub-machines to this machine
@@ -138,6 +139,9 @@ ES_Event RunCapturePSSM( ES_Event CurrentEvent )
 								if ((checkAcknowledged() == ACK_b) && (checkLocation()))
 								{
 									printf("Polling Station Confirmed 2: Captured, time to move on \n\r");
+									
+									//Update Our Own Frequency
+									updateCapturedFrequency(getLocation(), GetTargetFrequencyIndex());
 									
 									ES_Event ThisEvent;
 									ThisEvent.EventType = ES_PS_CAPTURED;								

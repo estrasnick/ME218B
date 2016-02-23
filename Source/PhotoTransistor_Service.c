@@ -24,8 +24,8 @@
 /*----------------------------- Module Defines ----------------------------*/
 
 #define PERIOD_MEASURING_ERROR_TOLERANCE 25 //in microseconds
-#define NUMBER_CONSECUTIVE_PULSES_2STORE 4
-#define NUMBER_PULSES_TO_BE_ALIGNED 4
+#define NUMBER_CONSECUTIVE_PULSES_2STORE 3
+#define NUMBER_PULSES_TO_BE_ALIGNED 3
 #define NUMBER_PHOTOTRANSISTORS 1
 #define NUMBER_BEACON_FREQUENCIES 4
 
