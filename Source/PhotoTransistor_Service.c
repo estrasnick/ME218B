@@ -70,7 +70,7 @@ static Beacon beacons[] =
 	{.period = BEACON_P_SW} //1950 Hz, SW
 };
 
-static uint32_t PhotoTransistor_LastPeriods[NUMBER_CONSECUTIVE_PULSES_2STORE];
+static uint32_t PhotoTransistor_LastPeriods[NUMBER_PULSES_TO_BE_ALIGNED];
 
 static uint32_t LastCapture;
 
@@ -198,10 +198,15 @@ void PhotoTransistor_InterruptResponse(void)
 
 	if (isHigh)
 	{
-
-isHigh = false;
+		isHigh = false;
 		// Calculate period
 		uint32_t Period = ((ThisCapture - LastCapture) * MICROSECONDS_DIVISOR ) / TICKS_PER_MS;
+		
+		static int i;
+		if (i++ % 2 == 0)
+		{
+			printf("Period = %d\r\n", Period);
+		}
 		
 		//Store the Last Cpature
 		LastCapture = ThisCapture;
@@ -224,20 +229,24 @@ isHigh = false;
 			case (BEACON_P_SW):
 				printf("STORING!!!!!!!!! BEACON_P_SW \n\r");
 			break;
-
-
+		}
 	}
 	else
 	{
-
 		if (LastBeacon != NULL_BEACON)
 		{
 			uint32_t HighTime = ThisCapture - LastCapture;
+			static int i;
+			if (i++ % 2 == 0)
+			{
+				printf("HighTime = %d\r\n", HighTime);
+			}
+			
 			if (HighTime < LastHighTime && LastBeacon != LastStoredBeacon)
 			{
 				if (AligningToBucket)
 				{
-					if (((MyColor() == COLOR_BLUE) && (matchingBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (matchingBeacon == BEACON_INDEX_SE)))
+					if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
 					{
 						setTargetDriveSpeed(0, 0);
 						ES_Event AlignedEvent;
@@ -280,6 +289,7 @@ isHigh = false;
 			
 			LastHighTime = HighTime;
 		}
+		
 		isHigh = true;
 	}
 }
@@ -287,7 +297,7 @@ isHigh = false;
 //Update the Last Period by shiting every value down and ours into the 0th index
 static void UpdateLastPeriod(uint32_t period)
 {
-	for (int i = NUMBER_CONSECUTIVE_PULSES_2STORE - 1; i > 0; i--)
+	for (int i = NUMBER_PULSES_TO_BE_ALIGNED - 1; i > 0; i--)
 	{
 		PhotoTransistor_LastPeriods[i] = PhotoTransistor_LastPeriods[i-1];
 	}
