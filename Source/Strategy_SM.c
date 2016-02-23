@@ -59,9 +59,11 @@ static void ChooseDestination(void);
 // everybody needs a state variable, you may need others as well
 static StrategyState_t CurrentState;
 
-static uint8_t TargetStation;
+static uint8_t TargetStation = NULL_STATION;
 
 static uint8_t timePeriod = 0;
+
+static uint8_t retryCount;
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -546,6 +548,7 @@ static void ChooseDestination(void)
 			printf("position in queue: %d\r\n", PositionInQueue(i));
 			
 			priority = (PRI_CAPTURE_HISTORY_MULTIPLIER * PositionInQueue(i))
+			+ (RETRY_MULTIPLIER * ((i == TargetStation) ? retryCount : 0))
 			+ (PRI_DISTANCE_MULTIPLIER * DistanceToPoint(GetStationX(i), GetStationY(i)));
 		}
 		
@@ -556,6 +559,15 @@ static void ChooseDestination(void)
 		}
 		
 		printf("Location: %d, priority: %d\r\n", i , priority);
+	}
+	
+	if (bestStation == TargetStation)
+	{
+		retryCount++;
+	}
+	else
+	{
+		retryCount = 0;
 	}
 	
 	TargetStation = bestStation;

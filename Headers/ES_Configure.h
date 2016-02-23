@@ -303,7 +303,8 @@ typedef enum {  ES_NO_EVENT = 0,
 								
 								ES_ALIGN_TO_BUCKET,
 								ES_RESET_DESTINATION,
-								ES_ALIGNED_TO_BUCKET
+								ES_ALIGNED_TO_BUCKET,
+								ES_MANUAL_SHOOT
 								
 								} ES_EventTyp_t ;
 
@@ -355,7 +356,8 @@ typedef enum {  ES_NO_EVENT = 0,
 #define TIMER0_RESP_FUNC PostDriveTrainControlService
 		#define MOTOR_STOPPED_L	0
 #define TIMER1_RESP_FUNC PostMasterSM
-		#define SEARCH_4_PS	1
+		#define MEASURING_TIMEOUT_TIMER	1
+		#define MEASURING_TIMEOUT_T 100
 #define TIMER2_RESP_FUNC PostMasterSM
 		#define POSITION_CHECK	2
 		#define POSITION_CHECK_T 100

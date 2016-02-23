@@ -156,6 +156,10 @@ ES_Event RunMapKeys( ES_Event ThisEvent )
 											 ThisEvent.EventParam = 0;
 											 printf("Commanding: ES_CALCULATE_POSITION, Event Param = 0 \n\r");                     
 											 break;
+						case 'H' : ThisEvent.EventType = ES_MANUAL_SHOOT; 
+											 ThisEvent.EventParam = 0;
+											 printf("Commanding: ES_MANUAL_SHOOT, Event Param = 0 \n\r");                     
+											 break;
 									
         }
 				

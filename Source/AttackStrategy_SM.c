@@ -75,7 +75,7 @@ ES_Event RunAttackStrategySM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
-            if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == ATTACK_PHASE_TIMER))
+            if (((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == ATTACK_PHASE_TIMER)) || (CurrentEvent.EventType == ES_MANUAL_SHOOT))
 						{
 							NextState = Attack_t;
 							MakeTransition = true;

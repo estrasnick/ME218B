@@ -406,6 +406,7 @@ static uint8_t PS_Frequency_Codes[] = {
 
 #define PRI_DISTANCE_MULTIPLIER 1
 #define PRI_CAPTURE_HISTORY_MULTIPLIER 20
+#define RETRY_MULTIPLIER 15
 
 #define NULL_BEACON 5
 	

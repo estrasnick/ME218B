@@ -142,6 +142,15 @@ ES_Event RunPACLogicSM( ES_Event CurrentEvent )
 									NextState = Waiting4Command_t;
 									MakeTransition = true;
 							}
+							else if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == MEASURING_TIMEOUT_TIMER))
+							{
+								ES_Event ResetDestinationEvent;
+								ResetDestinationEvent.EventType = ES_RESET_DESTINATION;
+								PostMasterSM(ResetDestinationEvent);
+								
+								NextState = Waiting4Command_t;
+								MakeTransition = true;
+							}
 					 }
 					 break;
 				

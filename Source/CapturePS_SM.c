@@ -226,6 +226,7 @@ static ES_Event DuringMeasuring1_t( ES_Event Event)
     {
         // implement any entry actions required for this state machine
         printf("Entering DuringMeasuring1_t \n\r");
+				ES_Timer_InitTimer(MEASURING_TIMEOUT_TIMER, MEASURING_TIMEOUT_T);
         // after that start any lower level machines that run in this state
         //StartLowerLevelSM( Event );
         // repeat the StartxxxSM() functions for concurrent state machines
@@ -303,6 +304,8 @@ static ES_Event DuringMeasuring2_t( ES_Event Event)
     {
         // implement any entry actions required for this state machine
         printf("Entering DuringMeasuring2_t \n\r");
+				ES_Timer_InitTimer(MEASURING_TIMEOUT_TIMER, MEASURING_TIMEOUT_T);
+			
         // after that start any lower level machines that run in this state
         //StartLowerLevelSM( Event );
         // repeat the StartxxxSM() functions for concurrent state machines
