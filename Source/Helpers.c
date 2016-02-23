@@ -523,7 +523,9 @@ uint8_t getLocation() {
 	byte = getResponseArray();
 	uint8_t RS = *(byte + 3);
 	
-	return RS & (BIT0HI | BIT1HI | BIT2HI | BIT3HI);
+	// Note: We have a zero-indexed location array, but location codes start at 0001
+	//   Solution: Subtract one from the location response.
+	return (RS & (BIT0HI | BIT1HI | BIT2HI | BIT3HI)) - 0x1;
 }
 	
 //Check that the Location is Correct (currently set this to correct
