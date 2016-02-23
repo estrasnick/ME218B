@@ -13,6 +13,8 @@ bool isGameStarted(void);
 void UpdateADStatus(void);
 bool AmIBlocked(void);
 bool IsEnemyBlocked(void);
+bool IsObstructed(uint8_t which);
+void MarkObstructed(uint8_t which);
 
 uint8_t GetStationOwner(uint8_t which);
 

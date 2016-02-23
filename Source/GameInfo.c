@@ -37,6 +37,7 @@ typedef struct {
 	uint8_t bit1;
 	uint8_t bit2;	
 	uint8_t f_index;
+	bool obstructed;
 } PS_Struct;
 
 /*---------------------------- Module Functions ---------------------------*/
@@ -45,6 +46,7 @@ typedef struct {
    behavior of this state machine
 */
 static void updateClaimedStatus(uint8_t index);
+static void ClearObstructions(void);
 
 /*---------------------------- Module Variables ---------------------------*/
 // everybody needs a state variable, you may need others as well
@@ -52,15 +54,15 @@ static bool MyBlockStatus;
 static bool EnemyBlockStatus;
 
 static PS_Struct PS_Array[] = {
-	{.location_code = SACREMENTO_CODE, .location_x = 6.0f, .location_y = 55.8f, 	.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F},
-	{.location_code = SEATTLE_CODE, .location_x = 9.0f, .location_y = 88.5f, 			.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT5HI, .bit2 = BIT4HI, .f_index = NULL_F},
-	{.location_code = BILLINGS_CODE, .location_x = 29.1f, .location_y = 75.8f, 		.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT3HI, .bit2 = BIT2HI, .f_index = NULL_F},
-	{.location_code = DENVER_CODE, .location_x = 33.3f, .location_y = 53.8f, 			.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT1HI, .bit2 = BIT0HI, .f_index = NULL_F},
-	{.location_code = DALLAS_CODE, .location_x = 45.3f, .location_y = 29.4f, 			.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F},
-	{.location_code = CHICAGO_CODE, .location_x = 61.8f, .location_y = 60.8f, 		.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT5HI, .bit2 = BIT4HI, .f_index = NULL_F},
-	{.location_code = MIAMI_CODE, .location_x = 80.8f, .location_y = 9.2f, 				.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT3HI, .bit2 = BIT2HI, .f_index = NULL_F},
-	{.location_code = WASHINGTON_CODE, .location_x = 81.5f, .location_y = 55.2f, 	.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT1HI, .bit2 = BIT0HI, .f_index = NULL_F},
-	{.location_code = CONCORD_CODE, .location_x = 87.6f, .location_y = 72.6f, 		.claimed_status = Unclaimed_b, .byte = 4, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F}
+	{.location_code = SACREMENTO_CODE, .location_x = 6.0f, .location_y = 55.8f, 	.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F, .obstructed = false},
+	{.location_code = SEATTLE_CODE, .location_x = 9.0f, .location_y = 88.5f, 			.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT5HI, .bit2 = BIT4HI, .f_index = NULL_F, .obstructed = false},
+	{.location_code = BILLINGS_CODE, .location_x = 29.1f, .location_y = 75.8f, 		.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT3HI, .bit2 = BIT2HI, .f_index = NULL_F, .obstructed = false},
+	{.location_code = DENVER_CODE, .location_x = 33.3f, .location_y = 53.8f, 			.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT1HI, .bit2 = BIT0HI, .f_index = NULL_F, .obstructed = false},
+	{.location_code = DALLAS_CODE, .location_x = 45.3f, .location_y = 29.4f, 			.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F, .obstructed = false},
+	{.location_code = CHICAGO_CODE, .location_x = 61.8f, .location_y = 60.8f, 		.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT5HI, .bit2 = BIT4HI, .f_index = NULL_F, .obstructed = false},
+	{.location_code = MIAMI_CODE, .location_x = 80.8f, .location_y = 9.2f, 				.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT3HI, .bit2 = BIT2HI, .f_index = NULL_F, .obstructed = false},
+	{.location_code = WASHINGTON_CODE, .location_x = 81.5f, .location_y = 55.2f, 	.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT1HI, .bit2 = BIT0HI, .f_index = NULL_F, .obstructed = false},
+	{.location_code = CONCORD_CODE, .location_x = 87.6f, .location_y = 72.6f, 		.claimed_status = Unclaimed_b, .byte = 4, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F, .obstructed = false}
 };
 
 /*------------------------------ Module Code ------------------------------*/
@@ -125,6 +127,16 @@ float GetStationY(uint8_t which)
 	return PS_Array[which].location_y;
 }
 
+bool IsObstructed(uint8_t which)
+{
+	return PS_Array[which].obstructed;
+}
+
+void MarkObstructed(uint8_t which)
+{
+	PS_Array[which].obstructed = true;
+}
+
 //Update Location Statuses
 void updatePSStatuses(){
 	for (int i = 0; i < NUM_STATIONS; i++){
@@ -139,7 +151,7 @@ void updatePSStatuses(){
 			//Set the Frequency to the NUll Frequency
 			PS_Array[i].f_index = NULL_F;
 			
-			//clearObstructions();
+			ClearObstructions();
 		}
 	}
 }
@@ -172,4 +184,12 @@ bool checkOwnFrequency(uint8_t f_index){
 	}	
 	
 	return false;
+}
+
+//Mark all stations as unobstructed
+static void ClearObstructions(void)
+{
+	for (int i = 0; i < NUM_STATIONS; i++){
+		PS_Array[i].obstructed = false;
+	}
 }
