@@ -414,6 +414,6 @@ static uint8_t PS_Frequency_Codes[] = {
 
 #define CANNON_DISTANCE_MULTIPLIER 5
 
-#define PROXIMITY_TO_OUR_STATION_THRESHOLD 5.0
+#define PROXIMITY_TO_OUR_STATION_THRESHOLD 7.0f
 	
 #endif

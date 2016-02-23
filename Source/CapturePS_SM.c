@@ -142,6 +142,9 @@ ES_Event RunCapturePSSM( ES_Event CurrentEvent )
 									
 									//Update Our Own Frequency
 									updateCapturedFrequency(getLocation(), GetTargetFrequencyIndex());
+									SetStationOwner(getLocation(), MyColor());
+									printf("Setting station owner for location: %d to color %d\r\n", getLocation(), MyColor());
+									
 									
 									ES_Event ThisEvent;
 									ThisEvent.EventType = ES_PS_CAPTURED;								

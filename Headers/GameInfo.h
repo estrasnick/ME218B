@@ -16,6 +16,7 @@ bool IsEnemyBlocked(void);
 bool IsObstructed(uint8_t which);
 void MarkObstructed(uint8_t which);
 
+void SetStationOwner(uint8_t which, Claimed_b owner);
 uint8_t GetStationOwner(uint8_t which);
 
 float GetStationX(uint8_t which);

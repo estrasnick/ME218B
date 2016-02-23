@@ -72,14 +72,19 @@ static PS_Struct PS_Array[] = {
 uint8_t MyColor()
 {
 	//Set default to Red because everyone is using blue in their testing
-	return RED; //HWREG(GAME_BASE + (GPIO_O_DATA + ALL_BITS)) & COLOR_PIN;
-}
+	return HWREG(GAME_BASE + (GPIO_O_DATA + ALL_BITS)) & COLOR_PIN;
+}	
 
 //Check if Game Started
 bool isGameStarted()
 {
 	uint8_t *byte;
 	byte = getResponseArray();
+	/*
+	for (int i = 0; i < 5; i++)
+	{
+		printf("Byte %d: %d\r\n", i, *(byte + i));
+	}*/
 	
 	return (*(byte + 4) & BIT0HI) == BIT0HI ;
 }
@@ -111,6 +116,11 @@ bool AmIBlocked(void)
 bool IsEnemyBlocked(void)
 {
 	return EnemyBlockStatus;
+}
+
+void SetStationOwner(uint8_t which, Claimed_b owner)
+{
+	PS_Array[which].claimed_status = owner;
 }
 
 uint8_t GetStationOwner(uint8_t which)
@@ -146,9 +156,15 @@ bool NotByOurStation(void)
 	{
 		if (PS_Array[i].claimed_status == MyColor())
 		{
+			printf("Found a station of our color\r\n");
 			if (DistanceToPoint(PS_Array[i].location_x, PS_Array[i].location_y) <= PROXIMITY_TO_OUR_STATION_THRESHOLD)
 			{
+				printf("The distance is within our threshold: myx: %f, myy: %f, targetx: %f, targety: %f\r\n", getX(), getY(), PS_Array[i].location_x, PS_Array[i].location_y);
 				return false;
+			}
+			else
+			{
+				printf("The distance is NOT within our threshold: myx: %f, myy: %f, targetx: %f, targety: %f\r\n", getX(), getY(), PS_Array[i].location_x, PS_Array[i].location_y);
 			}
 		}
 	}
