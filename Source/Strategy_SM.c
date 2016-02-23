@@ -535,7 +535,8 @@ static void ChooseDestination(void)
 	{
 		uint32_t priority;
 		
-		if (GetStationOwner(i) == MyColor())
+		//If we own the station or it is undefined, ie. not used
+		if ((GetStationOwner(i) == MyColor()) | (GetStationOwner(i) == Undefined_b))
 		{
 			priority = 0xffffffff;
 		}
