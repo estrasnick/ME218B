@@ -13,7 +13,7 @@
 #include "ES_Configure.h"
 #include "ES_Framework.h"
 
-/* include header files for this state machine as well as any machines at the
+/* include header files for this state machine as we00ll as any machines at the
    next lower level in the hierarchy that are sub-machines to this machine
 */
 #include "Attack_SM.h"
@@ -86,7 +86,7 @@ ES_Event RunAttackSM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
-            if (CurrentEvent.EventType == ES_CANNON_READY)
+            if (CurrentEvent.EventType == ES_CANNON_READY) //comes from Cannon Control Service when we reach our an RPM error of zero
             {
 							NextState = CannonReady_t;
 							MakeTransition = true;
@@ -220,11 +220,15 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
 			// implement any entry actions required for this state machine
+			//Pause our Positioning using the Periscope
 			PausePositioning();
+			
+			//Post an Align Event in order to use the latch to align the periscope
 			ES_Event AlignEvent;
 			AlignEvent.EventType = ES_ALIGN_TO_BUCKET;
 			PostPeriscopeControlService(AlignEvent);
 			
+			//Post to Start the Cannon
 			ES_Event StartCannonEvent;
 			StartCannonEvent.EventType = ES_START_CANNON;
 			PostCannonControlService(StartCannonEvent);
@@ -371,6 +375,7 @@ static ES_Event DuringFire_t( ES_Event Event)
 
 static void LoadChamber(void)
 {
+	printf("Load Hopper \n\r");
 	SetPWM_Hopper(HOPPER_LOAD_DUTY);
 	ES_Timer_InitTimer(HOPPER_LOAD_TIMER, HOPPER_LOAD_T);
 }

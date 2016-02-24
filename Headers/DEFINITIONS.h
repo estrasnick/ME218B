@@ -65,15 +65,17 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define CANNONANGLE_BASE 		GPIO_PORTB_BASE
 #define HOPPER_SYSCTL			SYSCTL_RCGCGPIO_R1
 #define HOPPER_BASE 			GPIO_PORTB_BASE
+#define GAME_SYSCTL 			SYSCTL_RCGCGPIO_R1
+#define GAME_BASE 				GPIO_PORTB_BASE
 
-#define unused0									GPIO_PIN_0
-#define unused3 								GPIO_PIN_1
+#define GAME_STATUS_PIN						GPIO_PIN_0
+#define COLOR_PIN 								GPIO_PIN_1
 #define unused4 								GPIO_PIN_2
 #define unused5									GPIO_PIN_3
 #define CANNON_PWM_PIN  				GPIO_PIN_4
 #define PERISCOPE_PWM_PIN 			GPIO_PIN_5
-#define HOPPER_PWM_PIN 							GPIO_PIN_6
-#define PERISCOPE_LATCH_PWM_PIN	GPIO_PIN_7
+#define PERISCOPE_LATCH_PWM_PIN GPIO_PIN_6
+#define HOPPER_PWM_PIN					GPIO_PIN_7
 
 // Port C
 // Phototransistor
@@ -122,12 +124,11 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define unavailable10 							GPIO_PIN_7
 
 // Port F
-// Game Swiches
-#define GAME_SYSCTL 	SYSCTL_RCGCGPIO_R5
-#define GAME_BASE 		GPIO_PORTF_BASE
+#define unused_SYSTCL 	SYSCTL_RCGCGPIO_R5
+#define unused_base 		GPIO_PORTF_BASE
 
-#define COLOR_PIN							GPIO_PIN_0
-#define GAME_STATUS_PIN				GPIO_PIN_1
+#define unused0							GPIO_PIN_0
+#define unused1							GPIO_PIN_1
 #define unused6 							GPIO_PIN_2
 #define unused7 							GPIO_PIN_3
 #define unused8 							GPIO_PIN_4
@@ -237,16 +238,16 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define	RIGHT_DRIVE_PWM				M1PWM3
 #define	CANNON_PWM						M0PWM2
 #define	PERISCOPE_PWM 				M0PWM3
-#define	HOPPER_PWM 						M0PWM0
-#define PERISCOPE_LATCH_PWM   M0PWM1
+#define	PERISCOPE_LATCH_PWM 						M0PWM0
+#define HOPPER_PWM    M0PWM1
 
 //PERIODS ARE IN MICROSECONDS
 //ASSIGN THE PERIODS
 #define LEFT_DRIVE_PERIOD			50
 #define RIGHT_DRIVE_PERIOD		50
 #define PERISCOPE_PERIOD			50
-#define PERISCOPE_LATCH_PERIOD 50
-#define HOPPER_PERIOD					50
+#define PERISCOPE_LATCH_PERIOD 20000
+#define HOPPER_PERIOD					20000
 #define CANNON_PERIOD					50
 
 //PIN DIRECTIONS (note hopper is a servo so it doesn't need this)
@@ -264,11 +265,13 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define CANNON_PWM_PARAMATERS				CANNON_PWM, CANNON_PERIOD
 #define PERISCOPE_LATCH_PWM_PARAMATERS    PERISCOPE_LATCH_PWM, PERISCOPE_LATCH_PERIOD
 
-#define PERISCOPE_PWM_DUTY 30 //45
-#define PERISCOPE_LATCH_DUTY 75
-#define PERISCOPE_UNLATCH_DUTY 25
-#define HOPPER_LOAD_DUTY 35
-#define HOPPER_DEFAULT_DUTY 50
+#define PERISCOPE_PWM_DUTY 20
+
+//These Values have been tested and appear to be good
+#define PERISCOPE_LATCH_DUTY 11
+#define PERISCOPE_UNLATCH_DUTY 5
+#define HOPPER_LOAD_DUTY 5
+#define HOPPER_DEFAULT_DUTY 10 
 
 //*******************************************************************************************
 //--------------------------------- SPI COMMANDS --------------------------------------

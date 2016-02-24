@@ -67,6 +67,10 @@ bool InitPeriscopeControlService ( uint8_t Priority )
 	SetPWM_Periscope(0); 
 	*/
 	
+	//Initialize the Periscope to be Unlatched
+	printf("Initialize the periscope as unlatched \n\r");
+	UnlatchPeriscope();
+	
 	ES_Timer_InitTimer(START_PERISCOPE_TIMER, START_PERISCOPE_T);
 	
 	printf("Periscope Service Initialized \n\r");

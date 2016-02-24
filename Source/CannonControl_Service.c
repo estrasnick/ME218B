@@ -81,8 +81,12 @@ bool InitCannonControlService ( uint8_t Priority )
 	//Initialize Periodic Interrupt for Control Laws
 	InitPeriodic(CANNON_CONTROL_INTERRUPT_PARAMATERS);
 	
+	//Start the Cannon at Rest
+	SetPWM_Cannon(0);
+	
 	//Set Hopper to proper position
 	SetPWM_Hopper(HOPPER_DEFAULT_DUTY);
+	printf("Setting Hopper to Default Duty \n\r");
   
 	printf("Cannon Service Initialized \n\r");
 	
@@ -135,10 +139,12 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
 		switch (ThisEvent.EventType){
 			case (ES_START_CANNON):
 				{
-					//For Testing
-					Revving = true;
-					setTargetCannonSpeed(DetermineCannonSpeed());
 					//For Actual Implementation
+					Revving = true;
+					//setTargetCannonSpeed(DetermineCannonSpeed());
+					//setTargetCannonSpeed(20);
+					SetPWM_Cannon(90);
+					//For Testing 
 					//setTargetCannonSpeed(RPMTarget);
 				}
 				break;
@@ -223,6 +229,7 @@ static void calculateControlResponse(float currentRPM, float integralTerm, uint3
 	
 	//If the RPM error is zero and hasn't been before then post that we are at the correct speed
 	if ((RPMError == 0) & (LastError != 0)){
+		printf("Post ES_CANNON_READY \n\r"); 
 		ES_Event ThisEvent;
 		ThisEvent.EventType = ES_CANNON_READY;
 		PostMasterSM(ThisEvent);
@@ -246,7 +253,7 @@ static void calculateControlResponse(float currentRPM, float integralTerm, uint3
 	LastError = RPMError;
 		
 	//Call the Set PWM Function on the clamped RequestedDuty Value
-	SetPWM_Cannon(clamp(RequestedDuty, 0, 100));
+	//SetPWM_Cannon(clamp(RequestedDuty, 0, 100));
 }
 
 

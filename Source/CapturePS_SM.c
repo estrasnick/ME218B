@@ -37,10 +37,11 @@
    functions, entry & exit functions.They should be functions relevant to the
    behavior of this state machine
 */
-static ES_Event DuringRequest1_t( ES_Event Event);
 static ES_Event DuringMeasuring1_t( ES_Event Event);
-static ES_Event DuringRequest2_t( ES_Event Event);
+static ES_Event DuringRequest1_t( ES_Event Event);
 static ES_Event DuringMeasuring2_t( ES_Event Event);
+static ES_Event DuringRequest2_t( ES_Event Event);
+static ES_Event DuringMeasuring3_t( ES_Event Event);
 
 /*---------------------------- Module Variables ---------------------------*/
 // everybody needs a state variable, you may need others as well
@@ -139,25 +140,43 @@ ES_Event RunCapturePSSM( ES_Event CurrentEvent )
 								if ((checkAcknowledged() == ACK_b) && (checkLocation()))
 								{
 									printf("Polling Station Confirmed 2: Captured, time to move on \n\r");
-									
-									//Update Our Own Frequency
-									updateCapturedFrequency(getLocation(), GetTargetFrequencyIndex());
-									SetStationOwner(getLocation(), MyColor());
-									printf("Setting station owner for location: %d to color %d\r\n", getLocation(), MyColor());
-									
-									
-									ES_Event ThisEvent;
-									ThisEvent.EventType = ES_PS_CAPTURED;								
-									PostMasterSM(ThisEvent);
-									
-									MakeTransition = false; //no need to transition out, we are going to exit
-								} else {	//if not exit and re-enter the state so that we send another request									
+								
+									NextState = Measuring3_t;
+									MakeTransition = true;
+								} else {	//if not exit and re-enter as measuring 1 to see if we can get it right the second time	around			
 									NextState = Measuring1_t;
 									MakeTransition = true;
 								}
 						}
          }
          break;	 
+				 
+				 //Measure a Third Time to prevent recapture attempts
+				 case Measuring3_t :     
+				// Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
+         CurrentEvent = DuringMeasuring3_t(CurrentEvent); 
+				 
+				 //Process Any Events
+         if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
+         {	
+						//If we received an EV_PS Detected
+						if (CurrentEvent.EventType == ES_PS_DETECTED)
+						{		
+									//Update Our Own Frequency with what we just remeasured
+									updateCapturedFrequency(getLocation(), GetTargetFrequencyIndex());
+									SetStationOwner(getLocation(), MyColor());
+									printf("Setting station owner for location: %d to color %d\r\n", getLocation(), MyColor());
+									
+									//Now Post that we Captured and it's time to move on
+									ES_Event ThisEvent;
+									ThisEvent.EventType = ES_PS_CAPTURED;								
+									PostMasterSM(ThisEvent);
+								
+								//No Need to Transition Out
+								MakeTransition = true;
+						}
+         }
+         break;
     } 
 	 
     //   If we are making a state transition
@@ -373,6 +392,44 @@ static ES_Event DuringRequest2_t( ES_Event Event)
       
         // do any activity that is repeated as long as we are in this state
 
+    }
+    // return either Event, if you don't want to allow the lower level machine
+    // to remap the current event, or ReturnEvent if you do want to allow it.
+    return(ReturnEvent);
+}
+
+static ES_Event DuringMeasuring3_t( ES_Event Event)
+{
+    ES_Event ReturnEvent = Event; // assme no re-mapping or comsumption
+
+    // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
+    if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
+    {
+        // implement any entry actions required for this state machine
+        printf("Entering DuringMeasuring3_t \n\r");
+				ES_Timer_InitTimer(MEASURING_TIMEOUT_TIMER, MEASURING_TIMEOUT_T);
+			
+        // after that start any lower level machines that run in this state
+        //StartLowerLevelSM( Event );
+        // repeat the StartxxxSM() functions for concurrent state machines
+        // on the lower level
+    }
+    else if ( Event.EventType == ES_EXIT )
+    {
+        // on exit, give the lower levels a chance to clean up first
+        //RunLowerLevelSM(Event);
+        // repeat for any concurrently running state machines
+        // now do any local exit functionality
+				ES_Timer_StopTimer(MEASURING_TIMEOUT_TIMER);
+    }else
+    // do the 'during' function for this state
+    {
+        // run any lower level state machine
+        // ReturnEvent = RunLowerLevelSM(Event);
+      
+        // repeat for any concurrent lower level machines
+      
+        // do any activity that is repeated as long as we are in this state
     }
     // return either Event, if you don't want to allow the lower level machine
     // to remap the current event, or ReturnEvent if you do want to allow it.

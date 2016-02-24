@@ -29,6 +29,7 @@
 #include "DriveTrainControl_Service.h"
 #include "PeriscopeControl_Service.h"
 #include "PositionLogic_Service.h"
+#include "PWM_Service.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 
@@ -157,6 +158,20 @@ ES_Event RunMapKeys( ES_Event ThisEvent )
 											 printf("Commanding: ES_CALCULATE_POSITION, Event Param = 0 \n\r");                     
 											 break;
 						case 'H' : ThisEvent.EventType = ES_MANUAL_SHOOT; 
+												SetPWM_Cannon(20);
+											 ThisEvent.EventParam = 0;
+											 printf("Commanding: ES_MANUAL_SHOOT, Event Param = 0 \n\r");                     
+											 break;
+						case '1' : ThisEvent.EventType = ES_NO_EVENT; 
+											SetPWM_Hopper(HOPPER_LOAD_DUTY);             
+											 break;
+						case '2' : ThisEvent.EventType = ES_NO_EVENT; 
+											SetPWM_Hopper(HOPPER_DEFAULT_DUTY);             
+											 break;
+						case 'J' : ThisEvent.EventType = ES_NO_EVENT; 
+											 static uint8_t PWM_Val_Latch = 0;
+											 SetPWM_PeriscopeLatch (PWM_Val_Latch);
+											 PWM_Val_Latch += 1;
 											 ThisEvent.EventParam = 0;
 											 printf("Commanding: ES_MANUAL_SHOOT, Event Param = 0 \n\r");                     
 											 break;

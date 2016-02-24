@@ -130,6 +130,8 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 						{
 							if (isGameStarted())
 							{
+								printf("Game is Started, Choose Destination \n\r");
+								
 								NextState = ChooseDestination_t;
 								MakeTransition = true;
 							}
@@ -333,6 +335,7 @@ static ES_Event DuringWait4Start_t( ES_Event Event)
         
         // repeat for any concurrently running state machines
         // now do any local exit functionality
+				printf("Game Started: Light our Indicator LED and start the Timer \n\r");
 				GPIO_Set(GAME_BASE, GAME_STATUS_PIN);
 				ES_Timer_InitTimer(GAME_TIMER, GAME_TIMER_T);
     }else

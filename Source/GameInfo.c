@@ -80,13 +80,10 @@ bool isGameStarted()
 {
 	uint8_t *byte;
 	byte = getResponseArray();
-	/*
-	for (int i = 0; i < 5; i++)
-	{
-		printf("Byte %d: %d\r\n", i, *(byte + i));
-	}*/
 	
-	return (*(byte + 4) & BIT0HI) == BIT0HI ;
+	//printf("Game Started: %d \n\r", ((*(byte + 3) & BIT0HI) == BIT0HI));
+	
+	return ((*(byte + 3) & BIT0HI) == BIT0HI) ;
 }
 
 void UpdateADStatus(void)

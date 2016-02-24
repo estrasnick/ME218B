@@ -352,10 +352,7 @@ static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm,
 		LastError_Left = RPMError;
 		integralTerm_Left = integralTerm;
 	}
-	
 	/*
-		if (displayinfo)
-	{
 	static int i;
 		if (i++ > 501)
 		{
@@ -377,9 +374,7 @@ static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm,
 			printf("\n\r");
 			i = 0;
 		}
-		
-	}*/
-	
+	*/
 	
 	return clamp(RequestedDuty, 0, 100);
 }

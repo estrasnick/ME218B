@@ -244,6 +244,7 @@ static ES_Event DuringAttack_t( ES_Event Event)
 			// now do any local exit functionality
 			ES_Timer_InitTimer(ATTACK_PHASE_TIMER, NEXT_SHOT_T);
 			
+			
 			ES_Event ResetEvent;
 			ResetEvent.EventType = ES_RESET_DESTINATION;
 			PostMasterSM(ResetEvent);
