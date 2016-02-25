@@ -18,6 +18,7 @@
 #include "PositionLogic_Service.h"
 #include "DriveTrainControl_Service.h"
 #include "PhotoTransistor_Service.h"
+#include "Master_SM.h"
 #include <Math.h>
 
 /*----------------------------- Module Defines ----------------------------*/
@@ -37,6 +38,8 @@ static uint8_t MyPriority;
 static uint32_t numTicks;
 
 static bool AligningToBucket = false;
+
+static bool isZeroed;
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -66,10 +69,6 @@ bool InitPeriscopeControlService ( uint8_t Priority )
 	printf("Initialize the Periscope as Not Spinning\r\n");
 	SetPWM_Periscope(0); 
 	*/
-	
-	//Initialize the Periscope to be Unlatched
-	printf("Initialize the periscope as unlatched \n\r");
-	UnlatchPeriscope();
 	
 	ES_Timer_InitTimer(START_PERISCOPE_TIMER, START_PERISCOPE_T);
 	
@@ -124,13 +123,19 @@ ES_Event RunPeriscopeControlService( ES_Event ThisEvent )
 	else if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == PERISCOPE_STOPPED_TIMER))
 	{
 		SetPWM_Periscope(0);
+		ResetPeriscopeEncoderTicks();
 		if (AligningToBucket)
 		{
 			ES_Event RotateEvent;
 			RotateEvent.EventType = ES_ALIGN_TO_BUCKET;
-			setTargetDriveSpeed(DEFAULT_DRIVE_RPM, -DEFAULT_DRIVE_RPM);
+			printf("Starting attack rotate\r\n");
+			setDriveToAlignToBucket();
 			PostPhotoTransistorService(RotateEvent);
 			AligningToBucket = false;
+		}
+		if (!isZeroed)
+		{
+			isZeroed = true;
 		}
 	}
 	else if (ThisEvent.EventType == ES_ALIGN_TO_BUCKET)
@@ -199,11 +204,23 @@ void ResetPeriscopeEncoderTicks(void)
 
 void LatchPeriscope(void)
 {
+	printf("Latching periscope\r\n");
 	SetPWM_PeriscopeLatch(PERISCOPE_LATCH_DUTY);
 }
 
 void UnlatchPeriscope(void)
 {
+	printf("Unlatching periscope\r\n");
 	SetPWM_PeriscopeLatch(PERISCOPE_UNLATCH_DUTY);
 	SetPWM_Periscope(PERISCOPE_PWM_DUTY);
+}
+
+void RequireZero(void)
+{
+	isZeroed = false;
+}
+
+bool IsZeroed(void)
+{
+	return isZeroed;
 }

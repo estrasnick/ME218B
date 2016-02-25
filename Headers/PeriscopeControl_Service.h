@@ -18,6 +18,9 @@ void PeriscopeEncoder_InterruptResponse(void);
 void ResetPeriscopeEncoderTicks(void);
 void LatchPeriscope(void);
 void UnlatchPeriscope(void);
+void RequireZero(void);
+bool IsZeroed(void);
+
 
 #endif 
 

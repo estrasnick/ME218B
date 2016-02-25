@@ -81,7 +81,7 @@ bool isGameStarted()
 	uint8_t *byte;
 	byte = getResponseArray();
 	
-	//printf("Game Started: %d \n\r", ((*(byte + 3) & BIT0HI) == BIT0HI));
+	printf("Game Started: %d \n\r", ((*(byte + 3) & BIT0HI) == BIT0HI));
 	
 	return ((*(byte + 3) & BIT0HI) == BIT0HI) ;
 }
@@ -195,7 +195,14 @@ static void updateClaimedStatus(uint8_t index){
 	uint8_t byte = *(RA + PS_Array[index].byte);
 	uint8_t bit1 = PS_Array[index].bit1;
 	uint8_t bit2 = PS_Array[index].bit2;
-	
+	/*
+	printf("Response: ");
+	for (int i = 0; i < 5; i++)
+	{
+		printf("%x, ", *(RA + i));
+	}
+	printf("\r\n");
+	*/
 	PS_Array[index].claimed_status = (byte & bit1) ? ((byte & bit2) ?  Undefined_b : RED_b ) : ((byte & bit2) ? BLUE_b : Unclaimed_b );
 }
 

@@ -86,13 +86,15 @@ ES_Event RunAttackSM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
-            if (CurrentEvent.EventType == ES_CANNON_READY) //comes from Cannon Control Service when we reach our an RPM error of zero
+            if (CurrentEvent.EventType == ES_CANNON_READY || ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == CANNON_READY_TIMER))) //comes from Cannon Control Service when we reach our an RPM error of zero
             {
+							printf("Cannon ready\r\n");
 							NextState = CannonReady_t;
 							MakeTransition = true;
             }
 						else if (CurrentEvent.EventType == ES_ALIGNED_TO_BUCKET)
 						{
+							printf("Aligned to bucket\r\n");
 							NextState = Aligned_t;
 							MakeTransition = true;
 						}
@@ -107,8 +109,9 @@ ES_Event RunAttackSM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
-            if (CurrentEvent.EventType == ES_CANNON_READY)
+            if (CurrentEvent.EventType == ES_CANNON_READY || ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == CANNON_READY_TIMER)))
             {
+							printf("Cannon ready\r\n");
 							NextState = Fire_t;
 							MakeTransition = true;
             }
@@ -125,6 +128,7 @@ ES_Event RunAttackSM( ES_Event CurrentEvent )
 						//Check for Specific Events
             if (CurrentEvent.EventType == ES_ALIGNED_TO_BUCKET)
 						{
+							printf("Aligned to bucket\r\n");
 							NextState = Fire_t;
 							MakeTransition = true;
 						}
@@ -221,6 +225,7 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event)
     {
 			// implement any entry actions required for this state machine
 			//Pause our Positioning using the Periscope
+			printf("entering attack state machine\r\n");
 			PausePositioning();
 			
 			//Post an Align Event in order to use the latch to align the periscope
@@ -232,6 +237,8 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event)
 			ES_Event StartCannonEvent;
 			StartCannonEvent.EventType = ES_START_CANNON;
 			PostCannonControlService(StartCannonEvent);
+			
+			ES_Timer_InitTimer(CANNON_READY_TIMER, CANNON_READY_T);
 			
 			// after that start any lower level machines that run in this state
 			//StartLowerLevelSM( Event );

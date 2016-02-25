@@ -13,6 +13,7 @@
 #include "ES_Configure.h"
 #include "ES_Framework.h"
 #include "Definitions.h"
+#include "Helpers.h"
 
 /* include header files for this state machine as well as any machines at the
    next lower level in the hierarchy that are sub-machines to this machine
@@ -41,6 +42,8 @@ static ES_Event DuringSendingByte2_t( ES_Event Event);
 static ES_Event DuringSendingByte3_t( ES_Event Event);
 static ES_Event DuringSendingByte4_t( ES_Event Event);
 static ES_Event DuringSendingByte5_t( ES_Event Event);
+
+static void checkForPACError(void);
 
 /*---------------------------- Module Variables ---------------------------*/
 // everybody needs a state variable, you may need others as well
@@ -227,6 +230,10 @@ ES_Event RunSendingCMDSM( ES_Event CurrentEvent )
 ****************************************************************************/
 void StartSendingCMDSM ( ES_Event CurrentEvent )
 {
+	//Initialize our PAC Error LED 
+	GPIO_Init(PACERROR_SYSTCL, PACERROR_BASE, PAC_ERROR_PIN, OUTPUT);
+	GPIO_Clear(PACERROR_BASE,PAC_ERROR_PIN);
+	
    // to implement entry to a history state or directly to a substate
    // you can modify the initialization of the CurrentState variable
    // otherwise just start in the entry state every time the state machine
@@ -477,10 +484,13 @@ static ES_Event DuringSendingByte5_t( ES_Event Event)
         // now do any local exit functionality
 				//Read the Data Register
 				responseArray[4] = ReadDataRegister();
-      
+				checkForPACError();
 				//Print the Values of the Response array
 				//printf("Response Array:  %x, %x, %x, %x, %x \n\r", 
 				//		responseArray[0], responseArray[1], responseArray[2], responseArray[3], responseArray[4]);
+			
+				
+			
 			
     }else
     // do the 'during' function for this state
@@ -505,7 +515,15 @@ uint8_t * getResponseArray(){
 	return responseArray;
 }
 
-
+static void checkForPACError(void){
+	//If the first byte received was FF
+	printf("%x, %x, %x, %x, %x\r\n", responseArray[0], responseArray[1], responseArray[2], responseArray[3], responseArray[4]);
+	if (responseArray[0] == 0xff){
+		GPIO_Set(PACERROR_BASE, PAC_ERROR_PIN);
+	} else {
+		GPIO_Clear(PACERROR_BASE, PAC_ERROR_PIN);
+	}
+}
 
 
 

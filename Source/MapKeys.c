@@ -158,7 +158,7 @@ ES_Event RunMapKeys( ES_Event ThisEvent )
 											 printf("Commanding: ES_CALCULATE_POSITION, Event Param = 0 \n\r");                     
 											 break;
 						case 'H' : ThisEvent.EventType = ES_MANUAL_SHOOT; 
-												SetPWM_Cannon(20);
+												//SetPWM_Cannon(20);
 											 ThisEvent.EventParam = 0;
 											 printf("Commanding: ES_MANUAL_SHOOT, Event Param = 0 \n\r");                     
 											 break;
@@ -169,12 +169,17 @@ ES_Event RunMapKeys( ES_Event ThisEvent )
 											SetPWM_Hopper(HOPPER_DEFAULT_DUTY);             
 											 break;
 						case 'J' : ThisEvent.EventType = ES_NO_EVENT; 
-											 static uint8_t PWM_Val_Latch = 0;
+											 static uint8_t PWM_Val_Latch = 15;
 											 SetPWM_PeriscopeLatch (PWM_Val_Latch);
-											 PWM_Val_Latch += 1;
+											 PWM_Val_Latch--;
 											 ThisEvent.EventParam = 0;
 											 printf("Commanding: ES_MANUAL_SHOOT, Event Param = 0 \n\r");                     
 											 break;
+							
+						case 'E' : ThisEvent.EventType = ES_ALIGNED_TO_BUCKET; 	
+											 clearDriveAligningToBucket();
+											 break;
+						
 									
         }
 				

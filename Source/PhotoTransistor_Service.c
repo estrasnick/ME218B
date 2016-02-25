@@ -147,7 +147,7 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 		{
 			if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
 			{
-				setTargetDriveSpeed(0, 0);
+				clearDriveAligningToBucket();
 				ES_Event AlignedEvent;
 				AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
 				PostMasterSM(AlignedEvent);

@@ -70,7 +70,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 
 #define GAME_STATUS_PIN						GPIO_PIN_0
 #define COLOR_PIN 								GPIO_PIN_1
-#define unused4 								GPIO_PIN_2
+#define unused 								GPIO_PIN_2
 #define unused5									GPIO_PIN_3
 #define CANNON_PWM_PIN  				GPIO_PIN_4
 #define PERISCOPE_PWM_PIN 			GPIO_PIN_5
@@ -124,12 +124,12 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define unavailable10 							GPIO_PIN_7
 
 // Port F
-#define unused_SYSTCL 	SYSCTL_RCGCGPIO_R5
-#define unused_base 		GPIO_PORTF_BASE
+#define PACERROR_SYSTCL 	SYSCTL_RCGCGPIO_R5
+#define PACERROR_BASE 		GPIO_PORTF_BASE
 
 #define unused0							GPIO_PIN_0
-#define unused1							GPIO_PIN_1
-#define unused6 							GPIO_PIN_2
+#define unused9							GPIO_PIN_1
+#define PAC_ERROR_PIN 							GPIO_PIN_2
 #define unused7 							GPIO_PIN_3
 #define unused8 							GPIO_PIN_4
 #define unavailable11 				GPIO_PIN_5
@@ -250,7 +250,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define HOPPER_PERIOD					20000
 #define CANNON_PERIOD					50
 
-//PIN DIRECTIONS (note hopper is a servo so it doesn't need this)
+//PIN DIRECTIONS (note hopper is a servo so it doesn't need this)x
 #define LEFT_DRIVE_FORWARD_PIN_DIRECTION 		0
 #define LEFT_DRIVE_BACKWARD_PIN_DIRECTION 	1
 #define RIGHT_DRIVE_FORWARD_PIN_DIRECTION 	0
@@ -265,10 +265,10 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define CANNON_PWM_PARAMATERS				CANNON_PWM, CANNON_PERIOD
 #define PERISCOPE_LATCH_PWM_PARAMATERS    PERISCOPE_LATCH_PWM, PERISCOPE_LATCH_PERIOD
 
-#define PERISCOPE_PWM_DUTY 20
+#define PERISCOPE_PWM_DUTY 60
 
 //These Values have been tested and appear to be good
-#define PERISCOPE_LATCH_DUTY 11
+#define PERISCOPE_LATCH_DUTY 9
 #define PERISCOPE_UNLATCH_DUTY 5
 #define HOPPER_LOAD_DUTY 5
 #define HOPPER_DEFAULT_DUTY 10 

@@ -23,6 +23,7 @@
 #include "SendingByte_SM.h"
 #include "DriveTrainControl_Service.h"
 #include "Master_SM.h"
+#include "Attack_SM.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 // define constants for the states for this machine
@@ -233,6 +234,7 @@ static ES_Event DuringAttack_t( ES_Event Event)
 			
         // after that start any lower level machines that run in this state
         //StartLowerLevelSM( Event );
+				StartAttackSM(Event);
         // repeat the StartxxxSM() functions for concurrent state machines
         // on the lower level
     }
@@ -240,6 +242,7 @@ static ES_Event DuringAttack_t( ES_Event Event)
 		{
 			// on exit, give the lower levels a chance to clean up first
 			//RunLowerLevelSM(Event);
+			ReturnEvent = RunAttackSM(Event);
 			// repeat for any concurrently running state machines
 			// now do any local exit functionality
 			ES_Timer_InitTimer(ATTACK_PHASE_TIMER, NEXT_SHOT_T);
@@ -253,7 +256,7 @@ static ES_Event DuringAttack_t( ES_Event Event)
     {
         // run any lower level state machine
         // ReturnEvent = RunLowerLevelSM(Event);
-      
+				ReturnEvent = RunAttackSM(Event);
         // repeat for any concurrent lower level machines
       
         // do any activity that is repeated as long as we are in this state

@@ -14,6 +14,8 @@ bool PostDriveTrainControlService( ES_Event ThisEvent );
 ES_Event RunDriveTrainControlService( ES_Event ThisEvent );
 
 void setTargetDriveSpeed(float newRPMTarget_left, float newRPMTarget_right);
+void setDriveToAlignToBucket(void);
+void clearDriveAligningToBucket(void);
 void setTargetEncoderTicks(uint32_t leftTicks, uint32_t rightTicks, bool negativeLeft, bool negativeRight);
 
 void DriveEncoder_Left_InterruptResponse(void);

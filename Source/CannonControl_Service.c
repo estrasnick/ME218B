@@ -27,6 +27,7 @@
 
 //Cannon Test Speeds in RPM
 #define CANNON_STOP_SPEED 0
+#define CANNON_TEST_PWM 10
 
 #define CANNON_RPM_TOLERANCE 2
 
@@ -132,46 +133,29 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
   ES_Event ReturnEvent;
   ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
 
-	//If we are in testing mode
-	if(TESTING_MODE){
-	
-		//If we receive any of these events (from keyboard presses)
+	//If we receive any of these events (from keyboard presses)
 		switch (ThisEvent.EventType){
 			case (ES_START_CANNON):
 				{
 					//For Actual Implementation
 					Revving = true;
 					//setTargetCannonSpeed(DetermineCannonSpeed());
-					//setTargetCannonSpeed(20);
-					SetPWM_Cannon(90);
+					
 					//For Testing 
-					//setTargetCannonSpeed(RPMTarget);
+					SetPWM_Cannon(CANNON_TEST_PWM);
 				}
 				break;
 			case (ES_STOP_CANNON):
-				{
-					setTargetCannonSpeed(CANNON_STOP_SPEED);
-					Revving = false;
-				}
-				break;
-		}
-	} 	else { //if we are not in testing mode
-			switch (ThisEvent.EventType){
-			case (ES_START_CANNON):
 				{
 					//For Actual Implementation
-					Revving = true;
-					setTargetCannonSpeed(ThisEvent.EventParam); //getting passed the value as a paramater
-				}
-				break;
-			case (ES_STOP_CANNON):
-				{
-					setTargetCannonSpeed(CANNON_STOP_SPEED);
 					Revving = false;
+					//setTargetCannonSpeed(CANNON_STOP_PWM);
+					
+					//For Testing 
+					SetPWM_Cannon(0);
 				}
 				break;
 			}
-	}
 	
   return ReturnEvent;
 }
@@ -227,13 +211,14 @@ static void calculateControlResponse(float currentRPM, float integralTerm, uint3
 	//Calculate Error (absolute)
 	RPMError = fabs(targetSpeed) - currentRPM; //fabs is absolute value
 	
+	/*
 	//If the RPM error is zero and hasn't been before then post that we are at the correct speed
 	if ((RPMError == 0) & (LastError != 0)){
 		printf("Post ES_CANNON_READY \n\r"); 
 		ES_Event ThisEvent;
 		ThisEvent.EventType = ES_CANNON_READY;
 		PostMasterSM(ThisEvent);
-	}
+	}*/
 
 	/*
 	printf("\n\r period %d", ThisPeriod);

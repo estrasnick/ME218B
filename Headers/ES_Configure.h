@@ -55,24 +55,24 @@
 #define MASTER_PRIORITY 1 //defining this for our deferral events
 
 // the header file with the public function prototypes
-#define SERV_1_HEADER "Master_SM.h"
+#define SERV_1_HEADER "PWM_Service.h"
 // the name of the Init function
-#define SERV_1_INIT InitMasterSM
+#define SERV_1_INIT InitPWMService
 // the name of the run function
-#define SERV_1_RUN RunMasterSM
+#define SERV_1_RUN RunPWMService
 // How big should this services Queue be?
-#define SERV_1_QUEUE_SIZE 10
+#define SERV_1_QUEUE_SIZE 5
 #endif
 
 /****************************************************************************/
 // These are the definitions for Service 2
 #if NUM_SERVICES > 2
 // the header file with the public function prototypes
-#define SERV_2_HEADER "PWM_Service.h"
+#define SERV_2_HEADER "CannonControl_Service.h"
 // the name of the Init function
-#define SERV_2_INIT InitPWMService
+#define SERV_2_INIT InitCannonControlService
 // the name of the run function
-#define SERV_2_RUN RunPWMService
+#define SERV_2_RUN RunCannonControlService
 // How big should this services Queue be?
 #define SERV_2_QUEUE_SIZE 5
 #endif
@@ -133,13 +133,13 @@
 // These are the definitions for Service 7
 #if NUM_SERVICES > 7
 // the header file with the public function prototypes
-#define SERV_7_HEADER "CannonControl_Service.h"
+#define SERV_7_HEADER "Master_SM.h"
 // the name of the Init function
-#define SERV_7_INIT InitCannonControlService
+#define SERV_7_INIT InitMasterSM
 // the name of the run function
-#define SERV_7_RUN RunCannonControlService
+#define SERV_7_RUN RunMasterSM
 // How big should this services Queue be?
-#define SERV_7_QUEUE_SIZE 3
+#define SERV_7_QUEUE_SIZE 10
 #endif
 
 /****************************************************************************/
@@ -304,7 +304,8 @@ typedef enum {  ES_NO_EVENT = 0,
 								ES_ALIGN_TO_BUCKET,
 								ES_RESET_DESTINATION,
 								ES_ALIGNED_TO_BUCKET,
-								ES_MANUAL_SHOOT
+								ES_MANUAL_SHOOT,
+								ES_ZEROED
 								
 								} ES_EventTyp_t ;
 
@@ -359,6 +360,8 @@ typedef enum {  ES_NO_EVENT = 0,
 		#define MEASURING_TIMEOUT_TIMER	1
 		#define MEASURING_TIMEOUT_T 100
 #define TIMER2_RESP_FUNC PostMasterSM
+		#define CHECK_ZERO_TIMER 2
+		#define CHECK_ZERO_T 100
 		#define POSITION_CHECK	2
 		#define POSITION_CHECK_T 100
 #define TIMER3_RESP_FUNC PostMasterSM
@@ -378,8 +381,9 @@ typedef enum {  ES_NO_EVENT = 0,
 #define TIMER9_RESP_FUNC PostMasterSM
 		#define CAPTURE_TIMEOUT_TIMER	9
 		#define CAPTURE_TIMEOUT_T 1000
-#define TIMER10_RESP_FUNC PostDriveTrainControlService
-		#define TEST_TIMER 10
+#define TIMER10_RESP_FUNC PostMasterSM
+		#define CANNON_READY_TIMER 10
+		#define CANNON_READY_T 2500
 #define TIMER11_RESP_FUNC PostPeriscopeControlService
 		#define START_PERISCOPE_TIMER 11
 		#define START_PERISCOPE_T 100
@@ -389,7 +393,7 @@ typedef enum {  ES_NO_EVENT = 0,
 		#define NEXT_SHOT_T 10000
 #define TIMER13_RESP_FUNC PostPeriscopeControlService
 		#define PERISCOPE_STOPPED_TIMER 13
-		#define PERISCOPE_STOPPED_T 100
+		#define PERISCOPE_STOPPED_T 250
 #define TIMER14_RESP_FUNC PostMasterSM
 		#define ATTACK_COMPLETE_TIMER 14
 		#define ATTACK_COMPLETE_T 1500

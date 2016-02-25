@@ -140,7 +140,7 @@ void SetPWM_DriveRight(float duty, uint32_t direction){
 //Periscope Duty Cycle
 void SetPWM_Periscope(float duty){
 	//Invert the value of the duty cycle passed
-	setPWM_value(100 - duty, PERISCOPE_PWM_PARAMATERS);
+	setPWM_value(duty, PERISCOPE_PWM_PARAMATERS);
 }
 	
 //Hopper Duty Cycle
@@ -152,7 +152,7 @@ void SetPWM_Hopper(float duty){
 //Cannon Duty Cycle
 void SetPWM_Cannon(float duty){
 	printf("Setting PWM SetPWM_Cannon Duty to: %f \n\r", duty);
-	setPWM_value(100-duty, CANNON_PWM_PARAMATERS);
+	setPWM_value(duty, CANNON_PWM_PARAMATERS);
 }
 
 //Periscope Latch Duty Cycle

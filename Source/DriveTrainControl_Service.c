@@ -77,7 +77,7 @@ static float LastError_Right = 0;
 
 static bool isMoving = false; //initialize to false
 
-
+static bool AligningToBucket = false;
 
 
 /*------------------------------ Module Code ------------------------------*/
@@ -224,7 +224,7 @@ void DriveEncoder_Left_InterruptResponse(void){
 	LeftEncoderTicks++;
 	
 	// Check if we've reached our target, and if so, stop
-	if (LeftEncoderTicks >= TargetTicks_Left)
+	if (LeftEncoderTicks >= TargetTicks_Left && (!AligningToBucket))
 	{
 		setTargetDriveSpeed(0, RPMTarget_Right);
 		if (RPMTarget_Right == 0)
@@ -264,7 +264,7 @@ void DriveEncoder_Right_InterruptResponse(void){
 	RightEncoderTicks++;
 	
 	// Check if we've reached our target, and if so, stop
-	if (RightEncoderTicks >= TargetTicks_Right)
+	if (RightEncoderTicks >= TargetTicks_Right && (!AligningToBucket))
 	{
 		setTargetDriveSpeed(RPMTarget_Left, 0);
 		if (RPMTarget_Left == 0)
@@ -414,6 +414,26 @@ void setTargetDriveSpeed(float newRPMTarget_left, float newRPMTarget_right){
 		ES_Timer_InitTimer(MOTOR_STOPPED_R, motor_stopped_timer);
 		ResetAbsolutePosition();
 	}
+}
+
+/****************************************************************************
+ Function
+     Tell the motors to align to bucket
+****************************************************************************/
+void setDriveToAlignToBucket(void)
+{
+	AligningToBucket = true;
+	setTargetDriveSpeed(DEFAULT_DRIVE_RPM, -DEFAULT_DRIVE_RPM);
+} 
+
+/****************************************************************************
+ Function
+     Tell the motors to stop aligning to bucket
+****************************************************************************/
+void clearDriveAligningToBucket(void)
+{
+	AligningToBucket = false;
+	setTargetDriveSpeed(0.0, 0.0);
 }
 
 /****************************************************************************

@@ -27,6 +27,7 @@
 #include "PeriscopeControl_Service.h"
 #include "GameInfo.h"
 #include "EnemyCaptureQueue.h"
+#include "PWM_Service.h"
 #include "DriveTrainControl_Service.h"
 
 /*----------------------------- Module Defines ----------------------------*/
@@ -130,10 +131,35 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 						{
 							if (isGameStarted())
 							{
+								if (IsZeroed())
+								{
+									printf("Game is Started, Choose Destination \n\r");
+									
+									ResumePositioning();
+									NextState = ChooseDestination_t;
+									MakeTransition = true;
+								}
+								else
+								{
+									printf("Not yet zeroed\r\n");
+									ES_Timer_InitTimer(CHECK_ZERO_TIMER, CHECK_ZERO_T);
+								}
+							}
+						}
+						else if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == CHECK_ZERO_TIMER))
+						{
+							if (IsZeroed())
+							{
 								printf("Game is Started, Choose Destination \n\r");
 								
+								ResumePositioning();
 								NextState = ChooseDestination_t;
 								MakeTransition = true;
+							}
+							else
+							{
+								printf("Not yet zeroed\r\n");
+								ES_Timer_InitTimer(CHECK_ZERO_TIMER, CHECK_ZERO_T);
 							}
 						}
 						else if (CurrentEvent.EventType == ES_MANUAL_START)
@@ -323,6 +349,8 @@ static ES_Event DuringWait4Start_t( ES_Event Event)
     {
         // implement any entry actions required for this state machine
 				GPIO_Clear(GAME_BASE, GAME_STATUS_PIN);
+				RequireZero();
+				PausePositioning();
         // after that start any lower level machines that run in this state
         
         // repeat the StartxxxSM() functions for concurrent state machines
@@ -392,6 +420,7 @@ static ES_Event DuringChooseDestination_t( ES_Event Event)
         // repeat for any concurrent lower level machines
       
         // do any activity that is repeated as long as we are in this state
+				
 				if ((Event.EventType == ES_TIMEOUT) && (Event.EventParam == POSITION_CHECK))
 				{
 					if (IsAbsolutePosition())
@@ -649,4 +678,5 @@ void ResumePositioning(void)
 	printf("Enabling positioning\r\n");
 	enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 	UnlatchPeriscope();
+	SetPWM_Periscope(PERISCOPE_PWM_DUTY);
 }

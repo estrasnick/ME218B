@@ -415,10 +415,10 @@ void SPI_Init(){
 	HWREG(SSI0_BASE+SSI_O_CC) = (HWREG(SSI0_BASE+SSI_O_CC) & 0xfffffff0) + SSI_CC_CS_SYSPLL;
 	
 	//	Configure clock prescalar
-	HWREG(SSI0_BASE+SSI_O_CPSR) = (HWREG(SSI0_BASE+SSI_O_CPSR) & 0xffffff00) + 0x6;
+	HWREG(SSI0_BASE+SSI_O_CPSR) = (HWREG(SSI0_BASE+SSI_O_CPSR) & 0xffffff00) + 0x14;
 	
 	//	Configure SCR, SPH, SPO, FRF (frame format), DSS (data size)
-	HWREG(SSI0_BASE+SSI_O_CR0) |= (0x7 << 8) | SSI_CR0_SPO | SSI_CR0_SPH | SSI_CR0_DSS_8 | SSI_CR0_FRF_MOTO;
+	HWREG(SSI0_BASE+SSI_O_CR0) |= (0x8B << 8) | SSI_CR0_SPO | SSI_CR0_SPH | SSI_CR0_DSS_8 | SSI_CR0_FRF_MOTO;
 	
 	//	Locally enable interrupts
 	HWREG(SSI0_BASE+SSI_O_IM) |= SSI_IM_TXIM;
