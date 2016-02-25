@@ -8,8 +8,7 @@ SendingCMD Header File
 
 // typedefs for the states
 // State definitions for use with the query function
-typedef enum { Waiting_t, SendingByte1_t, SendingByte2_t, SendingByte3_t, 
-		SendingByte4_t, SendingByte5_t } SendingCMDState_t ;
+typedef enum { Waiting_t, Waiting4Interrupt_t, Waiting4Timeout_t } SendingCMDState_t ;
 
 
 // Public Function Prototypes

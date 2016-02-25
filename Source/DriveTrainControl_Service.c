@@ -226,6 +226,7 @@ void DriveEncoder_Left_InterruptResponse(void){
 	// Check if we've reached our target, and if so, stop
 	if (LeftEncoderTicks >= TargetTicks_Left && (!AligningToBucket))
 	{
+		//printf("Left encoder reached destination\r\n");
 		setTargetDriveSpeed(0, RPMTarget_Right);
 		if (RPMTarget_Right == 0)
 		{
@@ -254,7 +255,7 @@ void DriveEncoder_Left_InterruptResponse(void){
 
 void DriveEncoder_Right_InterruptResponse(void){
 	uint32_t ThisCapture;
-
+	
 	// start by clearing the source of the interrupt, the input capture event
 	clearCaptureInterrupt(DRIVE_RIGHT_ENCODER_INTERRUPT_PARAMATERS);
 
@@ -266,6 +267,7 @@ void DriveEncoder_Right_InterruptResponse(void){
 	// Check if we've reached our target, and if so, stop
 	if (RightEncoderTicks >= TargetTicks_Right && (!AligningToBucket))
 	{
+		//printf("Right encoder reached destination\r\n");
 		setTargetDriveSpeed(RPMTarget_Left, 0);
 		if (RPMTarget_Left == 0)
 		{

@@ -23,7 +23,6 @@
 #include "CapturePS_SM.h"
 #include "Request_SM.h"
 #include "SendingCMD_SM.h"
-#include "SendingByte_SM.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 // define constants for the states for this machine
@@ -37,11 +36,8 @@
    behavior of this state machine
 */
 static ES_Event DuringWaiting_t( ES_Event Event);
-static ES_Event DuringSendingByte1_t( ES_Event Event);
-static ES_Event DuringSendingByte2_t( ES_Event Event);
-static ES_Event DuringSendingByte3_t( ES_Event Event);
-static ES_Event DuringSendingByte4_t( ES_Event Event);
-static ES_Event DuringSendingByte5_t( ES_Event Event);
+static ES_Event DuringWaiting4Interrupt_t( ES_Event Event);
+static ES_Event DuringWaiting4Timeout_t( ES_Event Event);
 
 static void checkForPACError(void);
 
@@ -70,7 +66,7 @@ ES_Event RunSendingCMDSM( ES_Event CurrentEvent )
    SendingCMDState_t NextState = CurrentState;
    ES_Event EntryEventKind = { ES_ENTRY, 0 };// default to normal entry to new state
    ES_Event ReturnEvent = CurrentEvent; // assume we are not consuming event
-
+ 
    switch ( CurrentState )
    {
   
@@ -84,121 +80,61 @@ ES_Event RunSendingCMDSM( ES_Event CurrentEvent )
 						//We've been commanded to Send a Command
             if (CurrentEvent.EventType == ES_SEND_CMD)
             {
-								ES_Event ThisEvent;
-								ThisEvent.EventType = ES_SEND_BYTE;
-								ThisEvent.EventParam = CurrentEvent.EventParam;	//Pass Along the current event param
-								PostMasterSM(ThisEvent);
+								EnterCritical();
+								//Write to the Data Register our First Command
+								WriteDataRegister(CurrentEvent.EventParam);
 							
-								NextState = SendingByte1_t;
+								for (int i = 0; i < 4; i++){
+									WriteDataRegister(0x00);
+								}
+								ExitCritical();
+							
+								NextState = Waiting4Interrupt_t;
 								MakeTransition = true;
             }
          }
          break;
-        
-			case SendingByte1_t :     
-         // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
-         CurrentEvent = DuringSendingByte1_t(CurrentEvent);
-			 
-         //Process Any Events
-         if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
-         {	
-						//Check for Specific Events
-            if ((CurrentEvent.EventType == ES_TIMEOUT) && CurrentEvent.EventParam == SSI_TIMER)
-            {
-								ES_Event ThisEvent;
-								ThisEvent.EventType = ES_SEND_BYTE;
-								ThisEvent.EventParam = RECEIVING_COMMAND;	//Going to Write Nothing
-								PostMasterSM(ThisEvent);
-							
-								NextState = SendingByte2_t;
-								MakeTransition = true;
-            }
-         }
-         break;
-       
-			case SendingByte2_t :     
-         // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
-         CurrentEvent = DuringSendingByte2_t(CurrentEvent);
-			 
-         //Process Any Events
-         if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
-         {	
-						//Check for Specific Events
-            if ((CurrentEvent.EventType == ES_TIMEOUT) && CurrentEvent.EventParam == SSI_TIMER)
-            {
-								ES_Event ThisEvent;
-								ThisEvent.EventType = ES_SEND_BYTE;
-								ThisEvent.EventParam = RECEIVING_COMMAND;	//Going to Write Nothing
-								PostMasterSM(ThisEvent);
-							
-								NextState = SendingByte3_t;
-								MakeTransition = true;
-            }
-         }
-         break;
-        
-			case SendingByte3_t :     
-         // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
-         CurrentEvent = DuringSendingByte3_t(CurrentEvent);
-			 
-         //Process Any Events
-         if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
-         {	
-						//Check for Specific Events
-            if ((CurrentEvent.EventType == ES_TIMEOUT) && CurrentEvent.EventParam == SSI_TIMER)
-            {
-								ES_Event ThisEvent;
-								ThisEvent.EventType = ES_SEND_BYTE;
-								ThisEvent.EventParam = RECEIVING_COMMAND;	//Going to Write Nothing
-								PostMasterSM(ThisEvent);
-							
-								NextState = SendingByte4_t;
-								MakeTransition = true;
-            }
-         }
-         break;
-        
-			case SendingByte4_t :     
-         // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
-         CurrentEvent = DuringSendingByte4_t(CurrentEvent);
-			 
-         //Process Any Events
-         if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
-         {	
-						//Check for Specific Events
-            if ((CurrentEvent.EventType == ES_TIMEOUT) && CurrentEvent.EventParam == SSI_TIMER)
-            {
-								ES_Event ThisEvent;
-								ThisEvent.EventType = ES_SEND_BYTE;
-								ThisEvent.EventParam = RECEIVING_COMMAND;	//Going to Write Nothing
-								PostMasterSM(ThisEvent);
-							
-								NextState = SendingByte5_t;
-								MakeTransition = true;
-            }
-         }
-         break;
-        
 				 
-			case SendingByte5_t :     
-         // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
-         CurrentEvent = DuringSendingByte5_t(CurrentEvent);
+			case Waiting4Interrupt_t :     
+				 // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
+				 CurrentEvent = DuringWaiting4Interrupt_t(CurrentEvent);
 			 
-         //Process Any Events
-         if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
-         {	
+				 //Process Any Events
+				 if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
+				 {	
 						//Check for Specific Events
-            if ((CurrentEvent.EventType == ES_TIMEOUT) && CurrentEvent.EventParam == SSI_TIMER)
-            {
-								ES_Event ThisEvent;
-								ThisEvent.EventType = ES_TRANSACTION_COMPLETE;
-								PostMasterSM(ThisEvent);
-							
-								NextState = Waiting_t;
+						if (CurrentEvent.EventType == ES_EOT)
+						{							
+								EnterCritical();
+								for (int i = 0; i < 5; i++)
+								{
+									responseArray[i] = ReadDataRegister();
+								}
+								ExitCritical();
+								NextState = Waiting4Timeout_t;
 								MakeTransition = true;
-            }
-         }
-         break;
+						}
+				 }
+				 break;
+				 
+			case Waiting4Timeout_t :     
+				 // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
+				 CurrentEvent = DuringWaiting4Timeout_t(CurrentEvent);
+			 
+				 //Process Any Events
+				 if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
+				 {	
+						//Check for Specific Events
+						if ((CurrentEvent.EventType == ES_TIMEOUT) && CurrentEvent.EventParam == SSI_TIMER)
+						{
+								ES_Event DoneEvent;
+								DoneEvent.EventType = ES_TRANSACTION_COMPLETE;
+								PostMasterSM(DoneEvent);
+								NextState = Waiting_t;
+								MakeTransition = true;					
+						}
+				 }
+				 break;
     }
     //   If we are making a state transition
     if (MakeTransition == true)
@@ -300,7 +236,7 @@ static ES_Event DuringWaiting_t( ES_Event Event)
     return(ReturnEvent);
 }
 
-static ES_Event DuringSendingByte1_t( ES_Event Event)
+static ES_Event DuringWaiting4Interrupt_t( ES_Event Event)
 {
     ES_Event ReturnEvent = Event; // assme no re-mapping or comsumption
 
@@ -310,193 +246,61 @@ static ES_Event DuringSendingByte1_t( ES_Event Event)
         // implement any entry actions required for this state machine
         
         // after that start any lower level machines that run in this state
-        StartSendingByteSM(Event);
-			
+        //StartLowerLevelSM( Event );
         // repeat the StartxxxSM() functions for concurrent state machines
-				
         // on the lower level
     }
     else if ( Event.EventType == ES_EXIT )
     {
         // on exit, give the lower levels a chance to clean up first
-        RunSendingByteSM(Event);
+        //RunLowerLevelSM(Event);
         // repeat for any concurrently running state machines
         // now do any local exit functionality
-				//Read the Data Register
-				responseArray[0] = ReadDataRegister();
-      
-    }else
-    // do the 'during' function for this state
-    {
-        // run any lower level state machine
-        ReturnEvent = RunSendingByteSM(Event);
-      
-        // repeat for any concurrent lower level machines
-      
-        // do any activity that is repeated as long as we are in this state
-    }
-    // return either Event, if you don't want to allow the lower level machine
-    // to remap the current event, or ReturnEvent if you do want to allow it.
-    return(ReturnEvent);
-}
-
-static ES_Event DuringSendingByte2_t( ES_Event Event)
-{
-    ES_Event ReturnEvent = Event; // assme no re-mapping or comsumption
-
-    // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
-    if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
-    {
-        // implement any entry actions required for this state machine
-        
-        // after that start any lower level machines that run in this state
-        StartSendingByteSM(Event);
-			
-        // repeat the StartxxxSM() functions for concurrent state machines
-				
-        // on the lower level
-    }
-    else if ( Event.EventType == ES_EXIT )
-    {
-        // on exit, give the lower levels a chance to clean up first
-        RunSendingByteSM(Event);
-        // repeat for any concurrently running state machines
-        // now do any local exit functionality
-				//Read the Data Register
-				responseArray[1] = ReadDataRegister();
-      
-    }else
-    // do the 'during' function for this state
-    {
-        // run any lower level state machine
-        ReturnEvent = RunSendingByteSM(Event);
-      
-        // repeat for any concurrent lower level machines
-      
-        // do any activity that is repeated as long as we are in this state
-    }
-    // return either Event, if you don't want to allow the lower level machine
-    // to remap the current event, or ReturnEvent if you do want to allow it.
-    return(ReturnEvent);
-}
-
-static ES_Event DuringSendingByte3_t( ES_Event Event)
-{
-    ES_Event ReturnEvent = Event; // assme no re-mapping or comsumption
-
-    // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
-    if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
-    {
-        // implement any entry actions required for this state machine
-        
-        // after that start any lower level machines that run in this state
-        StartSendingByteSM(Event);
-			
-        // repeat the StartxxxSM() functions for concurrent state machines
-				
-        // on the lower level
-    }
-    else if ( Event.EventType == ES_EXIT )
-    {
-        // on exit, give the lower levels a chance to clean up first
-        RunSendingByteSM(Event);
-        // repeat for any concurrently running state machines
-        // now do any local exit functionality
-				//Read the Data Register
-				responseArray[2] = ReadDataRegister();
-      
-    }else
-    // do the 'during' function for this state
-    {
-        // run any lower level state machine
-        ReturnEvent = RunSendingByteSM(Event);
-      
-        // repeat for any concurrent lower level machines
-      
-        // do any activity that is repeated as long as we are in this state
-    }
-    // return either Event, if you don't want to allow the lower level machine
-    // to remap the current event, or ReturnEvent if you do want to allow it.
-    return(ReturnEvent);
-}
-
-static ES_Event DuringSendingByte4_t( ES_Event Event)
-{
-    ES_Event ReturnEvent = Event; // assme no re-mapping or comsumption
-
-    // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
-    if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
-    {
-        // implement any entry actions required for this state machine
-        
-        // after that start any lower level machines that run in this state
-        StartSendingByteSM(Event);
-			
-        // repeat the StartxxxSM() functions for concurrent state machines
-				
-        // on the lower level
-    }
-    else if ( Event.EventType == ES_EXIT )
-    {
-        // on exit, give the lower levels a chance to clean up first
-        RunSendingByteSM(Event);
-        // repeat for any concurrently running state machines
-        // now do any local exit functionality
-				//Read the Data Register
-				responseArray[3] = ReadDataRegister();
-      
-    }else
-    // do the 'during' function for this state
-    {
-        // run any lower level state machine
-        ReturnEvent = RunSendingByteSM(Event);
-      
-        // repeat for any concurrent lower level machines
-      
-        // do any activity that is repeated as long as we are in this state
-    }
-    // return either Event, if you don't want to allow the lower level machine
-    // to remap the current event, or ReturnEvent if you do want to allow it.
-    return(ReturnEvent);
-}
-
-static ES_Event DuringSendingByte5_t( ES_Event Event)
-{
-    ES_Event ReturnEvent = Event; // assme no re-mapping or comsumption
-
-    // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
-    if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
-    {
-        // implement any entry actions required for this state machine
-        
-        // after that start any lower level machines that run in this state
-        StartSendingByteSM(Event);
-			
-        // repeat the StartxxxSM() functions for concurrent state machines
-				
-        // on the lower level
-    }
-    else if ( Event.EventType == ES_EXIT )
-    {
-        // on exit, give the lower levels a chance to clean up first
-        RunSendingByteSM(Event);
-        // repeat for any concurrently running state machines
-        // now do any local exit functionality
-				//Read the Data Register
-				responseArray[4] = ReadDataRegister();
 				checkForPACError();
-				//Print the Values of the Response array
-				//printf("Response Array:  %x, %x, %x, %x, %x \n\r", 
-				//		responseArray[0], responseArray[1], responseArray[2], responseArray[3], responseArray[4]);
-			
-				
-			
-			
     }else
     // do the 'during' function for this state
     {
         // run any lower level state machine
-        ReturnEvent = RunSendingByteSM(Event);
+        // ReturnEvent = RunLowerLevelSM(Event);
+      
+        // repeat for any concurrent lower level machines
+      
+        // do any activity that is repeated as long as we are in this state
+    }
+    // return either Event, if you don't want to allow the lower level machine
+    // to remap the current event, or ReturnEvent if you do want to allow it.
+    return(ReturnEvent);
+}
+
+static ES_Event DuringWaiting4Timeout_t( ES_Event Event)
+{
+    ES_Event ReturnEvent = Event; // assme no re-mapping or comsumption
+
+    // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
+    if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
+    {
+        // implement any entry actions required for this state machine
+				//Start the Timer that will ultimately get us our desired timeout
+				ES_Timer_InitTimer(SSI_TIMER, SSI_TIMER_LENGTH);
+			
+			
+        // after that start any lower level machines that run in this state
+        //StartLowerLevelSM( Event );
+        // repeat the StartxxxSM() functions for concurrent state machines
+        // on the lower level
+    }
+    else if ( Event.EventType == ES_EXIT )
+    {
+        // on exit, give the lower levels a chance to clean up first
+        //RunLowerLevelSM(Event);
+        // repeat for any concurrently running state machines
+        // now do any local exit functionality
+      
+    }else
+    // do the 'during' function for this state
+    {
+        // run any lower level state machine
+        // ReturnEvent = RunLowerLevelSM(Event);
       
         // repeat for any concurrent lower level machines
       
@@ -517,7 +321,7 @@ uint8_t * getResponseArray(){
 
 static void checkForPACError(void){
 	//If the first byte received was FF
-	printf("%x, %x, %x, %x, %x\r\n", responseArray[0], responseArray[1], responseArray[2], responseArray[3], responseArray[4]);
+	//printf("%x, %x, %x, %x, %x\r\n", responseArray[0], responseArray[1], responseArray[2], responseArray[3], responseArray[4]);
 	if (responseArray[0] == 0xff){
 		GPIO_Set(PACERROR_BASE, PAC_ERROR_PIN);
 	} else {

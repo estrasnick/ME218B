@@ -179,7 +179,9 @@ ES_Event RunMapKeys( ES_Event ThisEvent )
 						case 'E' : ThisEvent.EventType = ES_ALIGNED_TO_BUCKET; 	
 											 clearDriveAligningToBucket();
 											 break;
-						
+						case 'C' : ThisEvent.EventType = ES_NO_EVENT; 	
+												printf("Color Pin: %d \n\r", (HWREG(GAME_BASE + (GPIO_O_DATA + ALL_BITS)) & COLOR_PIN));
+											 break;
 									
         }
 				

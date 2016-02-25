@@ -265,7 +265,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define CANNON_PWM_PARAMATERS				CANNON_PWM, CANNON_PERIOD
 #define PERISCOPE_LATCH_PWM_PARAMATERS    PERISCOPE_LATCH_PWM, PERISCOPE_LATCH_PERIOD
 
-#define PERISCOPE_PWM_DUTY 60
+#define PERISCOPE_PWM_DUTY 20
 
 //These Values have been tested and appear to be good
 #define PERISCOPE_LATCH_DUTY 9
@@ -404,7 +404,7 @@ static uint8_t PS_Frequency_Codes[] = {
 	
 #define NULL_STATION 10
 	
-#define DEFAULT_DRIVE_RPM 60.0f
+#define DEFAULT_DRIVE_RPM 70.0f
 #define NOT_IN_QUEUE 0x30
 
 #define PRI_DISTANCE_MULTIPLIER 1
@@ -415,7 +415,7 @@ static uint8_t PS_Frequency_Codes[] = {
 
 #define HALL_SENSOR_OFFSET_IN_TICKS 30
 
-#define CANNON_DISTANCE_MULTIPLIER 5
+#define CANNON_DISTANCE_MULTIPLIER .38
 
 #define PROXIMITY_TO_OUR_STATION_THRESHOLD 7.0f
 

@@ -15,6 +15,7 @@
 #include "PWM_Service.h"
 #include "Helpers.h"
 #include "DEFINITIONS.h"
+#include "EnablePA25_PB23_PD7_PF0.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 
@@ -47,7 +48,7 @@ bool InitPWMService ( uint8_t Priority )
   MyPriority = Priority;
 	
 	//Initialize All of Our PWM Functions
-	
+	PortFunctionInit();
 	InitPWM(LEFT_DRIVE_PWM_PARAMATERS);
 	InitPWM(RIGHT_DRIVE_PWM_PARAMATERS);
 	InitPWM(PERISCOPE_PWM_PARAMATERS);

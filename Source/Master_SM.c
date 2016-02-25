@@ -207,7 +207,7 @@ static ES_Event DuringDefault( ES_Event Event)
         // implement any entry actions required for this state machine
         
 			
-				PortFunctionInit(); //enable local ports
+				 //enable local ports
         // after that start any lower level machines that run in this state
         StartStrategySM(Event);
 				StartAttackStrategySM(Event);

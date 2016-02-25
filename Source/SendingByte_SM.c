@@ -86,38 +86,6 @@ ES_Event RunSendingByteSM( ES_Event CurrentEvent )
             }
          }
          break;
-		 		
-				case Waiting4EOT_t :     
-         // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
-         CurrentEvent = DuringWaiting4EOT_t(CurrentEvent);
-			 
-         //Process Any Events
-         if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
-         {	
-						//Check for Specific Events
-            if (CurrentEvent.EventType == ES_EOT)
-            {							
-								NextState = Waiting4Timeout_t;
-								MakeTransition = true;
-            }
-         }
-         break;
-				 
-				case Waiting4Timeout_t :     
-         // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
-         CurrentEvent = DuringWaiting4Timeout_t(CurrentEvent);
-			 
-         //Process Any Events
-         if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
-         {	
-						//Check for Specific Events
-            if ((CurrentEvent.EventType == ES_TIMEOUT) && CurrentEvent.EventParam == SSI_TIMER)
-						{
-								NextState = Waiting2Send_t;
-								MakeTransition = true;					
-            }
-         }
-         break;
 				 
     }
     //   If we are making a state transition

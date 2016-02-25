@@ -208,9 +208,8 @@ static ES_Event DuringRequest_t( ES_Event Event)
 				//Get the Response Array and print it
 				uint8_t *byte;
 				byte = getResponseArray();
-			
 
-				printf("Sending Request:  %x, %x, %x, %x, %x \n\r", 
+				printf("Byte Received from Request Request:  %x, %x, %x, %x, %x \n\r", 
 				*(byte + 0), 
 				*(byte + 1), 
 				*(byte + 2), 
@@ -261,7 +260,7 @@ static ES_Event DuringQuery_t( ES_Event Event)
         // now do any local exit functionality
 							//Get the Response Array and print it
 			
-			/*	uint8_t *byte;
+				uint8_t *byte;
 				byte = getResponseArray();
 			
 				printf("Querying:  %x, %x, %x, %x, %x \n\r", 
@@ -270,7 +269,7 @@ static ES_Event DuringQuery_t( ES_Event Event)
 				*(byte + 2), 
 				*(byte + 3), 
 				*(byte + 4));
-      */
+      
     }else
     // do the 'during' function for this state
     {

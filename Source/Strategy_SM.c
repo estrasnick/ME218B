@@ -141,7 +141,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 								}
 								else
 								{
-									printf("Not yet zeroed\r\n");
+									//printf("Not yet zeroed\r\n");
 									ES_Timer_InitTimer(CHECK_ZERO_TIMER, CHECK_ZERO_T);
 								}
 							}
@@ -158,7 +158,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 							}
 							else
 							{
-								printf("Not yet zeroed\r\n");
+								//printf("Not yet zeroed\r\n");
 								ES_Timer_InitTimer(CHECK_ZERO_TIMER, CHECK_ZERO_T);
 							}
 						}
@@ -397,7 +397,6 @@ static ES_Event DuringChooseDestination_t( ES_Event Event)
 				{
 					ES_Timer_InitTimer(POSITION_CHECK, POSITION_CHECK_T);
 				}
-			
         // repeat the StartxxxSM() functions for concurrent state machines
         // on the lower level
 				
@@ -493,7 +492,7 @@ static ES_Event DuringTravel_t( ES_Event Event)
 				NewEvent.EventType = ES_DRIVE_TO_TARGET;
 				PostPositionLogicService(NewEvent);
 			
-				ES_Timer_InitTimer(RELATIVE_POSITION_TIMER, RELATIVE_POSITION_T);
+				//ES_Timer_InitTimer(RELATIVE_POSITION_TIMER, RELATIVE_POSITION_T);
         // after that start any lower level machines that run in this state
         
         // repeat the StartxxxSM() functions for concurrent state machines

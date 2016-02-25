@@ -274,7 +274,7 @@ typedef enum {  ES_NO_EVENT = 0,
 								ES_TRANSACTION_COMPLETE,	//posted when a transaction is completed with the super pac
 								ES_SEND_CMD,					//tells the PAC to send a command
 								ES_SEND_BYTE,					//tells the PAC to send a byte
-								ES_EOT,								//receive this when we the byte has been sent
+								ES_EOT,								//receive this when we the bytes have been sent
 									
 								ES_START_CANNON,			//commands the cannon to start spinning at the speed that has been set
 								ES_STOP_CANNON,				//commands 
@@ -361,7 +361,7 @@ typedef enum {  ES_NO_EVENT = 0,
 		#define MEASURING_TIMEOUT_T 100
 #define TIMER2_RESP_FUNC PostMasterSM
 		#define CHECK_ZERO_TIMER 2
-		#define CHECK_ZERO_T 100
+		#define CHECK_ZERO_T 250
 		#define POSITION_CHECK	2
 		#define POSITION_CHECK_T 100
 #define TIMER3_RESP_FUNC PostMasterSM

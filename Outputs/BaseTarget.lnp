@@ -9,7 +9,6 @@
 ".\outputs\paclogic_sm.o"
 ".\outputs\request_sm.o"
 ".\outputs\helpers.o"
-".\outputs\sendingbyte_sm.o"
 ".\outputs\sendingcmd_sm.o"
 ".\outputs\attackstrategy_sm.o"
 ".\outputs\halleffect_sm.o"

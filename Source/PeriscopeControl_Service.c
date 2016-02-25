@@ -218,6 +218,7 @@ void UnlatchPeriscope(void)
 void RequireZero(void)
 {
 	isZeroed = false;
+	ES_Timer_InitTimer(PERISCOPE_STOPPED_TIMER, PERISCOPE_STOPPED_T);
 }
 
 bool IsZeroed(void)

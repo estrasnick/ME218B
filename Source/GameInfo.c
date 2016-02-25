@@ -72,7 +72,7 @@ static PS_Struct PS_Array[] = {
 uint8_t MyColor()
 {
 	//Set default to Red because everyone is using blue in their testing
-	return HWREG(GAME_BASE + (GPIO_O_DATA + ALL_BITS)) & COLOR_PIN;
+	return (HWREG(GAME_BASE + (GPIO_O_DATA + ALL_BITS)) & COLOR_PIN);
 }	
 
 //Check if Game Started
@@ -83,7 +83,7 @@ bool isGameStarted()
 	
 	printf("Game Started: %d \n\r", ((*(byte + 3) & BIT0HI) == BIT0HI));
 	
-	return ((*(byte + 3) & BIT0HI) == BIT0HI) ;
+	return ((*(byte + 4) & BIT0HI) == BIT0HI) ;
 }
 
 void UpdateADStatus(void)

@@ -8,7 +8,7 @@ SendingByte Header File
 
 // typedefs for the states
 // State definitions for use with the query function
-typedef enum { Waiting2Send_t, Waiting4EOT_t, Waiting4Timeout_t } SendingByteState_t ;
+typedef enum { Waiting2Send_t,  } SendingByteState_t ;
 
 
 // Public Function Prototypes

@@ -22,9 +22,9 @@
 
 /*----------------------------- Module Defines ----------------------------*/
 
-#define PERIOD_MEASURING_ERROR_TOLERANCE 25 //in microseconds
-#define NUMBER_CONSECUTIVE_PULSES_2STORE 3
-#define NUMBER_PULSES_TO_BE_ALIGNED 3
+#define PERIOD_MEASURING_ERROR_TOLERANCE 40 //in microseconds
+#define NUMBER_CONSECUTIVE_PULSES_2STORE 2
+#define NUMBER_PULSES_TO_BE_ALIGNED 2
 #define NUMBER_PHOTOTRANSISTORS 1
 #define NUMBER_BEACON_FREQUENCIES 4
 
@@ -231,6 +231,12 @@ void PhotoTransistor_InterruptResponse(void)
 	
 	// Calculate period
 	uint32_t Period = ((ThisCapture - LastCapture) * MICROSECONDS_DIVISOR ) / TICKS_PER_MS;
+	/*
+	static int i;
+	if (i++ % 2 == 0)
+	{
+		printf("Period is: %d\r\n", Period);
+	}*/
 	
 	/*
 	static int i = 0;
@@ -265,7 +271,7 @@ void PhotoTransistor_InterruptResponse(void)
 		LastBeacon = matchingBeacon;
 		
 		
-		/*
+		
 		//Print which Beacon
 		switch (beacons[matchingBeacon].period){
 			case (BEACON_P_NW):
@@ -280,7 +286,7 @@ void PhotoTransistor_InterruptResponse(void)
 			case (BEACON_P_SW):
 				printf("BEACON_P_SW \n\r");
 			break;
-		}*/
+		}
 	
 
 	}

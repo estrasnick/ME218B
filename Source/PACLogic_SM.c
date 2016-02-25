@@ -149,6 +149,8 @@ ES_Event RunPACLogicSM( ES_Event CurrentEvent )
 							}
 							else if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == MEASURING_TIMEOUT_TIMER))
 							{
+								printf("TAKING TOO LONG TO CAPTURE, MOVE ON! \n\r");
+								
 								ES_Event ResetDestinationEvent;
 								ResetDestinationEvent.EventType = ES_RESET_DESTINATION;
 								PostMasterSM(ResetDestinationEvent);
