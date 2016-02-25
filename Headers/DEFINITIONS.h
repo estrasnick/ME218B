@@ -399,6 +399,8 @@ static uint8_t PS_Frequency_Codes[] = {
 	
 #define NUM_STATIONS 9
 
+#define FIELD_LENGTH 96
+
 #define COLOR_BLUE 1
 #define COLOR_RED 0
 	

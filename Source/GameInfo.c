@@ -71,8 +71,12 @@ static PS_Struct PS_Array[] = {
 //Check my color
 uint8_t MyColor()
 {
-	//Set default to Red because everyone is using blue in their testing
-	return (HWREG(GAME_BASE + (GPIO_O_DATA + ALL_BITS)) & COLOR_PIN);
+	//Color Pin isn't equal to one so need to explicitly say Red and Blue
+	if ((HWREG(GAME_BASE + (GPIO_O_DATA + ALL_BITS)) & COLOR_PIN) == 0){
+		return RED;
+	} else {
+		return BLUE;
+	}
 }	
 
 //Check if Game Started

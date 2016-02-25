@@ -38,6 +38,11 @@
 #define BEACON_P_SE  800    //6399 //800
 #define BEACON_P_SW  513    //6153 //513
 
+#define BEACON_INDEX_NW 0
+#define BEACON_INDEX_NE 1
+#define BEACON_INDEX_SE 2
+#define BEACON_INDEX_SW 3
+
 #define DIRECTION 1 //(use 1 if CW and -1 if CCW)
 	
 
@@ -68,10 +73,10 @@ static uint8_t MyPriority;
 
 static Beacon beacons[] = 
 {
-	{.period = BEACON_P_NW}, //1450 Hz, NW
-	{.period = BEACON_P_NE}, //1700 Hz, NE
-	{.period = BEACON_P_SE}, //1250 Hz, SE
-	{.period = BEACON_P_SW} //1950 Hz, SW
+	{.period = BEACON_P_NW, .priorBeacons = {BEACON_INDEX_NE, BEACON_INDEX_SE}, .xShift = 0, 							.yShift = 0, .thetaShift = 0}, //1450 Hz, NW
+	{.period = BEACON_P_NE, .priorBeacons = {BEACON_INDEX_SE, BEACON_INDEX_SW}, .xShift = 0, 							.yShift = FIELD_LENGTH, .thetaShift = 270}, //1700 Hz, NE
+	{.period = BEACON_P_SE, .priorBeacons = {BEACON_INDEX_SW, BEACON_INDEX_NW}, .xShift = FIELD_LENGTH, 	.yShift = FIELD_LENGTH, .thetaShift = 180}, //1250 Hz, SE
+	{.period = BEACON_P_SW, .priorBeacons = {BEACON_INDEX_NW, BEACON_INDEX_NE}, .xShift = FIELD_LENGTH, 	.yShift = 0, .thetaShift = 90} //1950 Hz, SW
 };
 
 static uint32_t PhotoTransistor_LastPeriods[NUMBER_CONSECUTIVE_PULSES_2STORE];
@@ -159,7 +164,6 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 		}
 		
 		beacons[LastBeacon].lastEncoderAngle = MovingAverage;
-		/*
 		switch (LastBeacon){
 			case (BEACON_INDEX_NW):
 				printf("\r\nAverage for Beacon NW: %f\n\r\r\n", MovingAverage);
@@ -173,10 +177,10 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 			case (BEACON_INDEX_SW):
 				printf("\r\nAverage for Beacon SW: %f\n\r\r\n", MovingAverage);
 			break;
-		}*/
+		}
 		
-		// Determine if we should recalculate our position and angle
-		if (LastBeacon == BEACON_INDEX_NW && TimeForUpdate())
+		// Determine if we should recalculate our position and angle based on whethe or not we have received 3 consecutive pulses
+		if (TimeForUpdate())
 		{
 			ResetUpdateTimes();
 			ES_Event NewEvent;
@@ -207,15 +211,50 @@ uint32_t GetLastUpdateTime(uint8_t beaconIndex)
 
 /****************************************************************************
  Function
-    GetBeaconAngle
+    GetBeaconAngle_
  Parameters
-   beaconIndex : which beacon to query
+   beaconIndex : which beacon was the latest one captured
  Returns
-   The last recorded angle to the given beacon
+   The angles A, B, C where A corresponds to the last beacon captured and C to the first
 ****************************************************************************/
-float GetBeaconAngle(uint8_t beaconIndex)
+float GetBeaconAngle_A(uint8_t beaconIndex)
 {
-	return beacons[beaconIndex].lastEncoderAngle;
+	float beaconAngle_A = beacons[beaconIndex].lastEncoderAngle;
+	return beaconAngle_A;
+}
+
+float GetBeaconAngle_B(uint8_t beaconIndex)
+{
+	uint8_t indexB = beacons[beaconIndex].priorBeacons[0];
+	float beaconAngle_B = beacons[indexB].lastEncoderAngle;
+	return beaconAngle_B;
+}
+
+float GetBeaconAngle_C(uint8_t beaconIndex)
+{
+	uint8_t indexC = beacons[beaconIndex].priorBeacons[1];
+	float beaconAngle_C = beacons[indexC].lastEncoderAngle;
+	return beaconAngle_C;
+}
+
+/****************************************************************************
+ Function
+    Get Axis Shifts
+ Parameters
+   beaconIndex : which beacon was the latest one captured
+ Returns
+   The shifts in the coordinate frame necessary to calculate position
+****************************************************************************/
+int getXShift(uint8_t beaconIndex){
+	return beacons[beaconIndex].xShift;
+}
+
+int getYShift(uint8_t beaconIndex){
+	return beacons[beaconIndex].yShift;
+}
+
+int getThetaShift(uint8_t beaconIndex){
+	return beacons[beaconIndex].thetaShift;
 }
 
 /***************************************************************************
@@ -334,9 +373,37 @@ static bool IsBeaconMatch(uint8_t beaconIndex)
 
 static bool TimeForUpdate()
 {
-	bool returnVal = ((beacons[BEACON_INDEX_NW].lastUpdateTime > beacons[BEACON_INDEX_NE].lastUpdateTime) && (beacons[BEACON_INDEX_NE].lastUpdateTime > beacons[BEACON_INDEX_SE].lastUpdateTime) && (beacons[BEACON_INDEX_SE].lastUpdateTime != 0));
-	return returnVal;
+	//Get our A, B, and C Update Times
+	uint8_t beaconAUpdateTime = beacons[mostRecentBeaconUpdate()].lastUpdateTime;
+	uint8_t indexB = beacons[mostRecentBeaconUpdate()].priorBeacons[0];
+	uint8_t beaconBUpdateTime = beacons[indexB].lastUpdateTime;
+	uint8_t indexC = beacons[mostRecentBeaconUpdate()].priorBeacons[1];
+	uint8_t beaconCUpdateTime = beacons[indexC].lastUpdateTime;
+	
+	//Determine if Sequence has been met
+	//if none of the update times were zero
+	if ((beaconAUpdateTime != 0) && (beaconBUpdateTime != 0) && (beaconCUpdateTime != 0)){			
+		return ((beaconAUpdateTime > beaconBUpdateTime && (beaconBUpdateTime > beaconCUpdateTime) && (beaconCUpdateTime != 0)));
+	} else {
+		return false;
+	}
 }
+
+
+//Takes nothing as a paramater and returns the index of the beacon most recently updated
+uint8_t mostRecentBeaconUpdate(void){
+	//First Check which Was the last updated Beacon
+	uint8_t mostRecentBeaconUpdated = 0;	//by default we assume the first beacon is the most recently updated by default                                                                       
+	for (uint8_t i = 1; i < 4; i++){
+		if (GetLastUpdateTime(i) > GetLastUpdateTime(i-1)){
+			//Set the mostRecentBeaconUpdate to i
+			mostRecentBeaconUpdated = i;
+		}
+	}
+	return mostRecentBeaconUpdated;
+}
+
+
 
 //Tolerance Check function to See if We are within our bounds
 static bool ToleranceCheck(uint32_t period, uint32_t targetPeriod, uint8_t tolerance)

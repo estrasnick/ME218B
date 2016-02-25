@@ -224,13 +224,30 @@ float DistanceToPoint(float TargetX, float TargetY)
 }
 
 /***************************************************************************
- private functions
+Absolute Position Calculations (ie. Photo Transistor Periscope Calculations)
  ***************************************************************************/
 // Calculate absolute position by measuring the angles to 3 beacons. 
 // See explanation of math for more details
 static void CalculateAbsolutePosition()
 {
+	// Disable our phototransistor interrupts while we work, so that angles don't update
+	// in the middle of the calculations
+	disableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
+
 	printf("Calculating position...\r\n");
+
+	//Get our A, B, and C Encoder Angles
+	uint8_t lastBeaconIndex = mostRecentBeaconUpdate();
+	float A =  GetBeaconAngle_A(lastBeaconIndex);
+	float B =  GetBeaconAngle_B(lastBeaconIndex);
+	float C =  GetBeaconAngle_C(lastBeaconIndex);
+	
+	//Get our Shifts for the rotation matrix
+	int xShift = getXShift(lastBeaconIndex);
+	int yShift = getYShift(lastBeaconIndex);
+	int thetaShift = getThetaShift(lastBeaconIndex);
+	
+	//Declare Static Variabels for our Calculations
 	float BMinusC;
 	float AMinusB;
 	float gamma;
@@ -238,12 +255,9 @@ static void CalculateAbsolutePosition()
 	float tempAngle;
 	float atan;
 	
-	// Disable our phototransistor interrupts while we work, so that angles don't update
-	// in the middle of the calculations
-	disableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
-	
-	BMinusC = ToRadians(ToAppropriateRange(GetBeaconAngle(BEACON_INDEX_NE) - GetBeaconAngle(BEACON_INDEX_SE)));
-	AMinusB = ToRadians(ToAppropriateRange(GetBeaconAngle(BEACON_INDEX_NW) - GetBeaconAngle(BEACON_INDEX_NE)));
+	//Perform Calculations with SW corner being used as the axis
+	BMinusC = ToRadians(ToAppropriateRange(B - C));
+	AMinusB = ToRadians(ToAppropriateRange(A - B));
 	
 	tempAngle = (1.5f * PI) - BMinusC - AMinusB;
 	
@@ -255,11 +269,16 @@ static void CalculateAbsolutePosition()
 	myX = 96.0 - (96.0 * sin(gamma) * (sin(PI - gamma - BMinusC)/sin(PI - BMinusC)));
 	myY = 96.0 - (96.0 * sin(delta) * (sin(PI - delta - AMinusB)/sin(PI - AMinusB)));
 	
-	myTheta = ToAppropriateRange(ToDegrees(ToRadians(360 - GetBeaconAngle(BEACON_INDEX_NE)) + gamma + BMinusC - (.5f * PI)));
+	myTheta = ToAppropriateRange(ToDegrees(ToRadians(360 - B) + gamma + BMinusC - (.5f * PI)));
+	
+	//Peform Rotations and Appropriate Shifts
+	myX = (myX*cos(ToRadians(thetaShift)) - myY*sin(ToRadians(thetaShift))) + xShift;
+	myY = (myX*sin(ToRadians(thetaShift)) + myY*cos(ToRadians(thetaShift))) + yShift;	
+	myTheta = ToAppropriateRange(myTheta + thetaShift); 
 	
 	//print our absolute position
 	printf("ABSOLUTE POSITION: X: %f, Y: %f, theta: %f\n\r", myX, myY, myTheta);	
-	printf("A was: %f, B was: %f, C was: %f, gamma was: %f\r\n", 360 -  GetBeaconAngle(BEACON_INDEX_NW), 360 -  GetBeaconAngle(BEACON_INDEX_NE),360 -  GetBeaconAngle(BEACON_INDEX_SE), ToDegrees(gamma));
+	printf("Last angle 'A' was: %d, A was: %f, B was: %f, C was: %f, gamma was: %f\r\n", lastBeaconIndex, 360 -  A, 360 -  B,360 -  C, ToDegrees(gamma));
 	
 	if ((myX < 0) || (myY < 0) || (myX > 96) || (myY > 96))
 	{
@@ -275,6 +294,22 @@ static void CalculateAbsolutePosition()
 	enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 }
 
+
+//Function Takes in the A, B, and C angles and calculates the X, Y position relative to our original coordinate frame in the bottom left
+//Depending on what sequence is passed in, a different rotation matrix must be applied
+static void calculatePosition(){
+	float BMinusC;
+	float AMinusB;
+	float gamma;
+	float delta;
+	float tempAngle;
+	float atan;
+}
+
+
+/***************************************************************************
+Relative Position Calculations (ie. Encoder Distance Travelled Calculations)
+ ***************************************************************************/
 // Calculate position by comparing the number of encoder ticks on the
 // left and right drive motors. (See explanation of math for more 
 // details

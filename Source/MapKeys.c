@@ -157,10 +157,13 @@ ES_Event RunMapKeys( ES_Event ThisEvent )
 											 ThisEvent.EventParam = 0;
 											 printf("Commanding: ES_CALCULATE_POSITION, Event Param = 0 \n\r");                     
 											 break;
-						case 'H' : ThisEvent.EventType = ES_MANUAL_SHOOT; 
-												//SetPWM_Cannon(20);
-											 ThisEvent.EventParam = 0;
-											 printf("Commanding: ES_MANUAL_SHOOT, Event Param = 0 \n\r");                     
+						case '3' : ThisEvent.EventType = ES_NO_EVENT; 
+											SetPWM_Cannon(15);
+											 printf("Commanding: Start Cannon \n\r");                     
+											 break;
+						case '4' : ThisEvent.EventType = ES_NO_EVENT; 
+											SetPWM_Cannon(0);
+											 printf("Commanding: Stop Cannon \n\r");                     
 											 break;
 						case '1' : ThisEvent.EventType = ES_NO_EVENT; 
 											SetPWM_Hopper(HOPPER_LOAD_DUTY);             

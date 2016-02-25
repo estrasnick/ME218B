@@ -463,11 +463,6 @@
               <FilePath>.\Source\Helpers.c</FilePath>
             </File>
             <File>
-              <FileName>SendingByte_SM.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\SendingByte_SM.c</FilePath>
-            </File>
-            <File>
               <FileName>SendingCMD_SM.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\SendingCMD_SM.c</FilePath>
@@ -809,11 +804,6 @@
               <FileName>Strategy_SM.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Headers\Strategy_SM.h</FilePath>
-            </File>
-            <File>
-              <FileName>GameInfo.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Headers\GameInfo.h</FilePath>
             </File>
           </Files>
         </Group>
