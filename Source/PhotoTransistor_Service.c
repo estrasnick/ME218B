@@ -147,6 +147,7 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 		{
 			if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
 			{
+				printf("Aligned to bucket!\r\n");
 				clearDriveAligningToBucket();
 				ES_Event AlignedEvent;
 				AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
@@ -158,7 +159,7 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 		}
 		
 		beacons[LastBeacon].lastEncoderAngle = MovingAverage;
-		
+		/*
 		switch (LastBeacon){
 			case (BEACON_INDEX_NW):
 				printf("\r\nAverage for Beacon NW: %f\n\r\r\n", MovingAverage);
@@ -172,7 +173,7 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 			case (BEACON_INDEX_SW):
 				printf("\r\nAverage for Beacon SW: %f\n\r\r\n", MovingAverage);
 			break;
-		}
+		}*/
 		
 		// Determine if we should recalculate our position and angle
 		if (LastBeacon == BEACON_INDEX_NW && TimeForUpdate())
