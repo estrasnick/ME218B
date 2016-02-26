@@ -242,6 +242,8 @@ static void CalculateAbsolutePosition()
 	float B =  GetBeaconAngle_B(lastBeaconIndex);
 	float C =  GetBeaconAngle_C(lastBeaconIndex);
 	
+	printf("lastBeaconIndex: %d \n\r", lastBeaconIndex);
+	
 	//Get our Shifts for the rotation matrix
 	int xShift = getXShift(lastBeaconIndex);
 	int yShift = getYShift(lastBeaconIndex);
@@ -271,6 +273,8 @@ static void CalculateAbsolutePosition()
 	
 	myTheta = ToAppropriateRange(ToDegrees(ToRadians(360 - B) + gamma + BMinusC - (.5f * PI)));
 	
+	printf("ABSOLUTE POSITION BEFORE ROTATION MATRIX: X: %f, Y: %f, theta: %f\n\r", myX, myY, myTheta);	
+	
 	//Peform Rotations and Appropriate Shifts
 	myX = (myX*cos(ToRadians(thetaShift)) - myY*sin(ToRadians(thetaShift))) + xShift;
 	myY = (myX*sin(ToRadians(thetaShift)) + myY*cos(ToRadians(thetaShift))) + yShift;	
@@ -289,6 +293,8 @@ static void CalculateAbsolutePosition()
 	{
 		AbsolutePosition = true;
 	}
+	
+	ResetUpdateTimes();
 	
 	// Reenable the phototransistor interrupts
 	enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);

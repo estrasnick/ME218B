@@ -74,7 +74,6 @@ bool InitCannonControlService ( uint8_t Priority )
   ES_Event ThisEvent;
 	
   MyPriority = Priority;
-  printf("Cannon Service Attempt Initialization \n\r");
 	
 	//Initialize Our Input Captures for Encoder
 	InitInputCapture(CANNON_ENCODER_INTERRUPT_PARAMATERS);
@@ -87,9 +86,6 @@ bool InitCannonControlService ( uint8_t Priority )
 	
 	//Set Hopper to proper position
 	SetPWM_Hopper(HOPPER_DEFAULT_DUTY);
-	printf("Setting Hopper to Default Duty \n\r");
-  
-	printf("Cannon Service Initialized \n\r");
 	
 	// post the initial transition event
   ThisEvent.EventType = ES_INIT;

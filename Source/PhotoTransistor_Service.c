@@ -23,8 +23,7 @@
 /*----------------------------- Module Defines ----------------------------*/
 
 #define PERIOD_MEASURING_ERROR_TOLERANCE 40 //in microseconds
-#define NUMBER_CONSECUTIVE_PULSES_2STORE 2
-#define NUMBER_PULSES_TO_BE_ALIGNED 2
+#define NUMBER_PULSES_TO_BE_ALIGNED 3
 #define NUMBER_PHOTOTRANSISTORS 1
 #define NUMBER_BEACON_FREQUENCIES 4
 
@@ -53,19 +52,19 @@
    relevant to the behavior of this service
 */
 
-static void UpdateLastPeriod(uint32_t period);
+//static void UpdateLastPeriod(uint32_t period);
 
-static uint8_t CheckForBeacon(void);
+static uint8_t CheckForBeacon(uint32_t period);
 
-static bool IsBeaconMatch(uint8_t beaconIndex);
+//static bool IsBeaconMatch(uint8_t beaconIndex);
 
 static bool ToleranceCheck(uint32_t period, uint32_t targetPeriod, uint8_t tolerance);
 
 static bool TimeForUpdate(void);
 
-static void ResetMovingAverage(void);
+static void ResetAverage(void);
 
-static void UpdateMovingAverage(float angle);
+static float CalculateAverage(void);
 
 /*---------------------------- Module Variables ---------------------------*/
 // with the introduction of Gen2, we need a module level Priority variable
@@ -79,7 +78,6 @@ static Beacon beacons[] =
 	{.period = BEACON_P_SW, .priorBeacons = {BEACON_INDEX_NW, BEACON_INDEX_NE}, .xShift = FIELD_LENGTH, 	.yShift = 0, .thetaShift = 90} //1950 Hz, SW
 };
 
-static uint32_t PhotoTransistor_LastPeriods[NUMBER_CONSECUTIVE_PULSES_2STORE];
 
 static uint32_t LastCapture;
 
@@ -88,7 +86,7 @@ static uint8_t LastBeacon = NULL_BEACON;
 static bool AligningToBucket = false;
 
 static uint32_t NumberSamples;
-static float MovingAverage;
+static float Sum;
 
 static uint8_t LastBeacon;
 
@@ -148,44 +146,48 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
   
 	if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == AVERAGE_BEACONS_TIMER))
 	{
-		if (AligningToBucket)
+		if (NumberSamples >= NUMBER_PULSES_TO_BE_ALIGNED)
 		{
-			if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
+			if (AligningToBucket)
 			{
-				printf("Aligned to bucket!\r\n");
-				clearDriveAligningToBucket();
-				ES_Event AlignedEvent;
-				AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
-				PostMasterSM(AlignedEvent);
+				if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
+				{
+					printf("Aligned to bucket!\r\n");
+					clearDriveAligningToBucket();
+					ES_Event AlignedEvent;
+					AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
+					PostMasterSM(AlignedEvent);
+				}
+				
+				
+				AligningToBucket = false;
 			}
+			beacons[LastBeacon].lastUpdateTime = captureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
+			beacons[LastBeacon].lastEncoderAngle = CalculateAverage();
+			switch (LastBeacon){
+				case (BEACON_INDEX_NW):
+					printf("\r\nAverage for Beacon NW: %f\n\r\r\n", beacons[LastBeacon].lastEncoderAngle);
+				break;
+				case (BEACON_INDEX_NE):
+					printf("\r\nAverage for Beacon NE: %f\n\r\r\n", beacons[LastBeacon].lastEncoderAngle);
+				break;
+				case (BEACON_INDEX_SE):
+					printf("\r\nAverage for Beacon SE: %f\n\r\r\n", beacons[LastBeacon].lastEncoderAngle);
+				break;
+				case (BEACON_INDEX_SW):
+					printf("\r\nAverage for Beacon SW: %f\n\r", beacons[LastBeacon].lastEncoderAngle);
+				break;
+				
+			}
+			printf("Beacon Last Update Time: %d\n\r", beacons[LastBeacon].lastUpdateTime);
 			
-			
-			AligningToBucket = false;
-		}
-		
-		beacons[LastBeacon].lastEncoderAngle = MovingAverage;
-		switch (LastBeacon){
-			case (BEACON_INDEX_NW):
-				printf("\r\nAverage for Beacon NW: %f\n\r\r\n", MovingAverage);
-			break;
-			case (BEACON_INDEX_NE):
-				printf("\r\nAverage for Beacon NE: %f\n\r\r\n", MovingAverage);
-			break;
-			case (BEACON_INDEX_SE):
-				printf("\r\nAverage for Beacon SE: %f\n\r\r\n", MovingAverage);
-			break;
-			case (BEACON_INDEX_SW):
-				printf("\r\nAverage for Beacon SW: %f\n\r\r\n", MovingAverage);
-			break;
-		}
-		
-		// Determine if we should recalculate our position and angle based on whethe or not we have received 3 consecutive pulses
-		if (TimeForUpdate())
-		{
-			ResetUpdateTimes();
-			ES_Event NewEvent;
-			NewEvent.EventType = ES_CALCULATE_POSITION;
-			PostPositionLogicService(NewEvent);
+			// Determine if we should recalculate our position and angle based on whethe or not we have received 3 consecutive pulses
+			if (TimeForUpdate())
+			{
+				ES_Event NewEvent;
+				NewEvent.EventType = ES_CALCULATE_POSITION;
+				PostPositionLogicService(NewEvent);
+			}
 		}
 	}
 	else if (ThisEvent.EventType == ES_ALIGN_TO_BUCKET)
@@ -271,47 +273,27 @@ void PhotoTransistor_InterruptResponse(void)
 	
 	// Calculate period
 	uint32_t Period = ((ThisCapture - LastCapture) * MICROSECONDS_DIVISOR ) / TICKS_PER_MS;
-	/*
-	static int i;
-	if (i++ % 2 == 0)
-	{
-		printf("Period is: %d\r\n", Period);
-	}*/
-	
-	/*
-	static int i = 0;
-	static uint32_t lastcap;
-	i++;
-	if (i >= 1000)
-	{
-		printf("The different after 1000 was: %d\r\n", lastcap - ThisCapture);
-		lastcap = ThisCapture;
-		i = 0;
-	}*/
 	
 	//Store the Last Cpature
 	LastCapture = ThisCapture;
 	
-	// Update our knowledge of the most recent periods
-	UpdateLastPeriod(Period);
 	// Check if we have a beacon match
-	uint8_t matchingBeacon = CheckForBeacon();
+	uint8_t matchingBeacon = CheckForBeacon(Period);
 	// If so, update the beacon structure
 	if (matchingBeacon != NULL_BEACON)
 	{
 		ES_Timer_InitTimer(AVERAGE_BEACONS_TIMER, AVERAGE_BEACONS_T);
 		
-		beacons[matchingBeacon].lastUpdateTime = ThisCapture;
-		
 		if (matchingBeacon != LastBeacon)
 		{
-			ResetMovingAverage();
+			ResetAverage();
 		}
-		UpdateMovingAverage(GetPeriscopeAngle());
+		Sum += GetPeriscopeAngle();
+		NumberSamples++;
 		LastBeacon = matchingBeacon;
 		
 		
-		
+		/*
 		//Print which Beacon
 		switch (beacons[matchingBeacon].period){
 			case (BEACON_P_NW):
@@ -327,11 +309,12 @@ void PhotoTransistor_InterruptResponse(void)
 				printf("BEACON_P_SW \n\r");
 			break;
 		}
-	
+		*/
 
 	}
 }
 
+/*
 //Update the Last Period by shiting every value down and ours into the 0th index
 static void UpdateLastPeriod(uint32_t period)
 {
@@ -340,16 +323,16 @@ static void UpdateLastPeriod(uint32_t period)
 		PhotoTransistor_LastPeriods[i] = PhotoTransistor_LastPeriods[i-1];
 	}
 	PhotoTransistor_LastPeriods[0] = period;
-}
+}*/
 
 
 
 //Check For a Beacon
-static uint8_t CheckForBeacon()
+static uint8_t CheckForBeacon(uint32_t period)
 {
 	for (int i = 0; i < NUMBER_BEACON_FREQUENCIES; i++)
 	{
-		if (IsBeaconMatch(i))
+		if (ToleranceCheck(period, beacons[i].period, PERIOD_MEASURING_ERROR_TOLERANCE))
 		{
 			return i;
 		}
@@ -358,6 +341,7 @@ static uint8_t CheckForBeacon()
 	return NULL_BEACON;
 }
 
+/*
 static bool IsBeaconMatch(uint8_t beaconIndex)
 {
 	for (int j = 0; j < NUMBER_PULSES_TO_BE_ALIGNED; j++)
@@ -369,38 +353,46 @@ static bool IsBeaconMatch(uint8_t beaconIndex)
 		}
 	}
 	return true;
-}
+}*/
 
 static bool TimeForUpdate()
 {
 	//Get our A, B, and C Update Times
-	uint8_t beaconAUpdateTime = beacons[mostRecentBeaconUpdate()].lastUpdateTime;
+	uint32_t beaconAUpdateTime = beacons[mostRecentBeaconUpdate()].lastUpdateTime;
 	uint8_t indexB = beacons[mostRecentBeaconUpdate()].priorBeacons[0];
-	uint8_t beaconBUpdateTime = beacons[indexB].lastUpdateTime;
+	uint32_t beaconBUpdateTime = beacons[indexB].lastUpdateTime;
 	uint8_t indexC = beacons[mostRecentBeaconUpdate()].priorBeacons[1];
-	uint8_t beaconCUpdateTime = beacons[indexC].lastUpdateTime;
+	uint32_t beaconCUpdateTime = beacons[indexC].lastUpdateTime;
+	
+	printf("Most recent beacon is: %d. Update times are A: %d, B: %d, C: %d\r\n", mostRecentBeaconUpdate(), beaconAUpdateTime, beaconBUpdateTime, beaconCUpdateTime);
 	
 	//Determine if Sequence has been met
 	//if none of the update times were zero
-	if ((beaconAUpdateTime != 0) && (beaconBUpdateTime != 0) && (beaconCUpdateTime != 0)){			
-		return ((beaconAUpdateTime > beaconBUpdateTime && (beaconBUpdateTime > beaconCUpdateTime) && (beaconCUpdateTime != 0)));
+	if ((beaconAUpdateTime != 0) && (beaconBUpdateTime != 0) && (beaconCUpdateTime != 0)){
+		return true;
 	} else {
 		return false;
 	}
+	//Update only if got last three in sequence
+	//return ((beaconAUpdateTime > beaconBUpdateTime && (beaconBUpdateTime > beaconCUpdateTime)) && beaconCUpdateTime > 0);
 }
 
 
 //Takes nothing as a paramater and returns the index of the beacon most recently updated
 uint8_t mostRecentBeaconUpdate(void){
+	/*
 	//First Check which Was the last updated Beacon
-	uint8_t mostRecentBeaconUpdated = 0;	//by default we assume the first beacon is the most recently updated by default                                                                       
-	for (uint8_t i = 1; i < 4; i++){
-		if (GetLastUpdateTime(i) > GetLastUpdateTime(i-1)){
+	uint8_t mostRecentBeaconUpdated = NULL_BEACON;	//by default we assume the first beacon is the most recently updated 
+	uint32_t mostRecentUpdateTime = 0;
+	for (uint8_t i = 0; i < 4; i++){
+		if (GetLastUpdateTime(i) > mostRecentUpdateTime){
 			//Set the mostRecentBeaconUpdate to i
 			mostRecentBeaconUpdated = i;
+			mostRecentUpdateTime = GetLastUpdateTime(i);
 		}
 	}
-	return mostRecentBeaconUpdated;
+	return mostRecentBeaconUpdated;*/
+	return LastBeacon;
 }
 
 
@@ -419,13 +411,13 @@ void ResetUpdateTimes(void)
 	}
 }
 
-void ResetMovingAverage(void)
+void ResetAverage(void)
 {
-	MovingAverage = 0;
+	Sum = 0;
 	NumberSamples = 0;
 }
 
-void UpdateMovingAverage(float angle)
+static float CalculateAverage(void)
 {
 	/*
 	switch (LastBeacon){
@@ -442,5 +434,5 @@ void UpdateMovingAverage(float angle)
 				printf("Adding to Beacon SW: %f\n\r", angle);
 			break;
 		}*/
-	MovingAverage += (angle - MovingAverage)/(++NumberSamples);
+	return Sum / NumberSamples;
 }

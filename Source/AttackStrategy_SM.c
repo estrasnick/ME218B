@@ -45,6 +45,7 @@ static ES_Event DuringWait4NextAttack_t( ES_Event Event);
 // everybody needs a state variable, you may need others as well
 static AttackStrategyState_t CurrentState;
 
+static bool attackingEnabled = true;
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
  Function
@@ -73,7 +74,7 @@ ES_Event RunAttackStrategySM( ES_Event CurrentEvent )
          CurrentEvent = DuringWait4AttackPhase_t(CurrentEvent);
 			 
          //Process Any Events
-         if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
+         if ( (CurrentEvent.EventType != ES_NO_EVENT ) && (attackingEnabled))//If an event is active and attacking is enabled
          {	
 						//Check for Specific Events
             if (((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == ATTACK_PHASE_TIMER)) || (CurrentEvent.EventType == ES_MANUAL_SHOOT))
@@ -302,3 +303,9 @@ static ES_Event DuringWait4NextAttack_t( ES_Event Event)
     // to remap the current event, or ReturnEvent if you do want to allow it.
     return(ReturnEvent);
 }
+
+
+//calling this function disables attacking so that we can test without worrying about the wheels spinning
+void disableAttacking(void){
+	attackingEnabled = false;
+};

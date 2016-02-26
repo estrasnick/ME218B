@@ -555,3 +555,8 @@ float clamp(float X, uint8_t min, uint8_t max){
 	return (X > max) ? max : ((X < min) ? min : X);
 }
 
+//print function, accepts up to 100 characters
+void printToCoordinates(int x, int y, char text[100])
+{
+    printf("\033[%d;%dH%s\n", x, x, text);
+}

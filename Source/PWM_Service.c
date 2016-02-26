@@ -55,9 +55,8 @@ bool InitPWMService ( uint8_t Priority )
 	InitPWM(CANNON_PWM_PARAMATERS);
 	InitPWM(HOPPER_PWM_PARAMATERS);
 	InitPWM(PERISCOPE_LATCH_PWM_PARAMATERS);
-	
-	printf("PWM Initialized \n\r");
 
+	
 	// post the initial transition event
   ThisEvent.EventType = ES_INIT;
   if (ES_PostToService( MyPriority, ThisEvent) == true)
@@ -146,18 +145,15 @@ void SetPWM_Periscope(float duty){
 	
 //Hopper Duty Cycle
 void SetPWM_Hopper(float duty){
-	printf("Setting PWM Hopper Duty to: %f \n\r", duty);
 	setPWM_value(duty, HOPPER_PWM_PARAMATERS);
 }
 	
 //Cannon Duty Cycle
 void SetPWM_Cannon(float duty){
-	printf("Setting PWM SetPWM_Cannon Duty to: %f \n\r", duty);
 	setPWM_value(duty, CANNON_PWM_PARAMATERS);
 }
 
 //Periscope Latch Duty Cycle
 void SetPWM_PeriscopeLatch(float duty){
-	printf("Setting PWM Latch Duty to: %f \n\r", duty);
 	setPWM_value(duty, PERISCOPE_LATCH_PWM_PARAMATERS);
 }

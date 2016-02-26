@@ -164,8 +164,19 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 						}
 						else if (CurrentEvent.EventType == ES_MANUAL_START)
 						{
-							NextState = ChooseDestination_t;
-							MakeTransition = true;
+							if (IsZeroed())
+								{
+									printf("Game is Started, Choose Destination \n\r");
+									
+									ResumePositioning();
+									NextState = ChooseDestination_t;
+									MakeTransition = true;
+								}
+								else
+								{
+									//printf("Not yet zeroed\r\n");
+									ES_Timer_InitTimer(CHECK_ZERO_TIMER, CHECK_ZERO_T);
+								}
 						}
 				 }
 				 break;

@@ -50,9 +50,7 @@ int main (void)
    
 // When doing testing, it is useful to announce just which program
 // is running.
-	puts("\rStarting Test Harness for \r");
-	printf("the 2nd Generation Events & Services Framework V2.2\r\n");
-	printf("Template for HSM implementation\r\n");
+	puts("\rStarting ME 218 B Project - Team 3\r");
 	printf("%s %s\n",__TIME__, __DATE__);
 	printf("\n\r\n");
 

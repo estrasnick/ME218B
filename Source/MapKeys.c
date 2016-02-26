@@ -30,6 +30,7 @@
 #include "PeriscopeControl_Service.h"
 #include "PositionLogic_Service.h"
 #include "PWM_Service.h"
+#include "AttackStrategy_SM.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 
@@ -119,21 +120,12 @@ ES_Event RunMapKeys( ES_Event ThisEvent )
     {
         switch ( toupper(ThisEvent.EventParam))
         {
-            case 'A' : ThisEvent.EventType = ES_DRIVE_FULL_SPEED; 
-											printf("Commanding: ES_DRIVE_FULL_SPEED \n\r");
-                       break;
 						case 'S' : ThisEvent.EventType = ES_DRIVE_HALF_SPEED; 
 											printf("Commanding: ES_DRIVE_HALF_SPEED \n\r");
                        break;
             case 'D' : ThisEvent.EventType = ES_STOP_DRIVE;
 											 printf("Commanding: ES_STOP_DRIVE \n\r");
                        break;
-						case 'F' : ThisEvent.EventType = ES_ROTATE_45; 
- 											 printf("Commanding: ES_ROTATE_45 \n\r");
-												break;
-						case 'G' : ThisEvent.EventType = ES_ROTATE_90; 
-											 printf("Commanding: ES_ROTATE_90 \n\r");                     
-											 break;
 						case 'Q' : ThisEvent.EventType = ES_START_CANNON; 
 											 printf("Commanding: ES_START_CANNON \n\r");                     
 											 break;
@@ -150,11 +142,9 @@ ES_Event RunMapKeys( ES_Event ThisEvent )
 											 printf("Commanding: ES_MANUAL_START \n\r");                     
 											 break;
 						case 'P' : ThisEvent.EventType = ES_PS_DETECTED; 
-											 ThisEvent.EventParam = 0;
 											 printf("Commanding: ES_PS_DETECTED, Event Param = 0 \n\r");                     
 											 break;
 						case 'K' : ThisEvent.EventType = ES_CALCULATE_POSITION; 
-											 ThisEvent.EventParam = 0;
 											 printf("Commanding: ES_CALCULATE_POSITION, Event Param = 0 \n\r");                     
 											 break;
 						case '3' : ThisEvent.EventType = ES_NO_EVENT; 
@@ -183,7 +173,7 @@ ES_Event RunMapKeys( ES_Event ThisEvent )
 											 clearDriveAligningToBucket();
 											 break;
 						case 'C' : ThisEvent.EventType = ES_NO_EVENT; 	
-												printf("Color Pin: %d \n\r", (HWREG(GAME_BASE + (GPIO_O_DATA + ALL_BITS)) & COLOR_PIN));
+											 disableAttacking();
 											 break;
 									
         }
