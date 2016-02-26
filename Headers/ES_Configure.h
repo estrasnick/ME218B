@@ -382,8 +382,8 @@ typedef enum {  ES_NO_EVENT = 0,
 		#define CAPTURE_TIMEOUT_TIMER	9
 		#define CAPTURE_TIMEOUT_T 1000
 #define TIMER10_RESP_FUNC PostMasterSM
-		#define CANNON_READY_TIMER 10
-		#define CANNON_READY_T 2500
+		#define CANNON_STOPPED_TIMER 11
+		#define CANNON_STOPPED_T 200
 #define TIMER11_RESP_FUNC PostPeriscopeControlService
 		#define START_PERISCOPE_TIMER 11
 		#define START_PERISCOPE_T 100

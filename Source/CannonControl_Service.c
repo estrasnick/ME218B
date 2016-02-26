@@ -22,8 +22,8 @@
 /*----------------------------- Module Defines ----------------------------*/
 //Define Gains
 #define P_GAIN 1.92f
-#define D_GAIN 2.5f
-#define I_GAIN .45f
+#define D_GAIN 0.0f
+#define I_GAIN .25f
 
 //Cannon Test Speeds in RPM
 #define CANNON_STOP_SPEED 0
@@ -36,7 +36,7 @@
    relevant to the behavior of this service
 */
 
-static void calculateControlResponse(float currentRPM, float integralTerm, uint32_t targetSpeed);
+static void calculateControlResponse(float currentRPM);
 static float CalculateRPM(uint32_t period);
 static bool SpeedCheck(float rpm);
 static float DetermineCannonSpeed(void);
@@ -82,7 +82,7 @@ bool InitCannonControlService ( uint8_t Priority )
 	InitPeriodic(CANNON_CONTROL_INTERRUPT_PARAMATERS);
 	
 	//Start the Cannon at Rest
-	SetPWM_Cannon(0);
+	setTargetCannonSpeed(0);
 	
 	//Set Hopper to proper position
 	SetPWM_Hopper(HOPPER_DEFAULT_DUTY);
@@ -129,6 +129,11 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
   ES_Event ReturnEvent;
   ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
 
+	if (ThisEvent.EventType == ES_TIMEOUT && ThisEvent.EventParam == CANNON_STOPPED_TIMER)
+	{
+		Period = 0;
+	}
+	
 	//If we receive any of these events (from keyboard presses)
 		switch (ThisEvent.EventType){
 			case (ES_START_CANNON):
@@ -138,7 +143,7 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
 					//setTargetCannonSpeed(DetermineCannonSpeed());
 					
 					//For Testing 
-					SetPWM_Cannon(CANNON_TEST_PWM);
+					setTargetCannonSpeed(CANNON_TEST_PWM);
 				}
 				break;
 			case (ES_STOP_CANNON):
@@ -148,7 +153,7 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
 					//setTargetCannonSpeed(CANNON_STOP_PWM);
 					
 					//For Testing 
-					SetPWM_Cannon(0);
+					setTargetCannonSpeed(0);
 				}
 				break;
 			}
@@ -181,6 +186,13 @@ void CannonControl_PeriodicInterruptResponse(void){
 	clearPeriodicInterrupt(CANNON_CONTROL_INTERRUPT_PARAMATERS);
 	
 	float rpm = CalculateRPM(Period);
+	/*
+	static int i;
+	if (i++ >= 300)
+	{
+		printf("CANNON RPM: %f, period: %d\r\n", rpm, Period);
+		i = 0;
+	}*/
 	
 	if (Revving)
 	{
@@ -194,18 +206,18 @@ void CannonControl_PeriodicInterruptResponse(void){
 	}
 	
 	//Calculate Control Response individually
-	calculateControlResponse(rpm, integralTerm, RPMTarget);
+	calculateControlResponse(rpm);
 }
 
 /***************************************************************************
 Control Law
  ***************************************************************************/
-static void calculateControlResponse(float currentRPM, float integralTerm, uint32_t targetSpeed){
+static void calculateControlResponse(float currentRPM){
 	static float RPMError; /* make static for speed */
 	static float LastError; /* for Derivative Control */
 	
 	//Calculate Error (absolute)
-	RPMError = fabs(targetSpeed) - currentRPM; //fabs is absolute value
+	RPMError = fabs(RPMTarget) - currentRPM; //fabs is absolute value
 	
 	/*
 	//If the RPM error is zero and hasn't been before then post that we are at the correct speed
@@ -235,6 +247,7 @@ static void calculateControlResponse(float currentRPM, float integralTerm, uint3
 		
 	//Call the Set PWM Function on the clamped RequestedDuty Value
 	//SetPWM_Cannon(clamp(RequestedDuty, 0, 100));
+	SetPWM_Cannon(CANNON_TEST_PWM);
 }
 
 
@@ -244,12 +257,20 @@ static void calculateControlResponse(float currentRPM, float integralTerm, uint3
 ****************************************************************************/
 void setTargetCannonSpeed(uint32_t newCannonRPM){
 	RPMTarget = newCannonRPM;
+	ES_Timer_InitTimer(CANNON_STOPPED_TIMER, CANNON_STOPPED_T);
 }
 
 //Returns the RPM
 static float CalculateRPM(uint32_t period) 
 {
-	return ((TICKS_PER_MS * SECS_PER_MIN * MS_PER_SEC) / ((float) period * FLYWHEEL_GEAR_RATIO * ENCODER_PULSES_PER_REV));
+	if (period == 0)
+	{
+		return 0;
+	}
+	else
+	{
+		return ((TICKS_PER_MS * SECS_PER_MIN * MS_PER_SEC) / ((float) period * FLYWHEEL_GEAR_RATIO * ENCODER_PULSES_PER_REV));
+	}
 }
 
 // Return true if the cannon has reached its target RPM

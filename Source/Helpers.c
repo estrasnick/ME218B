@@ -551,7 +551,7 @@ Other Funtions
 
 **********************************************************************/
 //Clamp Function
-float clamp(float X, uint8_t min, uint8_t max){
+float clamp(float X, int min, int max){
 	return (X > max) ? max : ((X < min) ? min : X);
 }
 

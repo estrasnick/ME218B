@@ -301,18 +301,6 @@ static void CalculateAbsolutePosition()
 }
 
 
-//Function Takes in the A, B, and C angles and calculates the X, Y position relative to our original coordinate frame in the bottom left
-//Depending on what sequence is passed in, a different rotation matrix must be applied
-static void calculatePosition(){
-	float BMinusC;
-	float AMinusB;
-	float gamma;
-	float delta;
-	float tempAngle;
-	float atan;
-}
-
-
 /***************************************************************************
 Relative Position Calculations (ie. Encoder Distance Travelled Calculations)
  ***************************************************************************/

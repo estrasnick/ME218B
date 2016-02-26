@@ -172,10 +172,19 @@ ES_Event RunMapKeys( ES_Event ThisEvent )
 						case 'E' : ThisEvent.EventType = ES_ALIGNED_TO_BUCKET; 	
 											 clearDriveAligningToBucket();
 											 break;
-						case 'C' : ThisEvent.EventType = ES_NO_EVENT; 	
+						case 'C' : ThisEvent.EventType = ES_NO_EVENT; 
+											 printf("Attacking disabled\r\n");
 											 disableAttacking();
 											 break;
-									
+						case 'H' : ThisEvent.EventType = ES_MANUAL_SHOOT; 
+												//SetPWM_Cannon(20);
+											ThisEvent.EventParam = 0;
+											printf("Commanding: ES_MANUAL_SHOOT, Event Param = 0 \n\r");
+											break;
+						case 'R' : ThisEvent.EventType = ES_CANNON_READY;
+											printf("Releasing hopper\r\n");
+											break;
+
         }
 				
 				PostMasterSM(ThisEvent);

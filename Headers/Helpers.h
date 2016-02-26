@@ -87,7 +87,7 @@ uint32_t captureInterrupt(
 	uint8_t priority,
 	uint32_t time_length);
 
-float clamp(float X, uint8_t min, uint8_t max);
+float clamp(float X, int min, int max);
 
 uint8_t GetRequestCommand(uint8_t M, uint8_t R, uint8_t F);
 

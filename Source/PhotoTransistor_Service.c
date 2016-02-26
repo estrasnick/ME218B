@@ -151,7 +151,7 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 			if (AligningToBucket)
 			{
 				if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
-				{
+				{ 
 					printf("Aligned to bucket!\r\n");
 					clearDriveAligningToBucket();
 					ES_Event AlignedEvent;

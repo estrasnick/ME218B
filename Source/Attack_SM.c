@@ -86,7 +86,7 @@ ES_Event RunAttackSM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
-            if (CurrentEvent.EventType == ES_CANNON_READY || ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == CANNON_READY_TIMER))) //comes from Cannon Control Service when we reach our an RPM error of zero
+            if (CurrentEvent.EventType == ES_CANNON_READY /*|| ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == CANNON_READY_TIMER))*/) //comes from Cannon Control Service when we reach our an RPM error of zero
             {
 							printf("Cannon ready\r\n");
 							NextState = CannonReady_t;
@@ -109,7 +109,7 @@ ES_Event RunAttackSM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
-            if (CurrentEvent.EventType == ES_CANNON_READY || ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == CANNON_READY_TIMER)))
+            if (CurrentEvent.EventType == ES_CANNON_READY /*|| ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == CANNON_READY_TIMER))*/)
             {
 							printf("Cannon ready\r\n");
 							NextState = Fire_t;
@@ -238,7 +238,7 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event)
 			StartCannonEvent.EventType = ES_START_CANNON;
 			PostCannonControlService(StartCannonEvent);
 			
-			ES_Timer_InitTimer(CANNON_READY_TIMER, CANNON_READY_T);
+			//ES_Timer_InitTimer(CANNON_READY_TIMER, CANNON_READY_T);
 			
 			// after that start any lower level machines that run in this state
 			//StartLowerLevelSM( Event );

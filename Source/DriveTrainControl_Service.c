@@ -226,16 +226,16 @@ void DriveEncoder_Left_InterruptResponse(void){
 	// Check if we've reached our target, and if so, stop
 	if (LeftEncoderTicks >= TargetTicks_Left && (!AligningToBucket))
 	{
-		//printf("Left encoder reached destination\r\n");
-		setTargetDriveSpeed(0, RPMTarget_Right);
-		if (RPMTarget_Right == 0)
-		{
+		printf("Left encoder reached destination\r\n");
+		setTargetDriveSpeed(0, 0);
+		//if (RPMTarget_Right == 0)
+		//{
 			ES_Event NewEvent;
 			NewEvent.EventType = ES_ARRIVED;
 			PostMasterSM(NewEvent);
 			isMoving = false;
 			ResetEncoderTicks();
-		}
+		//}
 	}
 	
 	// now grab the captured value and calculate the period
@@ -267,16 +267,16 @@ void DriveEncoder_Right_InterruptResponse(void){
 	// Check if we've reached our target, and if so, stop
 	if (RightEncoderTicks >= TargetTicks_Right && (!AligningToBucket))
 	{
-		//printf("Right encoder reached destination\r\n");
-		setTargetDriveSpeed(RPMTarget_Left, 0);
-		if (RPMTarget_Left == 0)
-		{
+		printf("Right encoder reached destination\r\n");
+		setTargetDriveSpeed(0, 0);
+		//if (RPMTarget_Left == 0)
+		//{
 			ES_Event NewEvent;
 			NewEvent.EventType = ES_ARRIVED;
 			PostMasterSM(NewEvent);
 			isMoving = false;
 			ResetEncoderTicks();
-		}
+		//}
 	}
 	
 	// now grab the captured value and calculate the period
@@ -354,7 +354,7 @@ static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm,
 		LastError_Left = RPMError;
 		integralTerm_Left = integralTerm;
 	}
-	/*
+	
 	static int i;
 		if (i++ > 501)
 		{
@@ -376,7 +376,7 @@ static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm,
 			printf("\n\r");
 			i = 0;
 		}
-	*/
+
 	
 	return clamp(RequestedDuty, 0, 100);
 }

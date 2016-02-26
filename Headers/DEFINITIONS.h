@@ -172,7 +172,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 
 #define PHOTOTRANSISTOR_INTERRUPT_PRIORITY	1
 
-#define HALLSENSOR_INTERRUPT_PRIORITY	3
+#define HALLSENSOR_INTERRUPT_PRIORITY	1
 
 #define DRIVE_CONTROL_INTERRUPT_PRIORITY 2
 #define CANNON_CONTROL_INTERRUPT_PRIORITY 2
@@ -265,7 +265,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define CANNON_PWM_PARAMATERS				CANNON_PWM, CANNON_PERIOD
 #define PERISCOPE_LATCH_PWM_PARAMATERS    PERISCOPE_LATCH_PWM, PERISCOPE_LATCH_PERIOD
 
-#define PERISCOPE_PWM_DUTY 40
+#define PERISCOPE_PWM_DUTY 30
 
 //These Values have been tested and appear to be good
 #define PERISCOPE_LATCH_DUTY 9
@@ -319,7 +319,7 @@ typedef struct {
 //*******************************************************************************************
 #define PERISCOPE_GEAR_RATIO 100
 #define DRIVE_GEAR_RATIO 50
-#define FLYWHEEL_GEAR_RATIO 25 // NOTE: This is not final!!!
+#define FLYWHEEL_GEAR_RATIO 1 // NOTE: This is not final!!!
 
 
 

@@ -574,7 +574,7 @@ static ES_Event DuringStationCapture_t( ES_Event Event)
 static void ChooseDestination(void)
 {
 	printf("Choosing destination\r\n");
-	uint8_t bestStation = NULL_STATION;
+	uint8_t bestStation = 0;
 	uint32_t bestPriority = 0xffffffff;
 	
 	for (int i = 0; i < NUM_STATIONS; i++)
