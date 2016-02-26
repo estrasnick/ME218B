@@ -354,7 +354,7 @@ static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm,
 		LastError_Left = RPMError;
 		integralTerm_Left = integralTerm;
 	}
-	
+	/*
 	static int i;
 		if (i++ > 501)
 		{
@@ -375,7 +375,7 @@ static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm,
 			printf("\r\n Requested duty %d", RequestedDuty);
 			printf("\n\r");
 			i = 0;
-		}
+		}*/
 
 	
 	return clamp(RequestedDuty, 0, 100);
@@ -425,7 +425,7 @@ void setTargetDriveSpeed(float newRPMTarget_left, float newRPMTarget_right){
 void setDriveToAlignToBucket(void)
 {
 	AligningToBucket = true;
-	setTargetDriveSpeed(DEFAULT_DRIVE_RPM, -DEFAULT_DRIVE_RPM);
+	setTargetDriveSpeed(.75 * DEFAULT_DRIVE_RPM, .75 * -DEFAULT_DRIVE_RPM);
 } 
 
 /****************************************************************************

@@ -20,7 +20,7 @@ void LatchPeriscope(void);
 void UnlatchPeriscope(void);
 void RequireZero(void);
 bool IsZeroed(void);
-
+void SetAttemptingToStop(bool val);
 
 #endif 
 

@@ -678,14 +678,17 @@ uint8_t GetTargetStation(void)
 
 void PausePositioning(void)
 {
+	SetAttemptingToStop(true);
 	printf("Disabling positioning\r\n");
 	LatchPeriscope();
 	disableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
+	
 }
 
 void ResumePositioning(void)
 {
 	printf("Enabling positioning\r\n");
+	SetAttemptingToStop(false);
 	enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 	UnlatchPeriscope();
 	SetPWM_Periscope(PERISCOPE_PWM_DUTY);

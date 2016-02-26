@@ -148,20 +148,7 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 	{
 		if (NumberSamples >= NUMBER_PULSES_TO_BE_ALIGNED)
 		{
-			if (AligningToBucket)
-			{
-				if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
-				{ 
-					printf("Aligned to bucket!\r\n");
-					clearDriveAligningToBucket();
-					ES_Event AlignedEvent;
-					AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
-					PostMasterSM(AlignedEvent);
-				}
-				
-				
-				AligningToBucket = false;
-			}
+			
 			beacons[LastBeacon].lastUpdateTime = captureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 			beacons[LastBeacon].lastEncoderAngle = CalculateAverage();
 			switch (LastBeacon){
@@ -188,11 +175,24 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 				NewEvent.EventType = ES_CALCULATE_POSITION;
 				PostPositionLogicService(NewEvent);
 			}
+			if (AligningToBucket)
+			{
+				if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
+				{ 
+					printf("Aligned to bucket!\r\n");
+					clearDriveAligningToBucket();
+					ES_Event AlignedEvent;
+					AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
+					PostMasterSM(AlignedEvent);
+					AligningToBucket = false;
+				}	
+			}
 		}
 	}
 	else if (ThisEvent.EventType == ES_ALIGN_TO_BUCKET)
 	{
 		AligningToBucket = true;
+		enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 	}
 	
   return ReturnEvent;
@@ -292,6 +292,11 @@ void PhotoTransistor_InterruptResponse(void)
 		NumberSamples++;
 		LastBeacon = matchingBeacon;
 		
+		/*
+		if (((MyColor() == COLOR_BLUE) && (matchingBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (matchingBeacon == BEACON_INDEX_SE)))
+		{
+			printf("Bucket beacon found!\r\n");
+		}*/
 		
 		/*
 		//Print which Beacon
@@ -357,6 +362,11 @@ static bool IsBeaconMatch(uint8_t beaconIndex)
 
 static bool TimeForUpdate()
 {
+	if (AligningToBucket)
+	{
+			return false;
+	} 
+	
 	//Get our A, B, and C Update Times
 	uint32_t beaconAUpdateTime = beacons[mostRecentBeaconUpdate()].lastUpdateTime;
 	uint8_t indexB = beacons[mostRecentBeaconUpdate()].priorBeacons[0];

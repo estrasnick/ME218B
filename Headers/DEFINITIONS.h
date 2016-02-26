@@ -435,4 +435,7 @@ static uint8_t PS_Frequency_Codes[] = {
 
 #define BACK_UP_TICKS 350
 	
+#define HEIGHT_OF_BUCKET 19.5
+#define HEIGHT_OF_FIELD 4.375
+	
 #endif

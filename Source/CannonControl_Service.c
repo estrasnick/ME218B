@@ -22,14 +22,15 @@
 /*----------------------------- Module Defines ----------------------------*/
 //Define Gains
 #define P_GAIN 1.92f
-#define D_GAIN 0.0f
-#define I_GAIN .25f
+#define D_GAIN .3f
+#define I_GAIN .45f
 
 //Cannon Test Speeds in RPM
 #define CANNON_STOP_SPEED 0
 #define CANNON_TEST_PWM 10
+#define CANNON_TEST_RPM 2200
 
-#define CANNON_RPM_TOLERANCE 2
+#define CANNON_RPM_TOLERANCE 100
 
 /*---------------------------- Module Functions ---------------------------*/
 /* prototypes for private functions for this service.They should be functions
@@ -143,7 +144,7 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
 					//setTargetCannonSpeed(DetermineCannonSpeed());
 					
 					//For Testing 
-					setTargetCannonSpeed(CANNON_TEST_PWM);
+					setTargetCannonSpeed(CANNON_TEST_RPM);
 				}
 				break;
 			case (ES_STOP_CANNON):
@@ -186,13 +187,6 @@ void CannonControl_PeriodicInterruptResponse(void){
 	clearPeriodicInterrupt(CANNON_CONTROL_INTERRUPT_PARAMATERS);
 	
 	float rpm = CalculateRPM(Period);
-	/*
-	static int i;
-	if (i++ >= 300)
-	{
-		printf("CANNON RPM: %f, period: %d\r\n", rpm, Period);
-		i = 0;
-	}*/
 	
 	if (Revving)
 	{
@@ -241,13 +235,20 @@ static void calculateControlResponse(float currentRPM){
 	
 	//Calculate Desired Duty Cycle
 	uint8_t RequestedDuty = (P_GAIN * ((RPMError)+integralTerm+(D_GAIN * (RPMError-LastError))));
+	/*
+	static int i;
+	if (i++ >= 300)
+	{
+		printf("CANNON RPM: %f, duty: %d\r\n", currentRPM, RequestedDuty);
+		i = 0;
+	}*/
 	
 	//Save the Last Error
 	LastError = RPMError;
 		
 	//Call the Set PWM Function on the clamped RequestedDuty Value
-	//SetPWM_Cannon(clamp(RequestedDuty, 0, 100));
-	SetPWM_Cannon(CANNON_TEST_PWM);
+	SetPWM_Cannon(clamp(RequestedDuty, 0, 100));
+	//SetPWM_Cannon(CANNON_TEST_PWM);
 }
 
 
@@ -280,6 +281,5 @@ static bool SpeedCheck(float rpm)
 }
 
 static float DetermineCannonSpeed(void)
-{
-	return DetermineDistanceToBucket() * CANNON_DISTANCE_MULTIPLIER;
+{	return DetermineDistanceToBucket() * CANNON_DISTANCE_MULTIPLIER;
 }

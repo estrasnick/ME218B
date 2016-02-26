@@ -26,6 +26,7 @@
 #include "SendingCMD_SM.h"
 #include "SendingByte_SM.h"
 #include "PACLogic_SM.h"
+#include "AttackStrategy_SM.h"
 /*----------------------------- Module Defines ----------------------------*/
 // define constants for the states for this machine
 // and any other local defines
@@ -440,6 +441,11 @@ Detect Polling Stations
 void detectPollingStation(uint8_t sensor_index){
 	//set boolean signaling variable PS_detected = false
 
+	if (QueryAttackStrategySM() == Attack_t)
+	{
+		return;
+	}
+	
 	//first check if the last period is within the tolerance of anything we care about
 	uint32_t periodMatchIndex = PS_Period_Comparison(HallSensor_LastPeriods[0][sensor_index]);
 

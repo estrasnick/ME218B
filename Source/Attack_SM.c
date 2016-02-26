@@ -226,7 +226,8 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event)
 			// implement any entry actions required for this state machine
 			//Pause our Positioning using the Periscope
 			printf("entering attack state machine\r\n");
-			PausePositioning();
+			LatchPeriscope();
+			SetAttemptingToStop(true);
 			
 			//Post an Align Event in order to use the latch to align the periscope
 			ES_Event AlignEvent;

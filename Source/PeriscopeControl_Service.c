@@ -43,6 +43,8 @@ static bool isZeroed;
 
 static uint8_t numRotations;
 
+static bool AttemptingToStop = false;
+
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
  Function
@@ -124,20 +126,23 @@ ES_Event RunPeriscopeControlService( ES_Event ThisEvent )
 	}
 	else if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == PERISCOPE_STOPPED_TIMER))
 	{
-		SetPWM_Periscope(0);
-		ResetPeriscopeEncoderTicks();
-		if (AligningToBucket)
+		if (AttemptingToStop)
 		{
-			ES_Event RotateEvent;
-			RotateEvent.EventType = ES_ALIGN_TO_BUCKET;
-			printf("Starting attack rotate\r\n");
-			setDriveToAlignToBucket();
-			PostPhotoTransistorService(RotateEvent);
-			AligningToBucket = false;
-		}
-		if (!isZeroed)
-		{
-			isZeroed = true;
+			SetPWM_Periscope(0);
+			ResetPeriscopeEncoderTicks();
+			if (AligningToBucket)
+			{
+				ES_Event RotateEvent;
+				RotateEvent.EventType = ES_ALIGN_TO_BUCKET;
+				printf("Starting attack rotate\r\n");
+				setDriveToAlignToBucket();
+				PostPhotoTransistorService(RotateEvent);
+				AligningToBucket = false;
+			}
+			if (!isZeroed)
+			{
+				isZeroed = true;
+			}
 		}
 	}
 	else if (ThisEvent.EventType == ES_ALIGN_TO_BUCKET)
@@ -226,4 +231,9 @@ void RequireZero(void)
 bool IsZeroed(void)
 {
 	return isZeroed;
+}
+
+void SetAttemptingToStop(bool val)
+{
+	AttemptingToStop = val;
 }
