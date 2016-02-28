@@ -53,6 +53,7 @@ static ES_Event DuringChooseDestination_t( ES_Event Event);
 static ES_Event DuringFaceTarget_t( ES_Event Event);
 static ES_Event DuringTravel_t( ES_Event Event);
 static ES_Event DuringStationCapture_t( ES_Event Event);
+static ES_Event DuringHandleCollision_t( ES_Event Event);
 
 static void ChooseDestination(void);
 
@@ -111,6 +112,11 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 	 {
 		 ResumePositioning();
 		 NextState = ChooseDestination_t;
+		 MakeTransition = true;
+	 }
+	 else if (CurrentEvent.EventType == ES_COLLISION)
+	 {
+		 NextState = HandleCollision_t;
 		 MakeTransition = true;
 	 }
 	 else
@@ -276,6 +282,26 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 						}
 				 }
 				 break;
+			 }
+			 
+			 case HandleCollision_t:
+			 {
+				 // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
+				 CurrentEvent = DuringHandleCollision_t(CurrentEvent);
+				 
+				 if (CurrentEvent.EventType == ES_PS_DETECTED)
+				 {
+				 	NextState = StationCapture_t; //ie. we want to exit and reenter
+				 	MakeTransition = true;
+				 	ResumePositioning();
+				 }
+				 else if (CurrentEvent.EventType == ES_ARRIVED)
+				 {
+				 	ResumePositioning();
+				 	printf("Arrived at target\r\n");
+				 	NextState = ChooseDestination_t;
+				 	MakeTransition = true;
+				 }
 			 }
 		 }
 	 }
@@ -543,6 +569,44 @@ static ES_Event DuringStationCapture_t( ES_Event Event)
         // implement any entry actions required for this state machine
         setTargetDriveSpeed(0.0, 0.0);
 				ResetEncoderTicks();
+        // after that start any lower level machines that run in this state
+        
+        // repeat the StartxxxSM() functions for concurrent state machines
+        // on the lower level
+			
+    }
+    else if ( Event.EventType == ES_EXIT )
+    {
+        // on exit, give the lower levels a chance to clean up first
+        
+        // repeat for any concurrently running state machines
+        // now do any local exit functionality
+      
+    }else
+    // do the 'during' function for this state
+    {
+        // run any lower level state machine
+        
+      
+        // repeat for any concurrent lower level machines
+      
+        // do any activity that is repeated as long as we are in this state
+    }
+    // return either Event, if you don't want to allow the lower level machine
+    // to remap the current event, or ReturnEvent if you do want to allow it.
+    return(ReturnEvent);
+}
+
+static ES_Event DuringHandleCollision_t( ES_Event Event)
+{
+    ES_Event ReturnEvent = Event; // assme no re-mapping or comsumption
+
+    // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
+    if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
+    {
+        // implement any entry actions required for this state machine
+        setTargetEncoderTicks(BACKUP_DISTANCE_TICKS, BACKUP_DISTANCE_TICKS, true, true);
+				MarkObstructed(TargetStation);
         // after that start any lower level machines that run in this state
         
         // repeat the StartxxxSM() functions for concurrent state machines

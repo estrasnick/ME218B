@@ -438,4 +438,6 @@ static uint8_t PS_Frequency_Codes[] = {
 #define HEIGHT_OF_BUCKET 19.5
 #define HEIGHT_OF_FIELD 4.375
 	
+#define BACKUP_DISTANCE_TICKS 250
+	
 #endif

@@ -8,7 +8,7 @@ Strategy Header File
 
 // typedefs for the states
 // State definitions for use with the query function
-typedef enum { Wait4Start_t, ChooseDestination_t, FaceTarget_t, Travel_t, StationCapture_t } StrategyState_t ;
+typedef enum { Wait4Start_t, ChooseDestination_t, FaceTarget_t, Travel_t, StationCapture_t, HandleCollision_t } StrategyState_t ;
 
 
 // Public Function Prototypes

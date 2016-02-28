@@ -305,7 +305,9 @@ typedef enum {  ES_NO_EVENT = 0,
 								ES_RESET_DESTINATION,
 								ES_ALIGNED_TO_BUCKET,
 								ES_MANUAL_SHOOT,
-								ES_ZEROED
+								ES_ZEROED,
+								
+								ES_COLLISION
 								
 								} ES_EventTyp_t ;
 

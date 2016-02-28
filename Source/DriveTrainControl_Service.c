@@ -35,6 +35,8 @@
 #define ROTATE_90_TIME 500
 #define ROTATE_45_TIME 300
 
+#define STALL_THRESHOLD 3
+
 /*---------------------------- Module Functions ---------------------------*/
 /* prototypes for private functions for this service.They should be functions
    relevant to the behavior of this service
@@ -79,6 +81,8 @@ static bool isMoving = false; //initialize to false
 
 static bool AligningToBucket = false;
 
+static uint8_t StallCounter_Left = 0;
+static uint8_t StallCounter_Right = 0;
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -197,6 +201,23 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 		Left_Period = 0;
 		Left_LastCapture = 0;
 		ExitCritical();
+		
+		if (RPMTarget_Left != 0)
+		{
+			StallCounter_Left++;
+			if (StallCounter_Left > STALL_THRESHOLD)
+			{
+				printf("Collision detected!");
+				ES_Event CollisionEvent;
+				CollisionEvent.EventType = ES_COLLISION;
+				PostMasterSM(CollisionEvent);
+				StallCounter_Left = 0;
+			}
+			else
+			{
+				ES_Timer_InitTimer(MOTOR_STOPPED_L, motor_stopped_timer);
+			}
+		}
 	}
 	else if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == MOTOR_STOPPED_R))
 	{
@@ -205,6 +226,22 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 		Right_Period = 0;
 		Right_LastCapture = 0;
 		ExitCritical();
+		if (RPMTarget_Right != 0)
+		{
+			StallCounter_Right++;
+			if (StallCounter_Right > STALL_THRESHOLD)
+			{
+				printf("Collision detected!");
+				ES_Event CollisionEvent;
+				CollisionEvent.EventType = ES_COLLISION;
+				PostMasterSM(CollisionEvent);
+				StallCounter_Right = 0;
+			}
+			else
+			{
+				ES_Timer_InitTimer(MOTOR_STOPPED_R, motor_stopped_timer);
+			}
+		}
 	}
 	
   return ReturnEvent;
@@ -222,6 +259,8 @@ void DriveEncoder_Left_InterruptResponse(void){
 	
 	// increment the encoder ticks that we have seen
 	LeftEncoderTicks++;
+	
+	StallCounter_Left = 0;
 	
 	// Check if we've reached our target, and if so, stop
 	if (LeftEncoderTicks >= TargetTicks_Left && (!AligningToBucket))
@@ -263,6 +302,8 @@ void DriveEncoder_Right_InterruptResponse(void){
 	
 	// increment the encoder ticks that we have seen
 	RightEncoderTicks++;
+	
+	StallCounter_Right = 0;
 	
 	// Check if we've reached our target, and if so, stop
 	if (RightEncoderTicks >= TargetTicks_Right && (!AligningToBucket))
