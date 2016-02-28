@@ -41,8 +41,6 @@ static bool AligningToBucket = false;
 
 static bool isZeroed;
 
-static uint8_t numRotations;
-
 static bool AttemptingToStop = false;
 
 /*------------------------------ Module Code ------------------------------*/

@@ -22,10 +22,11 @@
 
 /*----------------------------- Module Defines ----------------------------*/
 
-#define PERIOD_MEASURING_ERROR_TOLERANCE 40 //in microseconds
+#define PERIOD_MEASURING_ERROR_TOLERANCE 10 //in microseconds
 #define NUMBER_PULSES_TO_BE_ALIGNED 3
 #define NUMBER_PHOTOTRANSISTORS 1
 #define NUMBER_BEACON_FREQUENCIES 4
+#define NUMBER_PULSES_FOR_BUCKET 3
 
 #define BEACON_F_NW 1450
 #define BEACON_F_NE 1700
@@ -146,6 +147,20 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
   
 	if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == AVERAGE_BEACONS_TIMER))
 	{
+		switch (LastBeacon){
+				case (BEACON_INDEX_NW):
+					printf("\r\nNum ticks Beacon NW: %d\n\r\r\n", NumberSamples);
+				break;
+				case (BEACON_INDEX_NE):
+					printf("\r\nNum ticks Beacon NE: %d\n\r\r\n", NumberSamples);
+				break;
+				case (BEACON_INDEX_SE):
+					printf("\r\nNum ticks Beacon SE: %d\n\r\r\n", NumberSamples);
+				break;
+				case (BEACON_INDEX_SW):
+					printf("\r\nNum ticks Beacon SW: %d\n\r", NumberSamples);
+				break;
+			}
 		if (NumberSamples >= NUMBER_PULSES_TO_BE_ALIGNED)
 		{
 			
@@ -174,18 +189,6 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 				ES_Event NewEvent;
 				NewEvent.EventType = ES_CALCULATE_POSITION;
 				PostPositionLogicService(NewEvent);
-			}
-			if (AligningToBucket)
-			{
-				if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
-				{ 
-					printf("Aligned to bucket!\r\n");
-					clearDriveAligningToBucket();
-					ES_Event AlignedEvent;
-					AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
-					PostMasterSM(AlignedEvent);
-					AligningToBucket = false;
-				}	
 			}
 		}
 	}
@@ -286,11 +289,24 @@ void PhotoTransistor_InterruptResponse(void)
 		
 		if (matchingBeacon != LastBeacon)
 		{
+			printf("Switching from beacon %d to %d\r\n", LastBeacon, matchingBeacon);
 			ResetAverage();
 		}
 		Sum += GetPeriscopeAngle();
 		NumberSamples++;
 		LastBeacon = matchingBeacon;
+		
+		if (AligningToBucket && NumberSamples >= NUMBER_PULSES_FOR_BUCKET)
+		{
+			if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
+				{ 
+					printf("Aligned to bucket!\r\n");
+					clearDriveAligningToBucket();
+					ES_Event AlignedEvent;
+					AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
+					PostMasterSM(AlignedEvent);
+				}	
+		}
 		
 		/*
 		if (((MyColor() == COLOR_BLUE) && (matchingBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (matchingBeacon == BEACON_INDEX_SE)))
@@ -425,6 +441,11 @@ void ResetAverage(void)
 {
 	Sum = 0;
 	NumberSamples = 0;
+}
+
+void ResetAligningToBucket(void)
+{
+	AligningToBucket = false;
 }
 
 static float CalculateAverage(void)

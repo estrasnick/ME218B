@@ -23,9 +23,9 @@
 
 /*----------------------------- Module Defines ----------------------------*/
 //Define Gains
-#define P_GAIN 1.92f
+#define P_GAIN 2.92f
 #define D_GAIN  0.0f //2.5f
-#define I_GAIN .25f
+#define I_GAIN .15f
 
 //Test Conditions
 #define FULL_SPEED 100.0f
@@ -356,7 +356,7 @@ static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm,
 	}
 	/*
 	static int i;
-		if (i++ > 501)
+		if (i++ > 250)
 		{
 			if (isRight)
 			{
@@ -375,8 +375,8 @@ static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm,
 			printf("\r\n Requested duty %d", RequestedDuty);
 			printf("\n\r");
 			i = 0;
-		}*/
-
+		}
+*/
 	
 	return clamp(RequestedDuty, 0, 100);
 }
@@ -415,7 +415,15 @@ void setTargetDriveSpeed(float newRPMTarget_left, float newRPMTarget_right){
 		ES_Timer_InitTimer(MOTOR_STOPPED_L, motor_stopped_timer);
 		ES_Timer_InitTimer(MOTOR_STOPPED_R, motor_stopped_timer);
 		ResetAbsolutePosition();
+		integralTerm_Left = 0;
+		integralTerm_Right = 0;
+		LastError_Left = 0;
+		LastError_Right = 0;
 	}
+	integralTerm_Left = 0;
+		integralTerm_Right = 0;
+		LastError_Left = 0;
+		LastError_Right = 0;
 }
 
 /****************************************************************************
@@ -425,7 +433,7 @@ void setTargetDriveSpeed(float newRPMTarget_left, float newRPMTarget_right){
 void setDriveToAlignToBucket(void)
 {
 	AligningToBucket = true;
-	setTargetDriveSpeed(.75 * DEFAULT_DRIVE_RPM, .75 * -DEFAULT_DRIVE_RPM);
+	setTargetDriveSpeed(DEFAULT_DRIVE_RPM, -DEFAULT_DRIVE_RPM);
 } 
 
 /****************************************************************************

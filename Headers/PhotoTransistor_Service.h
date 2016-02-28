@@ -34,6 +34,7 @@ void PhotoTransistor_InterruptResponse(void);
 uint32_t GetLastUpdateTime(uint8_t beaconIndex);
 void ResetUpdateTimes(void);
 uint8_t mostRecentBeaconUpdate(void);
+void ResetAligningToBucket(void);
 
 float GetBeaconAngle_A(uint8_t beaconIndex);
 float GetBeaconAngle_B(uint8_t beaconIndex);

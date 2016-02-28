@@ -150,7 +150,7 @@ void SetPWM_Hopper(float duty){
 	
 //Cannon Duty Cycle
 void SetPWM_Cannon(float duty){
-	setPWM_value(duty, CANNON_PWM_PARAMATERS);
+	setPWM_value(100 - duty, CANNON_PWM_PARAMATERS);
 }
 
 //Periscope Latch Duty Cycle

@@ -21,16 +21,16 @@
 
 /*----------------------------- Module Defines ----------------------------*/
 //Define Gains
-#define P_GAIN 1.92f
-#define D_GAIN .3f
-#define I_GAIN .45f
+#define P_GAIN 2.42f
+#define D_GAIN 0.0f
+#define I_GAIN 1.45f
 
 //Cannon Test Speeds in RPM
 #define CANNON_STOP_SPEED 0
 #define CANNON_TEST_PWM 10
 #define CANNON_TEST_RPM 2200
 
-#define CANNON_RPM_TOLERANCE 100
+#define CANNON_RPM_TOLERANCE 800
 
 /*---------------------------- Module Functions ---------------------------*/
 /* prototypes for private functions for this service.They should be functions
@@ -237,7 +237,7 @@ static void calculateControlResponse(float currentRPM){
 	uint8_t RequestedDuty = (P_GAIN * ((RPMError)+integralTerm+(D_GAIN * (RPMError-LastError))));
 	/*
 	static int i;
-	if (i++ >= 300)
+	if (i++ >= 100)
 	{
 		printf("CANNON RPM: %f, duty: %d\r\n", currentRPM, RequestedDuty);
 		i = 0;
@@ -247,8 +247,8 @@ static void calculateControlResponse(float currentRPM){
 	LastError = RPMError;
 		
 	//Call the Set PWM Function on the clamped RequestedDuty Value
-	SetPWM_Cannon(clamp(RequestedDuty, 0, 100));
-	//SetPWM_Cannon(CANNON_TEST_PWM);
+	//SetPWM_Cannon(clamp(RequestedDuty, 0, 100));
+	SetPWM_Cannon(CANNON_TEST_PWM);
 }
 
 

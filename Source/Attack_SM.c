@@ -27,6 +27,7 @@
 #include "DEFINITIONS.h"
 #include "Strategy_SM.h"
 #include "PeriscopeControl_Service.h"
+#include "PhotoTransistor_Service.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 // define constants for the states for this machine
@@ -363,6 +364,7 @@ static ES_Event DuringFire_t( ES_Event Event)
         //RunLowerLevelSM(Event);
         // repeat for any concurrently running state machines
         // now do any local exit functionality
+				ResetAligningToBucket();
 				ES_Event StopCannonEvent;
 				StopCannonEvent.EventType = ES_STOP_CANNON;
 				PostCannonControlService(StopCannonEvent);
@@ -390,5 +392,6 @@ static void LoadChamber(void)
 
 static void DriveHammer(void)
 {
+	printf("FIRING!!!!!\r\n");
 	SetPWM_Hopper(HOPPER_DEFAULT_DUTY);
 }

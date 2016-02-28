@@ -47,6 +47,8 @@ static ES_Event DuringMeasuring3_t( ES_Event Event);
 // everybody needs a state variable, you may need others as well
 static CapturePSState_t CurrentState;
 
+static uint8_t storedLocation;
+
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
  Function
@@ -67,7 +69,7 @@ ES_Event RunCapturePSSM( ES_Event CurrentEvent )
    CapturePSState_t NextState = CurrentState;
    ES_Event EntryEventKind = { ES_ENTRY, 0 };// default to normal entry to new state
    ES_Event ReturnEvent = CurrentEvent; // assume we are not consuming event
-
+	 
    switch ( CurrentState )
    {
         case Measuring1_t :     
@@ -141,6 +143,8 @@ ES_Event RunCapturePSSM( ES_Event CurrentEvent )
 								{
 									printf("Polling Station Confirmed 2: Captured, time to move on \n\r");
 								
+									storedLocation = getLocation();
+									SetStationOwner(storedLocation, MyColor());
 									NextState = Measuring3_t;
 									MakeTransition = true;
 								} else {	//if not exit and re-enter as measuring 1 to see if we can get it right the second time	around			
@@ -163,8 +167,7 @@ ES_Event RunCapturePSSM( ES_Event CurrentEvent )
 						if (CurrentEvent.EventType == ES_PS_DETECTED)
 						{		
 									//Update Our Own Frequency with what we just remeasured
-									updateCapturedFrequency(getLocation(), GetTargetFrequencyIndex());
-									SetStationOwner(getLocation(), MyColor());
+									updateCapturedFrequency(storedLocation, GetTargetFrequencyIndex());
 									printf("Setting station owner for location: %d to color %d\r\n", getLocation(), MyColor());
 									
 									//Now Post that we Captured and it's time to move on

@@ -271,7 +271,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define PERISCOPE_LATCH_DUTY 9
 #define PERISCOPE_UNLATCH_DUTY 5
 #define HOPPER_LOAD_DUTY 5
-#define HOPPER_DEFAULT_DUTY 10 
+#define HOPPER_DEFAULT_DUTY 11
 
 //*******************************************************************************************
 //--------------------------------- SPI COMMANDS --------------------------------------
@@ -429,7 +429,7 @@ static uint8_t PS_Frequency_Codes[] = {
 
 #define HALL_SENSOR_OFFSET_IN_TICKS 30
 
-#define CANNON_DISTANCE_MULTIPLIER .38
+#define CANNON_DISTANCE_MULTIPLIER .38f
 
 #define PROXIMITY_TO_OUR_STATION_THRESHOLD 7.0f
 

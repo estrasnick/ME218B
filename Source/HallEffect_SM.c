@@ -460,8 +460,8 @@ void detectPollingStation(uint8_t sensor_index){
 			uint8_t numGoodPulses = 0;
 			
 			//Loop Through All of Our Hall Sensor values
-			for (uint8_t sensor = 0; sensor < NUMBER_HALL_EFFECT_SENSORS; sensor++){
-				for (uint8_t pulse = 0; pulse < NUMBER_PULSES_TO_STOP; pulse ++){
+			for (uint8_t pulse = 0; pulse < NUMBER_PULSES_TO_STOP; pulse ++){
+				for (uint8_t sensor = 0; sensor < NUMBER_HALL_EFFECT_SENSORS; sensor++){
 					//Check if we have a match against the period we got in our latest pulse
 					if (toleranceCheck(HallSensor_LastPeriods[pulse][sensor], periodMatch, PERIOD_MEASURING_ERROR_TOLERANCE)){
 							//printf("One more Hall Effect sensor confirmed \n\r");
@@ -477,9 +477,9 @@ void detectPollingStation(uint8_t sensor_index){
 				
 				// Check if the station we are measuring is one that we own, by comparing our 
 				// current position to the locations of stations we own
-				if (NotByOurStation())
-				{
-				//if (!checkOwnFrequency(periodMatchIndex)){
+				//if (NotByOurStation())
+				//{
+				if (!checkOwnFrequency(periodMatchIndex)){
 					//Disable the Interrupts
 					disableHEInterrupts();
 					
@@ -491,7 +491,7 @@ void detectPollingStation(uint8_t sensor_index){
 					ThisEvent.EventType = ES_PS_DETECTED;
 					ThisEvent.EventParam = periodMatchIndex; //Pass Index Over
 					//set the target frequency index
-					 SetTargetFrequencyIndex(periodMatchIndex);
+					SetTargetFrequencyIndex(periodMatchIndex);
 					
 					PostMasterSM(ThisEvent);
 				}

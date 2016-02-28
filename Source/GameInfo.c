@@ -220,7 +220,7 @@ void updateCapturedFrequency(uint8_t station, uint8_t f_index){
 bool checkOwnFrequency(uint8_t f_index){
 	for (int i = 0; i < NUM_STATIONS; i++){		
 			//Check if it changed to someone else's color
-			if (PS_Array[i].f_index == f_index){
+			if (PS_Array[i].f_index == f_index && PS_Array[i].claimed_status == MyColor()){
 					return true;
 			}
 	}	
