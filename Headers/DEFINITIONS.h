@@ -179,7 +179,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 
 //PERIODIC INTERRUPT TIMES (microseconds)
 #define DRIVE_CONTROL_INTERRUPT_PERIOD 2000
-#define CANNON_CONTROL_INTERRUPT_PERIOD 2000
+#define CANNON_CONTROL_INTERRUPT_PERIOD 500
 #define NULL_INTERRUPT_PERIOD 0
 
 //Timer Definitions
@@ -248,7 +248,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define PERISCOPE_PERIOD			50
 #define PERISCOPE_LATCH_PERIOD 20000
 #define HOPPER_PERIOD					20000
-#define CANNON_PERIOD					50
+#define CANNON_PERIOD					200
 
 //PIN DIRECTIONS (note hopper is a servo so it doesn't need this)x
 #define LEFT_DRIVE_FORWARD_PIN_DIRECTION 		0
