@@ -34,7 +34,7 @@
 */
 
 static void CalculateAbsolutePosition(void);
-static void CalculateRelativePosition(void);
+//static void CalculateRelativePosition(void);
 static float ConvertEncoderTicksToInches(uint32_t ticks);
 static uint32_t ConvertInchesToEncoderTicks(float inches);
 static float ToRadians(float degrees);
@@ -129,6 +129,7 @@ ES_Event RunPositionLogicService( ES_Event ThisEvent )
 			CalculateAbsolutePosition();
 			break;
 		}
+		/*
 		case ES_TIMEOUT:
 		{
 			if (ThisEvent.EventParam == RELATIVE_POSITION_TIMER)
@@ -143,7 +144,7 @@ ES_Event RunPositionLogicService( ES_Event ThisEvent )
 				}
 			}
 			break;
-		}
+		}*/
 		case ES_FACE_TARGET:
 		{
 			printf("Facing target\r\n");
@@ -307,7 +308,7 @@ Relative Position Calculations (ie. Encoder Distance Travelled Calculations)
 // Calculate position by comparing the number of encoder ticks on the
 // left and right drive motors. (See explanation of math for more 
 // details
-static void CalculateRelativePosition()
+/*static void CalculateRelativePosition()
 {
 	printf("RELATIVE POSITION!\r\n");
 	uint32_t leftEncoderTicks;
@@ -355,7 +356,7 @@ static void CalculateRelativePosition()
 	myX += displacement * cos(displacementAngle);
 	myY += displacement * sin(displacementAngle);
 	myTheta = myNewTheta;
-}
+}*/       
 
 // Convert Encoder ticks to linear distance measurement
 static float ConvertEncoderTicksToInches(uint32_t ticks)

@@ -35,7 +35,6 @@
 
 #define PERIOD_MEASURING_ERROR_TOLERANCE 10 //in micr
 #define NUMBER_PULSES_TO_STOP 3
-#define NUMBER_PULSES_TO_STORE 10
 #define NUMBER_HALL_EFFECT_SENSORS 4
 #define NUMBER_FREQUENCIES 16
 
@@ -59,16 +58,13 @@ void initializeHEInterrupts(void);
 void enableHEInterrupts(void);
 void disableHEInterrupts(void);
 
-void updatePeriodArrays(uint8_t sensor_index, uint32_t CurrentPeriod);
-void detectPollingStation(uint8_t sensor_index);
-uint8_t PS_Period_Comparison(uint32_t actualPeriod);
+void updateBuckets(uint32_t CurrentPeriod);
 bool toleranceCheck(uint32_t value, uint32_t target, uint32_t tol);
 /*---------------------------- Module Variables ---------------------------*/
 // everybody needs a state variable, you may need others as well
 static HallEffectState_t CurrentState;
 
-//Create Module Level variable for Each Hall Sensors Last Captured Periods (in us)
-static uint32_t HallSensor_LastPeriods[NUMBER_PULSES_TO_STORE][NUMBER_HALL_EFFECT_SENSORS];
+static uint8_t buckets[NUMBER_FREQUENCIES];
 
 //Create Array with different Possibile Periods in Microseconds (note although it says _f these are actually directly periods in Microseconds
 uint32_t HallEffect_P[] = {	
@@ -259,6 +255,13 @@ static ES_Event DuringMeasure_t( ES_Event Event)
         // repeat for any concurrent lower level machines
       
         // do any activity that is repeated as long as we are in this state
+				if ((Event.EventType == ES_TIMEOUT) && (Event.EventParam == HALL_EFFECT_TIMEOUT_TIMER))
+				{
+					for (int i = 0; i < NUMBER_FREQUENCIES; i++)
+					{
+						buckets[i] = 0;
+					}
+				}
     }
     // return either Event, if you don't want to allow the lower level machine
     // to remap the current event, or ReturnEvent if you do want to allow it.
@@ -348,10 +351,7 @@ void HE_OuterLeft_InterruptResponse(void){
 	lastCaptureOuterLeft = ThisCapture;
 	
 	// Update our knowledge of the most recent periods
-	updatePeriodArrays(LEFT_OUTER_INDEX, Period);
-	
-	// Check if we have a Matched Any Frequencies
-	detectPollingStation(LEFT_OUTER_INDEX);
+	updateBuckets(Period);
 }
 
 //INNER LEFT
@@ -369,10 +369,7 @@ void HE_InnerLeft_InterruptResponse(void){
 	lastCaptureInnerLeft = ThisCapture;
 	
 	// Update our knowledge of the most recent periods
-	updatePeriodArrays(LEFT_INNER_INDEX, Period);
-	
-	// Check if we have a Matched Any Frequencies
-	detectPollingStation(LEFT_INNER_INDEX);
+	updateBuckets(Period);
 }
 
 //INNER RIGHT
@@ -390,10 +387,7 @@ void HE_InnerRight_InterruptResponse(void){
 	lastCaptureInnerRight = ThisCapture;
 	
 	// Update our knowledge of the most recent periods
-	updatePeriodArrays(RIGHT_INNER_INDEX, Period);
-	
-	// Check if we have a Matched Any Frequencies
-	detectPollingStation(RIGHT_INNER_INDEX);
+	updateBuckets(Period);
 }
 
 //OUTER RIGHT
@@ -411,10 +405,7 @@ void HE_OuterRight_InterruptResponse(void){
 	lastCaptureOuterRight = ThisCapture;
 	
 	// Update our knowledge of the most recent periods
-	updatePeriodArrays(RIGHT_OUTER_INDEX, Period);
-	
-	// Check if we have a Matched Any Frequencies
-	detectPollingStation(RIGHT_OUTER_INDEX);
+	updateBuckets(Period);
 }
 
 
@@ -425,123 +416,46 @@ void HE_OuterRight_InterruptResponse(void){
 /***************************************************************************
 Update the Array with Periods to shift everything down whenever we get a new one
  ***************************************************************************/
-void updatePeriodArrays(uint8_t sensor_index, uint32_t CurrentPeriod){
-	if (NUMBER_PULSES_TO_STORE > 2){
-		//Shift Periods Down
-		for (uint8_t i = NUMBER_PULSES_TO_STORE-1; i > 0; i--){
-				HallSensor_LastPeriods[i][sensor_index] = HallSensor_LastPeriods[i-1][sensor_index];
-		}
-	}
-	//Update the Most Recent Period
-	HallSensor_LastPeriods[0][sensor_index] = CurrentPeriod;
-}
-
-/***************************************************************************
-Detect Polling Stations
- ***************************************************************************/
-void detectPollingStation(uint8_t sensor_index){
-	//set boolean signaling variable PS_detected = false
-
-	if (QueryAttackStrategySM() == Attack_t)
-	{
-		return;
-	}
-	
-	//first check if the last period is within the tolerance of anything we care about
-	uint32_t periodMatchIndex = PS_Period_Comparison(HallSensor_LastPeriods[0][sensor_index]);
-
-	//If the periodMatch was not null then we found a period
-	if (periodMatchIndex != NULL_PERIOD_INDEX){
-			//Now we want to check if we have gotten any other values also within the tolerance bounds of the period match we just found
-			
-			//Get period Based on the Index
-			uint32_t periodMatch = HallEffect_P[periodMatchIndex];
-			
-			//Initialize Number of good pulses to zero (the one we currently have is going to be counted again)
-			uint8_t numGoodPulses = 0;
-			
-			//Loop Through All of Our Hall Sensor values
-			for (uint8_t pulse = 0; pulse < NUMBER_PULSES_TO_STORE; pulse ++){
-				for (uint8_t sensor = 0; sensor < NUMBER_HALL_EFFECT_SENSORS; sensor++){
-					//Check if we have a match against the period we got in our latest pulse
-					if (toleranceCheck(HallSensor_LastPeriods[pulse][sensor], periodMatch, PERIOD_MEASURING_ERROR_TOLERANCE)){
-							//printf("One more Hall Effect sensor confirmed \n\r");
-							//increment our numGoodPulses
-							numGoodPulses++;
-					}			
-				}
-			}
-
-			//If we have enough good pulses
-			if (numGoodPulses >= NUMBER_PULSES_TO_STOP){
-				//printf("Sufficient Pulses Observed, Attempt to Capture the Polling Station \n\r");
-				
-				// Check if the station we are measuring is one that we own, by comparing our 
-				// current position to the locations of stations we own
-				//if (NotByOurStation())
-				//{
-				if (!checkOwnFrequency(periodMatchIndex)){
-					//Disable the Interrupts
-					disableHEInterrupts();
-					
-					
-					//printf("Checked own frequency table, didn't match. Post that new PS was detected: %d Sensor %d \n\r", periodMatchIndex, sensor_index);
-					 
-					//Post to master that we detected a polling station
-					ES_Event ThisEvent;
-					ThisEvent.EventType = ES_PS_DETECTED;
-					ThisEvent.EventParam = periodMatchIndex; //Pass Index Over
-					//set the target frequency index
-					SetTargetFrequencyIndex(periodMatchIndex);
-					
-					PostMasterSM(ThisEvent);
-				}
-				else
-				{
-					//printf("Matched an owned frequency: %d Sensor %d \n\r", periodMatchIndex, sensor_index);
-				}
-			}
-			else
+void updateBuckets(uint32_t CurrentPeriod){
+	//Shift Periods Down
+	for (int i = 0; i < NUMBER_FREQUENCIES; i++){
+			if (toleranceCheck(CurrentPeriod, HallEffect_P[i], PERIOD_MEASURING_ERROR_TOLERANCE))
 			{
-				//printf("Not enough pulses (only %d) for period: %d. Sensor %d\r\n", numGoodPulses, periodMatchIndex, sensor_index);
-				//Loop Through All of Our Hall Sensor values
-				/*
-				static int i;
-				if (i++ > 30)
+				buckets[i]++;
+				if (buckets[i] > NUMBER_PULSES_TO_STOP)
 				{
-					for (uint8_t sensor = 0; sensor < NUMBER_HALL_EFFECT_SENSORS; sensor++){
-						for (uint8_t pulse = 0; pulse < NUMBER_PULSES_TO_STORE; pulse ++){
-							printf("sensor: %d, pulse%d, period: %d\r\n", sensor, pulse, HallSensor_LastPeriods[pulse][sensor]);
+					if (!checkOwnFrequency(i)){
+						//Disable the Interrupts
+						disableHEInterrupts();
+						
+						//printf("Checked own frequency table, didn't match. Post that new PS was detected: %d Sensor %d \n\r", periodMatchIndex, sensor_index);
+						 
+						//Post to master that we detected a polling station
+						ES_Event ThisEvent;
+						ThisEvent.EventType = ES_PS_DETECTED;
+						ThisEvent.EventParam = i; //Pass Index Over
+						//set the target frequency index
+						SetTargetFrequencyIndex(i);
+						
+						PostMasterSM(ThisEvent);
+						
+						// reset buckets
+						for (int i = 0; i < NUMBER_FREQUENCIES; i++){
+							buckets[i] = 0;
 						}
 					}
-					i = 0;
-				}*/
+					else
+					{
+						//printf("Matched an owned frequency: %d Sensor %d \n\r", periodMatchIndex, sensor_index);
+					}
+				}
+				
+				ES_Timer_InitTimer(HALL_EFFECT_TIMEOUT_TIMER, HALL_EFFECT_TIMEOUT_T);
+				
+				return;
 			}
 	}
 }
-
-
-//Compare the Period Given With the Possible Periods
-uint8_t PS_Period_Comparison(uint32_t actualPeriod){
-	//set returnPeriod to null as null will be returned if no matches are found
-	uint8_t returnPeriodIndex = NULL_PERIOD_INDEX;
-	
-	//Iterate Through Our Possible Frequencies
-	for (uint8_t i = 0; i < NUMBER_FREQUENCIES; i++){
-		//Check if Contained within 
-		bool contained = toleranceCheck(actualPeriod, HallEffect_P[i], PERIOD_MEASURING_ERROR_TOLERANCE);
-		
-		if (contained){
-			//For Testing
-			//printf("We got a single matching frequency, it's index is: %d \n\r", i);
-			
-			returnPeriodIndex =  i; //we return the index
-		}
-			
-	}
-	return returnPeriodIndex;
-}
-
 
 //Tolerance Check
 bool toleranceCheck(uint32_t value, uint32_t target, uint32_t tol){

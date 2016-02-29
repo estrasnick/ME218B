@@ -373,8 +373,9 @@ typedef enum {  ES_NO_EVENT = 0,
 #define TIMER5_RESP_FUNC PostMasterSM
 		#define GAME_TIMER	5
 		#define GAME_TIMER_T 46000 // Note, the total game time is 3x this value
-#define TIMER6_RESP_FUNC PostPositionLogicService
-		#define RELATIVE_POSITION_TIMER 6
+#define TIMER6_RESP_FUNC PostMasterSM
+		#define HALL_EFFECT_TIMEOUT_TIMER 6
+		#define HALL_EFFECT_TIMEOUT_T 100
 #define TIMER7_RESP_FUNC PostDriveTrainControlService
 		#define MOTOR_STOPPED_R 7
 #define TIMER8_RESP_FUNC PostMasterSM

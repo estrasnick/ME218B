@@ -173,7 +173,7 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 				break;
 			case (ES_DRIVE_HALF_SPEED):
 				printf("Driving forward half speed\r\n");
-				setTargetEncoderTicks(250, 250, 0, 0);
+				setTargetEncoderTicks(1000, 1000, 0, 0);
 				//setTargetDriveSpeed(80, 80);
 				//SetPWM_DriveLeft(HALF_SPEED_L, LEFT_DRIVE_FORWARD_PIN_DIRECTION);
 				//SetPWM_DriveRight(HALF_SPEED_R, RIGHT_DRIVE_FORWARD_PIN_DIRECTION);		
