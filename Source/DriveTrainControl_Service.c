@@ -23,7 +23,7 @@
 
 /*----------------------------- Module Defines ----------------------------*/
 //Define Gains
-#define P_GAIN 2.92f
+#define P_GAIN 1.32f
 #define D_GAIN  0.0f //2.5f
 #define I_GAIN .15f
 

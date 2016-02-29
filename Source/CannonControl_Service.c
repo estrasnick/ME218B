@@ -251,9 +251,10 @@ static void calculateControlResponse(float currentRPM){
 		
 	//Call the Set PWM Function on the clamped RequestedDuty Value
 	//SetPWM_Cannon(clamp(RequestedDuty, 0, 100));
-	//SetPWM_Cannon(CANNON_TEST_PWM);
-	SetPWM_Cannon(0);
+	SetPWM_Cannon(CANNON_TEST_PWM);
+	//SetPWM_Cannon(0);
 }
+
 
 
 /****************************************************************************

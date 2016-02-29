@@ -485,7 +485,7 @@ void detectPollingStation(uint8_t sensor_index){
 					disableHEInterrupts();
 					
 					
-					printf("Checked own frequency table, didn't match. Post that new PS was detected: %d Sensor %d \n\r", periodMatchIndex, sensor_index);
+					//printf("Checked own frequency table, didn't match. Post that new PS was detected: %d Sensor %d \n\r", periodMatchIndex, sensor_index);
 					 
 					//Post to master that we detected a polling station
 					ES_Event ThisEvent;
@@ -498,12 +498,24 @@ void detectPollingStation(uint8_t sensor_index){
 				}
 				else
 				{
-					printf("Matched an owned frequency: %d Sensor %d \n\r", periodMatchIndex, sensor_index);
+					//printf("Matched an owned frequency: %d Sensor %d \n\r", periodMatchIndex, sensor_index);
 				}
 			}
 			else
 			{
-				printf("Not enough pulses (only %d) for period: %d. Sensor %d\r\n", numGoodPulses, periodMatchIndex, sensor_index);
+				//printf("Not enough pulses (only %d) for period: %d. Sensor %d\r\n", numGoodPulses, periodMatchIndex, sensor_index);
+				//Loop Through All of Our Hall Sensor values
+				/*
+				static int i;
+				if (i++ > 30)
+				{
+					for (uint8_t sensor = 0; sensor < NUMBER_HALL_EFFECT_SENSORS; sensor++){
+						for (uint8_t pulse = 0; pulse < NUMBER_PULSES_TO_STORE; pulse ++){
+							printf("sensor: %d, pulse%d, period: %d\r\n", sensor, pulse, HallSensor_LastPeriods[pulse][sensor]);
+						}
+					}
+					i = 0;
+				}*/
 			}
 	}
 }

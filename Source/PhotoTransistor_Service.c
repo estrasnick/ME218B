@@ -289,7 +289,7 @@ void PhotoTransistor_InterruptResponse(void)
 		
 		if (matchingBeacon != LastBeacon)
 		{
-			printf("Switching from beacon %d to %d\r\n", LastBeacon, matchingBeacon);
+			//printf("Switching from beacon %d to %d\r\n", LastBeacon, matchingBeacon);
 			ResetAverage();
 		}
 		Sum += GetPeriscopeAngle();
