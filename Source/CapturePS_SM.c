@@ -176,7 +176,7 @@ ES_Event RunCapturePSSM( ES_Event CurrentEvent )
 									PostMasterSM(ThisEvent);
 								
 								//No Need to Transition Out
-								MakeTransition = true;
+								MakeTransition = false;
 						}
          }
          break;

@@ -33,8 +33,9 @@
 
 #define ENTRY_STATE Measure_t
 
-#define PERIOD_MEASURING_ERROR_TOLERANCE 20 //in micr
-#define NUMBER_PULSES_TO_STOP 5
+#define PERIOD_MEASURING_ERROR_TOLERANCE 10 //in micr
+#define NUMBER_PULSES_TO_STOP 3
+#define NUMBER_PULSES_TO_STORE 10
 #define NUMBER_HALL_EFFECT_SENSORS 4
 #define NUMBER_FREQUENCIES 16
 
@@ -67,7 +68,7 @@ bool toleranceCheck(uint32_t value, uint32_t target, uint32_t tol);
 static HallEffectState_t CurrentState;
 
 //Create Module Level variable for Each Hall Sensors Last Captured Periods (in us)
-static uint32_t HallSensor_LastPeriods[NUMBER_PULSES_TO_STOP*2][NUMBER_HALL_EFFECT_SENSORS];
+static uint32_t HallSensor_LastPeriods[NUMBER_PULSES_TO_STORE][NUMBER_HALL_EFFECT_SENSORS];
 
 //Create Array with different Possibile Periods in Microseconds (note although it says _f these are actually directly periods in Microseconds
 uint32_t HallEffect_P[] = {	
@@ -425,9 +426,9 @@ void HE_OuterRight_InterruptResponse(void){
 Update the Array with Periods to shift everything down whenever we get a new one
  ***************************************************************************/
 void updatePeriodArrays(uint8_t sensor_index, uint32_t CurrentPeriod){
-	if (NUMBER_PULSES_TO_STOP > 2){
+	if (NUMBER_PULSES_TO_STORE > 2){
 		//Shift Periods Down
-		for (uint8_t i = NUMBER_PULSES_TO_STOP-1; i > 0; i--){
+		for (uint8_t i = NUMBER_PULSES_TO_STORE-1; i > 0; i--){
 				HallSensor_LastPeriods[i][sensor_index] = HallSensor_LastPeriods[i-1][sensor_index];
 		}
 	}
@@ -460,13 +461,13 @@ void detectPollingStation(uint8_t sensor_index){
 			uint8_t numGoodPulses = 0;
 			
 			//Loop Through All of Our Hall Sensor values
-			for (uint8_t pulse = 0; pulse < NUMBER_PULSES_TO_STOP; pulse ++){
+			for (uint8_t pulse = 0; pulse < NUMBER_PULSES_TO_STORE; pulse ++){
 				for (uint8_t sensor = 0; sensor < NUMBER_HALL_EFFECT_SENSORS; sensor++){
 					//Check if we have a match against the period we got in our latest pulse
 					if (toleranceCheck(HallSensor_LastPeriods[pulse][sensor], periodMatch, PERIOD_MEASURING_ERROR_TOLERANCE)){
 							//printf("One more Hall Effect sensor confirmed \n\r");
 							//increment our numGoodPulses
-							numGoodPulses ++;
+							numGoodPulses++;
 					}			
 				}
 			}
@@ -484,8 +485,8 @@ void detectPollingStation(uint8_t sensor_index){
 					disableHEInterrupts();
 					
 					
-					printf("Checked own frequency table, didn't match. Post that new PS was detected: %d \n\r", periodMatchIndex);
-					
+					printf("Checked own frequency table, didn't match. Post that new PS was detected: %d Sensor %d \n\r", periodMatchIndex, sensor_index);
+					 
 					//Post to master that we detected a polling station
 					ES_Event ThisEvent;
 					ThisEvent.EventType = ES_PS_DETECTED;
@@ -495,7 +496,15 @@ void detectPollingStation(uint8_t sensor_index){
 					
 					PostMasterSM(ThisEvent);
 				}
-			}	
+				else
+				{
+					printf("Matched an owned frequency: %d Sensor %d \n\r", periodMatchIndex, sensor_index);
+				}
+			}
+			else
+			{
+				printf("Not enough pulses (only %d) for period: %d. Sensor %d\r\n", numGoodPulses, periodMatchIndex, sensor_index);
+			}
 	}
 }
 

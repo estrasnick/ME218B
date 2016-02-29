@@ -35,7 +35,7 @@
 #define ROTATE_90_TIME 500
 #define ROTATE_45_TIME 300
 
-#define STALL_THRESHOLD 3
+#define STALL_THRESHOLD 5
 
 /*---------------------------- Module Functions ---------------------------*/
 /* prototypes for private functions for this service.They should be functions
@@ -210,7 +210,7 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 				printf("Collision detected!");
 				ES_Event CollisionEvent;
 				CollisionEvent.EventType = ES_COLLISION;
-				PostMasterSM(CollisionEvent);
+				//PostMasterSM(CollisionEvent);
 				StallCounter_Left = 0;
 			}
 			else
@@ -234,7 +234,7 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 				printf("Collision detected!");
 				ES_Event CollisionEvent;
 				CollisionEvent.EventType = ES_COLLISION;
-				PostMasterSM(CollisionEvent);
+				//PostMasterSM(CollisionEvent);
 				StallCounter_Right = 0;
 			}
 			else
@@ -265,8 +265,8 @@ void DriveEncoder_Left_InterruptResponse(void){
 	// Check if we've reached our target, and if so, stop
 	if (LeftEncoderTicks >= TargetTicks_Left && (!AligningToBucket))
 	{
-		printf("Left encoder reached destination\r\n");
-		setTargetDriveSpeed(0, 0);
+		//printf("Left encoder reached destination\r\n");
+		setTargetEncoderTicks(0, 0, false, false);
 		//if (RPMTarget_Right == 0)
 		//{
 			ES_Event NewEvent;
@@ -308,8 +308,9 @@ void DriveEncoder_Right_InterruptResponse(void){
 	// Check if we've reached our target, and if so, stop
 	if (RightEncoderTicks >= TargetTicks_Right && (!AligningToBucket))
 	{
-		printf("Right encoder reached destination\r\n");
-		setTargetDriveSpeed(0, 0);
+		//printf("Right encoder reached destination\r\n");
+		setTargetEncoderTicks(0, 0, false, false);
+		
 		//if (RPMTarget_Left == 0)
 		//{
 			ES_Event NewEvent;
@@ -397,7 +398,7 @@ static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm,
 	}
 	/*
 	static int i;
-		if (i++ > 250)
+		if (i++ > 101)
 		{
 			if (isRight)
 			{
@@ -462,9 +463,9 @@ void setTargetDriveSpeed(float newRPMTarget_left, float newRPMTarget_right){
 		LastError_Right = 0;
 	}
 	integralTerm_Left = 0;
-		integralTerm_Right = 0;
-		LastError_Left = 0;
-		LastError_Right = 0;
+	integralTerm_Right = 0;
+	LastError_Left = 0;
+	LastError_Right = 0;
 }
 
 /****************************************************************************
@@ -492,7 +493,7 @@ void clearDriveAligningToBucket(void)
      Set the New Target Encoder Ticks
 ****************************************************************************/
 void setTargetEncoderTicks(uint32_t leftTicks, uint32_t rightTicks, bool negativeLeft, bool negativeRight){
-	printf("Encoder ticks set to: %d, %d, direction %d, %d\r\n", leftTicks, rightTicks, negativeLeft, negativeRight);
+	//printf("Encoder ticks set to: %d, %d, direction %d, %d\r\n", leftTicks, rightTicks, negativeLeft, negativeRight);
 	isMoving = true;
 	
 	TargetTicks_Left = leftTicks;
@@ -500,7 +501,14 @@ void setTargetEncoderTicks(uint32_t leftTicks, uint32_t rightTicks, bool negativ
 	
 	if (leftTicks == rightTicks)
 	{
-		setTargetDriveSpeed(negativeLeft ? -DEFAULT_DRIVE_RPM : DEFAULT_DRIVE_RPM, negativeRight ? -DEFAULT_DRIVE_RPM : DEFAULT_DRIVE_RPM);
+		if (leftTicks == 0)
+		{
+			setTargetDriveSpeed(0, 0);
+		}
+		else
+		{
+			setTargetDriveSpeed(negativeLeft ? -DEFAULT_DRIVE_RPM : DEFAULT_DRIVE_RPM, negativeRight ? -DEFAULT_DRIVE_RPM : DEFAULT_DRIVE_RPM);
+		}
 	}
 	else
 	{

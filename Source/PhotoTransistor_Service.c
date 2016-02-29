@@ -29,7 +29,7 @@
 #define NUMBER_PULSES_FOR_BUCKET 3
 
 #define BEACON_F_NW 1450
-#define BEACON_F_NE 1700
+#define BEACON_F_NE 1700  
 #define BEACON_F_SE 1250
 #define BEACON_F_SW 1950
 

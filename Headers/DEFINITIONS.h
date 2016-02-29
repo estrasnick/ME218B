@@ -71,7 +71,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define GAME_STATUS_PIN						GPIO_PIN_0
 #define COLOR_PIN 								GPIO_PIN_1
 #define unused 								GPIO_PIN_2
-#define unused5									GPIO_PIN_3
+#define CANNON_DIRECTION_PIN									GPIO_PIN_3
 #define CANNON_PWM_PIN  				GPIO_PIN_4
 #define PERISCOPE_PWM_PIN 			GPIO_PIN_5
 #define PERISCOPE_LATCH_PWM_PIN GPIO_PIN_6
@@ -265,7 +265,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define CANNON_PWM_PARAMATERS				CANNON_PWM, CANNON_PERIOD
 #define PERISCOPE_LATCH_PWM_PARAMATERS    PERISCOPE_LATCH_PWM, PERISCOPE_LATCH_PERIOD
 
-#define PERISCOPE_PWM_DUTY 30
+#define PERISCOPE_PWM_DUTY 50
 
 //These Values have been tested and appear to be good
 #define PERISCOPE_LATCH_DUTY 9

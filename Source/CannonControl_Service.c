@@ -27,10 +27,10 @@
 
 //Cannon Test Speeds in RPM
 #define CANNON_STOP_SPEED 0
-#define CANNON_TEST_PWM 10
-#define CANNON_TEST_RPM 2200
+#define CANNON_TEST_PWM 30
+#define CANNON_TEST_RPM 2700
 
-#define CANNON_RPM_TOLERANCE 800
+#define CANNON_RPM_TOLERANCE 2000
 
 /*---------------------------- Module Functions ---------------------------*/
 /* prototypes for private functions for this service.They should be functions
@@ -75,6 +75,9 @@ bool InitCannonControlService ( uint8_t Priority )
   ES_Event ThisEvent;
 	
   MyPriority = Priority;
+	
+	GPIO_Init(CANNONANGLE_SYSCTL, CANNONANGLE_BASE, CANNON_DIRECTION_PIN, OUTPUT);
+	GPIO_Clear(CANNONANGLE_BASE, CANNON_DIRECTION_PIN);
 	
 	//Initialize Our Input Captures for Encoder
 	InitInputCapture(CANNON_ENCODER_INTERRUPT_PARAMATERS);
@@ -248,7 +251,8 @@ static void calculateControlResponse(float currentRPM){
 		
 	//Call the Set PWM Function on the clamped RequestedDuty Value
 	//SetPWM_Cannon(clamp(RequestedDuty, 0, 100));
-	SetPWM_Cannon(CANNON_TEST_PWM);
+	//SetPWM_Cannon(CANNON_TEST_PWM);
+	SetPWM_Cannon(0);
 }
 
 

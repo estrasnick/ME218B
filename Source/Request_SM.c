@@ -263,12 +263,14 @@ static ES_Event DuringQuery_t( ES_Event Event)
 				uint8_t *byte;
 				byte = getResponseArray();
 			
+			/*
 				printf("Querying:  %x, %x, %x, %x, %x \n\r", 
 				*(byte + 0), 
 				*(byte + 1), 
 				*(byte + 2), 
 				*(byte + 3), 
 				*(byte + 4));
+			*/
       
     }else
     // do the 'during' function for this state
