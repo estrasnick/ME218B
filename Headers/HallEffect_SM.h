@@ -23,6 +23,7 @@ void HE_InnerLeft_InterruptResponse(void);
 void HE_InnerRight_InterruptResponse(void);
 void HE_OuterRight_InterruptResponse(void);
 
+void SetAllowStop(bool allow);
 
 #endif 
 

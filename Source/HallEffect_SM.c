@@ -26,6 +26,7 @@
 #include "SendingCMD_SM.h"
 #include "SendingByte_SM.h"
 #include "PACLogic_SM.h"
+#include "DriveTrainControl_Service.h"
 #include "AttackStrategy_SM.h"
 /*----------------------------- Module Defines ----------------------------*/
 // define constants for the states for this machine
@@ -34,7 +35,7 @@
 #define ENTRY_STATE Measure_t
 
 #define PERIOD_MEASURING_ERROR_TOLERANCE 10 //in micr
-#define NUMBER_PULSES_TO_STOP 3
+#define NUMBER_PULSES_TO_STOP 4
 #define NUMBER_HALL_EFFECT_SENSORS 4
 #define NUMBER_FREQUENCIES 16
 
@@ -54,12 +55,13 @@
 static ES_Event DuringMeasure_t( ES_Event Event);
 static ES_Event DuringRequesting_t( ES_Event Event);
 
-void initializeHEInterrupts(void);
-void enableHEInterrupts(void);
-void disableHEInterrupts(void);
+static void initializeHEInterrupts(void);
+static void enableHEInterrupts(void);
+static void disableHEInterrupts(void);
 
-void updateBuckets(uint32_t CurrentPeriod);
-bool toleranceCheck(uint32_t value, uint32_t target, uint32_t tol);
+static void updateBuckets(uint32_t CurrentPeriod);
+static bool toleranceCheck(uint32_t value, uint32_t target, uint32_t tol);
+
 /*---------------------------- Module Variables ---------------------------*/
 // everybody needs a state variable, you may need others as well
 static HallEffectState_t CurrentState;
@@ -92,6 +94,8 @@ uint32_t HallEffect_P[] = {
 	uint32_t lastCaptureOuterRight;
 	
 	
+static bool AllowStop = true;
+	
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
  Function
@@ -113,42 +117,53 @@ ES_Event RunHallEffectSM( ES_Event CurrentEvent )
    ES_Event EntryEventKind = { ES_ENTRY, 0 };// default to normal entry to new state
    ES_Event ReturnEvent = CurrentEvent; // assume we are not consuming event
 
-   switch ( CurrentState )
-   {
-       case Measure_t :     
-         // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
-         CurrentEvent = DuringMeasure_t(CurrentEvent);
-			 
-         //Process Any Events
-         if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
-         {	
-						//Check for Specific Events
-            if (CurrentEvent.EventType == ES_PS_DETECTED)
-            {
-							printf("PS detected with Frequency:%d !\r\n", CurrentEvent.EventParam);
-							MakeTransition = true;
-							NextState = Requesting_t;
-            }
-         }
-         break;
-        
-			 case Requesting_t :     
-         // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
-         CurrentEvent = DuringRequesting_t(CurrentEvent);
-			 
-         //Process Any Events
-         if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
-         {	
-						//Check for Specific Events
-            if (CurrentEvent.EventType == ES_PS_MEASURING)
-            {
-							MakeTransition = true;
-							NextState = Measure_t;
-            }
-         }
-         break;
-    
-    }
+	 if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == HALL_EFFECT_TIMEOUT_TIMER))
+	 {
+	 	 printf("Hall effect timeout; resetting buckets\r\n");
+	 	 for (int i = 0; i < NUMBER_FREQUENCIES; i++)
+	 	 {
+	 	 	 buckets[i] = 0;
+	 	 }
+	 }
+	 else
+	 {
+		 switch ( CurrentState )
+		 {
+				 case Measure_t :     
+					 // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
+					 CurrentEvent = DuringMeasure_t(CurrentEvent);
+				 
+					 //Process Any Events
+					 if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
+					 {	
+							//Check for Specific Events
+							if (CurrentEvent.EventType == ES_PS_DETECTED)
+							{
+								printf("PS detected with Frequency:%d !\r\n", CurrentEvent.EventParam);
+								MakeTransition = true;
+								NextState = Requesting_t;
+							}
+					 }
+					 break;
+					
+				 case Requesting_t :     
+					 // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
+					 CurrentEvent = DuringRequesting_t(CurrentEvent);
+				 
+					 //Process Any Events
+					 if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
+					 {	
+							//Check for Specific Events
+							if (CurrentEvent.EventType == ES_PS_MEASURING)
+							{
+								MakeTransition = true;
+								NextState = Measure_t;
+							}
+					 }
+					 break;
+			
+			}
+		}
     //   If we are making a state transition
     if (MakeTransition == true)
     {
@@ -255,13 +270,7 @@ static ES_Event DuringMeasure_t( ES_Event Event)
         // repeat for any concurrent lower level machines
       
         // do any activity that is repeated as long as we are in this state
-				if ((Event.EventType == ES_TIMEOUT) && (Event.EventParam == HALL_EFFECT_TIMEOUT_TIMER))
-				{
-					for (int i = 0; i < NUMBER_FREQUENCIES; i++)
-					{
-						buckets[i] = 0;
-					}
-				}
+				
     }
     // return either Event, if you don't want to allow the lower level machine
     // to remap the current event, or ReturnEvent if you do want to allow it.
@@ -421,9 +430,16 @@ void updateBuckets(uint32_t CurrentPeriod){
 	for (int i = 0; i < NUMBER_FREQUENCIES; i++){
 			if (toleranceCheck(CurrentPeriod, HallEffect_P[i], PERIOD_MEASURING_ERROR_TOLERANCE))
 			{
+				if (AllowStop)
+				{
+					setTargetDriveSpeed(0.0, 0.0);
+					ResetEncoderTicks();
+					AllowStop = false;
+				}
 				buckets[i]++;
 				if (buckets[i] > NUMBER_PULSES_TO_STOP)
 				{
+					printf("Choosing bucket:%d \r\n", i);
 					if (!checkOwnFrequency(i)){
 						//Disable the Interrupts
 						disableHEInterrupts();
@@ -439,14 +455,15 @@ void updateBuckets(uint32_t CurrentPeriod){
 						
 						PostMasterSM(ThisEvent);
 						
-						// reset buckets
-						for (int i = 0; i < NUMBER_FREQUENCIES; i++){
-							buckets[i] = 0;
-						}
+						
 					}
 					else
 					{
 						//printf("Matched an owned frequency: %d Sensor %d \n\r", periodMatchIndex, sensor_index);
+					}
+					// reset buckets
+					for (int i = 0; i < NUMBER_FREQUENCIES; i++){
+						buckets[i] = 0;
 					}
 				}
 				
@@ -457,8 +474,14 @@ void updateBuckets(uint32_t CurrentPeriod){
 	}
 }
 
+void SetAllowStop(bool allow)
+{
+	AllowStop = allow;
+}
+
+
 //Tolerance Check
-bool toleranceCheck(uint32_t value, uint32_t target, uint32_t tol){
+static bool toleranceCheck(uint32_t value, uint32_t target, uint32_t tol){
 	//Check if within Tolerance
 	if ( (value <= target + tol) && (value >= target - tol)){
 		return true;

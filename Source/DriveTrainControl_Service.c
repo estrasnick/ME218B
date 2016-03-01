@@ -202,6 +202,7 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 		Left_LastCapture = 0;
 		ExitCritical();
 		
+		printf("Left motor stopped\r\n");
 		if (RPMTarget_Left != 0)
 		{
 			StallCounter_Left++;
@@ -226,6 +227,8 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 		Right_Period = 0;
 		Right_LastCapture = 0;
 		ExitCritical();
+		
+		printf("Right motor stopped\r\n");
 		if (RPMTarget_Right != 0)
 		{
 			StallCounter_Right++;

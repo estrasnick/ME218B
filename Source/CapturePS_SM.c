@@ -105,6 +105,7 @@ ES_Event RunCapturePSSM( ES_Event CurrentEvent )
 									NextState = Measuring2_t;
 									MakeTransition = true;
 								} else {	//if not exit and go back to measuring									
+									printf("Got a NACK, go back to measuring1_t \n\r");
 									NextState = Measuring1_t;
 									MakeTransition = true;
 								}
@@ -174,7 +175,7 @@ ES_Event RunCapturePSSM( ES_Event CurrentEvent )
 									ES_Event ThisEvent;
 									ThisEvent.EventType = ES_PS_CAPTURED;								
 									PostMasterSM(ThisEvent);
-								
+									
 								//No Need to Transition Out
 								MakeTransition = false;
 						}
@@ -419,6 +420,12 @@ static ES_Event DuringMeasuring3_t( ES_Event Event)
     }
     else if ( Event.EventType == ES_EXIT )
     {
+			
+				//Start Measuring Again
+				ES_Event ThisEvent;
+				ThisEvent.EventType = ES_PS_MEASURING;								
+				PostMasterSM(ThisEvent);
+			
         // on exit, give the lower levels a chance to clean up first
         //RunLowerLevelSM(Event);
         // repeat for any concurrently running state machines

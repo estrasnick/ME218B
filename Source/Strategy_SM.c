@@ -28,6 +28,7 @@
 #include "GameInfo.h"
 #include "EnemyCaptureQueue.h"
 #include "PWM_Service.h"
+#include "HallEffect_SM.h"
 #include "DriveTrainControl_Service.h"
 
 /*----------------------------- Module Defines ----------------------------*/
@@ -254,6 +255,10 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 						{
 							ResumePositioning();
 							printf("Arrived at target\r\n");
+							
+							// Since we have traveled, we are now allowed to stop for a station again
+							SetAllowStop(true);
+							
 							NextState = ChooseDestination_t;
 							MakeTransition = true;
 						}
@@ -567,8 +572,7 @@ static ES_Event DuringStationCapture_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-        setTargetDriveSpeed(0.0, 0.0);
-				ResetEncoderTicks();
+        
         // after that start any lower level machines that run in this state
         
         // repeat the StartxxxSM() functions for concurrent state machines
