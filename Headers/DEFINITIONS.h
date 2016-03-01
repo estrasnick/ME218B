@@ -245,7 +245,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 //ASSIGN THE PERIODS
 #define LEFT_DRIVE_PERIOD			50
 #define RIGHT_DRIVE_PERIOD		50
-#define PERISCOPE_PERIOD			50
+#define PERISCOPE_PERIOD			200
 #define PERISCOPE_LATCH_PERIOD 20000
 #define HOPPER_PERIOD					20000
 #define CANNON_PERIOD					200
