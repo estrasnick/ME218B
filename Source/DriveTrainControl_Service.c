@@ -29,8 +29,8 @@
 
 //Test Conditions
 #define FULL_SPEED 100.0f
-#define HALF_SPEED_L 70.0f
-#define HALF_SPEED_R 63.0f
+#define HALF_SPEED_L 50.0f
+#define HALF_SPEED_R 50.0f
 #define STOP_SPEED 0.0f
 #define ROTATE_90_TIME 500
 #define ROTATE_45_TIME 300

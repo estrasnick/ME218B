@@ -23,7 +23,7 @@
 /*----------------------------- Module Defines ----------------------------*/
 
 #define PERIOD_MEASURING_ERROR_TOLERANCE 10 //in microseconds
-#define NUMBER_PULSES_TO_BE_ALIGNED 3
+#define NUMBER_PULSES_TO_BE_ALIGNED 5
 #define NUMBER_PHOTOTRANSISTORS 1
 #define NUMBER_BEACON_FREQUENCIES 4
 #define NUMBER_PULSES_FOR_BUCKET 3
@@ -54,8 +54,6 @@
 */
 
 //static void UpdateLastPeriod(uint32_t period);
-
-static uint8_t CheckForBeacon(uint32_t period);
 
 //static bool IsBeaconMatch(uint8_t beaconIndex);
 
@@ -90,6 +88,8 @@ static uint32_t NumberSamples;
 static float Sum;
 
 static uint8_t LastBeacon;
+
+static uint8_t buckets[NUMBER_BEACON_FREQUENCIES];
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -191,6 +191,14 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 				PostPositionLogicService(NewEvent);
 			}
 		}
+		
+		for (int j = 0; j < NUMBER_BEACON_FREQUENCIES; j++)
+		{
+			buckets[j] = 0;
+		}
+		ResetAverage();
+		
+		LastBeacon = NULL_BEACON;
 	}
 	else if (ThisEvent.EventType == ES_ALIGN_TO_BUCKET)
 	{
@@ -280,33 +288,38 @@ void PhotoTransistor_InterruptResponse(void)
 	//Store the Last Cpature
 	LastCapture = ThisCapture;
 	
-	// Check if we have a beacon match
-	uint8_t matchingBeacon = CheckForBeacon(Period);
-	// If so, update the beacon structure
-	if (matchingBeacon != NULL_BEACON)
+	for (int i = 0; i < NUMBER_BEACON_FREQUENCIES; i++)
 	{
-		ES_Timer_InitTimer(AVERAGE_BEACONS_TIMER, AVERAGE_BEACONS_T);
-		
-		if (matchingBeacon != LastBeacon)
+		if (ToleranceCheck(Period, beacons[i].period, PERIOD_MEASURING_ERROR_TOLERANCE))
 		{
-			//printf("Switching from beacon %d to %d\r\n", LastBeacon, matchingBeacon);
-			ResetAverage();
+			buckets[i]++;
+			if (buckets[i] > NUMBER_PULSES_TO_BE_ALIGNED)
+			{
+				LastBeacon = i;
+				if (AligningToBucket && NumberSamples >= NUMBER_PULSES_FOR_BUCKET)
+				{
+					if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
+					{ 
+						printf("Aligned to bucket!\r\n");
+						clearDriveAligningToBucket();
+						ES_Event AlignedEvent;
+						AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
+						PostMasterSM(AlignedEvent);
+						
+						for (int j = 0; j < NUMBER_BEACON_FREQUENCIES; j++)
+						{
+							buckets[j] = 0;
+						}
+						ResetAverage();
+						LastBeacon = NULL_BEACON;
+					}
+				}
+			}
+			Sum += GetPeriscopeAngle();
+			NumberSamples++;
+			ES_Timer_InitTimer(AVERAGE_BEACONS_TIMER, AVERAGE_BEACONS_T);
 		}
-		Sum += GetPeriscopeAngle();
-		NumberSamples++;
-		LastBeacon = matchingBeacon;
-		
-		if (AligningToBucket && NumberSamples >= NUMBER_PULSES_FOR_BUCKET)
-		{
-			if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
-				{ 
-					printf("Aligned to bucket!\r\n");
-					clearDriveAligningToBucket();
-					ES_Event AlignedEvent;
-					AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
-					PostMasterSM(AlignedEvent);
-				}	
-		}
+	}
 		
 		/*
 		if (((MyColor() == COLOR_BLUE) && (matchingBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (matchingBeacon == BEACON_INDEX_SE)))
@@ -331,8 +344,6 @@ void PhotoTransistor_InterruptResponse(void)
 			break;
 		}
 		*/
-
-	}
 }
 
 /*
@@ -346,21 +357,6 @@ static void UpdateLastPeriod(uint32_t period)
 	PhotoTransistor_LastPeriods[0] = period;
 }*/
 
-
-
-//Check For a Beacon
-static uint8_t CheckForBeacon(uint32_t period)
-{
-	for (int i = 0; i < NUMBER_BEACON_FREQUENCIES; i++)
-	{
-		if (ToleranceCheck(period, beacons[i].period, PERIOD_MEASURING_ERROR_TOLERANCE))
-		{
-			return i;
-		}
-	}
-	
-	return NULL_BEACON;
-}
 
 /*
 static bool IsBeaconMatch(uint8_t beaconIndex)
