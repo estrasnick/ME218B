@@ -179,7 +179,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 
 //PERIODIC INTERRUPT TIMES (microseconds)
 #define DRIVE_CONTROL_INTERRUPT_PERIOD 2000
-#define CANNON_CONTROL_INTERRUPT_PERIOD 500
+#define CANNON_CONTROL_INTERRUPT_PERIOD 20
 #define NULL_INTERRUPT_PERIOD 0
 
 //Timer Definitions
@@ -265,7 +265,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define CANNON_PWM_PARAMATERS				CANNON_PWM, CANNON_PERIOD
 #define PERISCOPE_LATCH_PWM_PARAMATERS    PERISCOPE_LATCH_PWM, PERISCOPE_LATCH_PERIOD
 
-#define PERISCOPE_PWM_DUTY 50
+#define PERISCOPE_PWM_DUTY 0
 
 //These Values have been tested and appear to be good
 #define PERISCOPE_LATCH_DUTY 9
