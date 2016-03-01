@@ -283,7 +283,7 @@ static void CalculateAbsolutePosition()
 	
 	//print our absolute position
 	printf("ABSOLUTE POSITION: X: %f, Y: %f, theta: %f\n\r", myX, myY, myTheta);	
-	printf("Last angle 'A' was: %d, A was: %f, B was: %f, C was: %f, gamma was: %f\r\n", lastBeaconIndex, 360 -  A, 360 -  B,360 -  C, ToDegrees(gamma));
+	printf("Last angle 'A' was: %d, A was: %f, B was: %f, C was: %f, gamma was: %f\r\n", lastBeaconIndex, A, B, C, ToDegrees(gamma));
 	
 	if ((myX < 0) || (myY < 0) || (myX > 96) || (myY > 96))
 	{

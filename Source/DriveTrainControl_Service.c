@@ -371,9 +371,9 @@ void DriveControl_PeriodicInterruptResponse(void){
 Control Law
  ***************************************************************************/
 static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm, float targetSpeed, bool isRight){
-	static float RPMError; /* make static for speed */
-	static float currentRPM;
-	static float lastError;
+	float RPMError; /* make static for speed */
+	float currentRPM;
+	float lastError;
 	
 	//Calculate RPM (Need new formula
 	currentRPM = CalculateRPM(ThisPeriod);
@@ -388,7 +388,7 @@ static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm,
 	integralTerm = clamp(integralTerm, 0, 100); /* anti-windup */
 	
 	//Calculate Desired Duty Cycle
-	uint8_t RequestedDuty = (P_GAIN * ((RPMError)+integralTerm+(D_GAIN * (RPMError-lastError))));
+	float RequestedDuty = (P_GAIN * ((RPMError)+integralTerm+(D_GAIN * (RPMError-lastError))));
 	if (isRight)
 	{
 		LastError_Right = RPMError;
@@ -401,7 +401,7 @@ static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm,
 	}
 	/*
 	static int i;
-		if (i++ > 101)
+		if (i++ > 51)
 		{
 			if (isRight)
 			{
@@ -417,7 +417,7 @@ static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm,
 			printf("\n\r RPMError %f", RPMError);
 			printf("\r\n LastError %f", lastError);
 			printf("\n\r Integral Term %f", integralTerm);
-			printf("\r\n Requested duty %d", RequestedDuty);
+			printf("\r\n Requested duty %f", RequestedDuty);
 			printf("\n\r");
 			i = 0;
 		}

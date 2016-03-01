@@ -124,6 +124,10 @@ ES_Event RunHallEffectSM( ES_Event CurrentEvent )
 	 	 {
 	 	 	 buckets[i] = 0;
 	 	 }
+		 
+		 ES_Event ResetEvent;
+		 ResetEvent.EventType = ES_RESET_DESTINATION;
+		 PostMasterSM(ResetEvent);
 	 }
 	 else
 	 {

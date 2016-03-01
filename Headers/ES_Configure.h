@@ -402,7 +402,7 @@ typedef enum {  ES_NO_EVENT = 0,
 		#define ATTACK_COMPLETE_T 1500
 #define TIMER15_RESP_FUNC PostPhotoTransistorService
 		#define AVERAGE_BEACONS_TIMER 15
-		#define AVERAGE_BEACONS_T 15
+		#define AVERAGE_BEACONS_T 5
 
 
 /****************************************************************************/

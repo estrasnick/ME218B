@@ -433,7 +433,7 @@ static uint8_t PS_Frequency_Codes[] = {
 
 #define PROXIMITY_TO_OUR_STATION_THRESHOLD 7.0f
 
-#define BACK_UP_TICKS 350
+#define BACK_UP_TICKS 175
 	
 #define HEIGHT_OF_BUCKET 19.5
 #define HEIGHT_OF_FIELD 4.375

@@ -91,6 +91,8 @@ static uint8_t LastBeacon;
 
 static uint8_t buckets[NUMBER_BEACON_FREQUENCIES];
 
+static uint8_t LastUpdatedBeacon = NULL_BEACON;
+
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
  Function
@@ -163,7 +165,6 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 			}
 		if (NumberSamples >= NUMBER_PULSES_TO_BE_ALIGNED)
 		{
-			
 			beacons[LastBeacon].lastUpdateTime = captureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 			beacons[LastBeacon].lastEncoderAngle = CalculateAverage();
 			switch (LastBeacon){
@@ -183,6 +184,8 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 			}
 			printf("Beacon Last Update Time: %d\n\r", beacons[LastBeacon].lastUpdateTime);
 			
+			LastUpdatedBeacon = LastBeacon;
+			
 			// Determine if we should recalculate our position and angle based on whethe or not we have received 3 consecutive pulses
 			if (TimeForUpdate())
 			{
@@ -190,6 +193,7 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 				NewEvent.EventType = ES_CALCULATE_POSITION;
 				PostPositionLogicService(NewEvent);
 			}
+			
 		}
 		
 		for (int j = 0; j < NUMBER_BEACON_FREQUENCIES; j++)
@@ -311,7 +315,7 @@ void PhotoTransistor_InterruptResponse(void)
 					LastBeacon = NULL_BEACON;
 				}
 			}
-			else if (buckets[i] > NUMBER_PULSES_TO_BE_ALIGNED)
+			else if (buckets[i] > NUMBER_PULSES_TO_BE_ALIGNED && LastBeacon == NULL_BEACON)
 			{
 				LastBeacon = i;
 			}
@@ -414,7 +418,7 @@ uint8_t mostRecentBeaconUpdate(void){
 		}
 	}
 	return mostRecentBeaconUpdated;*/
-	return LastBeacon;
+	return LastUpdatedBeacon;
 }
 
 
