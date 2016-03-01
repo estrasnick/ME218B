@@ -225,20 +225,29 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
 			// implement any entry actions required for this state machine
-			//Pause our Positioning using the Periscope
-			printf("entering attack state machine\r\n");
-			LatchPeriscope();
-			SetAttemptingToStop(true);
+			if (IsAbsolutePosition())
+			{
+				//Pause our Positioning using the Periscope
+				printf("entering attack state machine\r\n");
+				LatchPeriscope();
+				SetAttemptingToStop(true);
+				
+				//Post an Align Event in order to use the latch to align the periscope
+				ES_Event AlignEvent;
+				AlignEvent.EventType = ES_ALIGN_TO_BUCKET;
+				PostPeriscopeControlService(AlignEvent);
+				
+				//Post to Start the Cannon
+				ES_Event StartCannonEvent;
+				StartCannonEvent.EventType = ES_START_CANNON;
+				PostCannonControlService(StartCannonEvent);
 			
-			//Post an Align Event in order to use the latch to align the periscope
-			ES_Event AlignEvent;
-			AlignEvent.EventType = ES_ALIGN_TO_BUCKET;
-			PostPeriscopeControlService(AlignEvent);
-			
-			//Post to Start the Cannon
-			ES_Event StartCannonEvent;
-			StartCannonEvent.EventType = ES_START_CANNON;
-			PostCannonControlService(StartCannonEvent);
+			}
+			else
+			{
+				ES_Timer_InitTimer(POSITION_CHECK, POSITION_CHECK_T);
+			}
+			// after that start any lower level machines that run in this state
 			
 			//ES_Timer_InitTimer(CANNON_READY_TIMER, CANNON_READY_T);
 			
@@ -263,6 +272,32 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event)
         // repeat for any concurrent lower level machines
       
         // do any activity that is repeated as long as we are in this state
+				if ((Event.EventType == ES_TIMEOUT) & (Event.EventParam == POSITION_CHECK))
+				{
+					// implement any entry actions required for this state machine
+					if (IsAbsolutePosition())
+					{
+						//Pause our Positioning using the Periscope
+						printf("entering attack state machine\r\n");
+						LatchPeriscope();
+						SetAttemptingToStop(true);
+						
+						//Post an Align Event in order to use the latch to align the periscope
+						ES_Event AlignEvent;
+						AlignEvent.EventType = ES_ALIGN_TO_BUCKET;
+						PostPeriscopeControlService(AlignEvent);
+						
+						//Post to Start the Cannon
+						ES_Event StartCannonEvent;
+						StartCannonEvent.EventType = ES_START_CANNON;
+						PostCannonControlService(StartCannonEvent);
+					
+					}
+					else
+					{
+						ES_Timer_InitTimer(POSITION_CHECK, POSITION_CHECK_T);
+					}	
+				}
     }
     // return either Event, if you don't want to allow the lower level machine
     // to remap the current event, or ReturnEvent if you do want to allow it.

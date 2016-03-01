@@ -293,27 +293,27 @@ void PhotoTransistor_InterruptResponse(void)
 		if (ToleranceCheck(Period, beacons[i].period, PERIOD_MEASURING_ERROR_TOLERANCE))
 		{
 			buckets[i]++;
-			if (buckets[i] > NUMBER_PULSES_TO_BE_ALIGNED)
+			if (AligningToBucket && NumberSamples >= NUMBER_PULSES_FOR_BUCKET)
+			{
+				if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
+				{ 
+					printf("Aligned to bucket!\r\n");
+					clearDriveAligningToBucket();
+					ES_Event AlignedEvent;
+					AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
+					PostMasterSM(AlignedEvent);
+					
+					for (int j = 0; j < NUMBER_BEACON_FREQUENCIES; j++)
+					{
+						buckets[j] = 0;
+					}
+					ResetAverage();
+					LastBeacon = NULL_BEACON;
+				}
+			}
+			else if (buckets[i] > NUMBER_PULSES_TO_BE_ALIGNED)
 			{
 				LastBeacon = i;
-				if (AligningToBucket && NumberSamples >= NUMBER_PULSES_FOR_BUCKET)
-				{
-					if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
-					{ 
-						printf("Aligned to bucket!\r\n");
-						clearDriveAligningToBucket();
-						ES_Event AlignedEvent;
-						AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
-						PostMasterSM(AlignedEvent);
-						
-						for (int j = 0; j < NUMBER_BEACON_FREQUENCIES; j++)
-						{
-							buckets[j] = 0;
-						}
-						ResetAverage();
-						LastBeacon = NULL_BEACON;
-					}
-				}
 			}
 			Sum += GetPeriscopeAngle();
 			NumberSamples++;

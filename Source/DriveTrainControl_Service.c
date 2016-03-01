@@ -173,7 +173,7 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 				break;
 			case (ES_DRIVE_HALF_SPEED):
 				printf("Driving forward half speed\r\n");
-				setTargetEncoderTicks(1000, 1000, 0, 0);
+				setTargetEncoderTicks(250, 250, 0, 0);
 				//setTargetDriveSpeed(80, 80);
 				//SetPWM_DriveLeft(HALF_SPEED_L, LEFT_DRIVE_FORWARD_PIN_DIRECTION);
 				//SetPWM_DriveRight(HALF_SPEED_R, RIGHT_DRIVE_FORWARD_PIN_DIRECTION);		
@@ -268,7 +268,7 @@ void DriveEncoder_Left_InterruptResponse(void){
 	// Check if we've reached our target, and if so, stop
 	if (LeftEncoderTicks >= TargetTicks_Left && (!AligningToBucket))
 	{
-		//printf("Left encoder reached destination\r\n");
+		printf("Left encoder reached destination: %d\r\n", TargetTicks_Left);
 		setTargetEncoderTicks(0, 0, false, false);
 		//if (RPMTarget_Right == 0)
 		//{
@@ -311,7 +311,7 @@ void DriveEncoder_Right_InterruptResponse(void){
 	// Check if we've reached our target, and if so, stop
 	if (RightEncoderTicks >= TargetTicks_Right && (!AligningToBucket))
 	{
-		//printf("Right encoder reached destination\r\n");
+		printf("Right encoder reached destination: %d\r\n", TargetTicks_Right);
 		setTargetEncoderTicks(0, 0, false, false);
 		
 		//if (RPMTarget_Left == 0)
