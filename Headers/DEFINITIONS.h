@@ -238,7 +238,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define	RIGHT_DRIVE_PWM				M1PWM3
 #define	CANNON_PWM						M0PWM2
 #define	PERISCOPE_PWM 				M0PWM3
-#define	PERISCOPE_LATCH_PWM 						M0PWM0
+#define	PERISCOPE_LATCH_PWM 	M0PWM0
 #define HOPPER_PWM    M0PWM1
 
 //PERIODS ARE IN MICROSECONDS
@@ -265,7 +265,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define CANNON_PWM_PARAMATERS				CANNON_PWM, CANNON_PERIOD
 #define PERISCOPE_LATCH_PWM_PARAMATERS    PERISCOPE_LATCH_PWM, PERISCOPE_LATCH_PERIOD
 
-#define PERISCOPE_PWM_DUTY 0
+#define PERISCOPE_PWM_DUTY 50
 
 //These Values have been tested and appear to be good
 #define PERISCOPE_LATCH_DUTY 9
@@ -429,8 +429,6 @@ static uint8_t PS_Frequency_Codes[] = {
 
 #define HALL_SENSOR_OFFSET_IN_TICKS 30
 
-#define CANNON_DISTANCE_MULTIPLIER .38f
-
 #define PROXIMITY_TO_OUR_STATION_THRESHOLD 7.0f
 
 #define BACK_UP_TICKS 175
@@ -440,6 +438,9 @@ static uint8_t PS_Frequency_Codes[] = {
 	
 #define BACKUP_DISTANCE_TICKS 250
 
-#define DISTANCE_FROM_BEACON_TO_BUCKET_CENTER 8.5
+#define DISTANCE_FROM_BEACON_TO_BUCKET_CENTER 8.5f
+
+#define CANNON_Y_INTERCEPT 59.576f
+#define CANNON_SLOPE_MULTIPLIER 24.57f
 	
 #endif

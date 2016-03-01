@@ -36,7 +36,7 @@
 #define INTEGRAL_CLAMP_MAX 100
 
 //Cannon Test Speeds in RPM
-#define CANNON_STOP_SPEED 0
+#define CANNON_STOP_SPEED 2500
 #define CANNON_TEST_PWM 30
 #define CANNON_TEST_RPM 3036
 
@@ -96,7 +96,7 @@ bool InitCannonControlService ( uint8_t Priority )
 	InitPeriodic(CANNON_CONTROL_INTERRUPT_PARAMATERS);
 	
 	//Start the Cannon at Rest
-	setTargetCannonSpeed(CANNON_TEST_RPM);	//thsi should be zero but we are experimenting for testing
+	setTargetCannonSpeed(0.0);	//thsi should be zero but we are experimenting for testing
 	
 	//Set Hopper to proper position
 	SetPWM_Hopper(HOPPER_DEFAULT_DUTY);
@@ -154,20 +154,20 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
 				{
 					//For Actual Implementation
 					Revving = true;
-					//setTargetCannonSpeed(DetermineCannonSpeed());
+					setTargetCannonSpeed(DetermineCannonSpeed());
 					
 					//For Testing 
-					setTargetCannonSpeed(CANNON_TEST_RPM);
+					//setTargetCannonSpeed(CANNON_TEST_RPM);
 				}
 				break;
 			case (ES_STOP_CANNON):
 				{
 					//For Actual Implementation
 					Revving = false;
-					//setTargetCannonSpeed(CANNON_STOP_PWM);
+					setTargetCannonSpeed(CANNON_STOP_SPEED);
 					
 					//For Testing 
-					setTargetCannonSpeed(0);
+					//setTargetCannonSpeed(0);
 				}
 				break;
 				case (ES_TIMEOUT):
@@ -313,30 +313,31 @@ static void calculateControlResponse(float currentRPM){
 	
 	
 		//For Printing
-	
-	static float vals[10][7];
-	static uint8_t i;
-	//add to i
-	if (i > 90 && i <= 100)
+	if (RPMTarget != 0)
 	{
-		vals[i - 91][0] = RPMTarget;
-		vals[i - 91][1] = currentRPM;
-		vals[i - 91][2] = RPMError;
-		vals[i - 91][3] = RequestedDuty;
-		vals[i - 91][4] = proportionalResponse;
-		vals[i - 91][5] = derviativeResponse;
-		vals[i - 91][6] = integralResponse;
-	}
-	else if (i > 100){
-		for (int j = 0; j < 10; j++)
+		static float vals[10][7];
+		static uint8_t i;
+		//add to i
+		if (i > 90 && i <= 100)
 		{
-			printf("TargetRPM: %f, CurrentRPM: %f,  RPMError: %f, duty: %f,   P: %f ,     D: %f 	    I: %f \n\r", vals[j][0], vals[j][1], vals[j][2], vals[j][3], vals[j][4], vals[j][5], vals[j][6]);
+			vals[i - 91][0] = RPMTarget;
+			vals[i - 91][1] = currentRPM;
+			vals[i - 91][2] = RPMError;
+			vals[i - 91][3] = RequestedDuty;
+			vals[i - 91][4] = proportionalResponse;
+			vals[i - 91][5] = derviativeResponse;
+			vals[i - 91][6] = integralResponse;
 		}
-		printf("\r\n");
-		i = 0; //reset i
+		else if (i > 100){
+			for (int j = 0; j < 10; j++)
+			{
+				printf("TargetRPM: %f, CurrentRPM: %f,  RPMError: %f, duty: %f,   P: %f ,     D: %f 	    I: %f \n\r", vals[j][0], vals[j][1], vals[j][2], vals[j][3], vals[j][4], vals[j][5], vals[j][6]);
+			}
+			printf("\r\n");
+			i = 0; //reset i
+		}
+		i++; 
 	}
-	i++; 
-	
 	//Save the Last Error
 	LastError = RPMError;
 	
@@ -377,5 +378,6 @@ static bool SpeedCheck(float rpm)
 }
 
 static float DetermineCannonSpeed(void)
-{	return DetermineDistanceToBucket() * CANNON_DISTANCE_MULTIPLIER;
+{	
+	return (DetermineDistanceToBucket() + DISTANCE_FROM_BEACON_TO_BUCKET_CENTER + CANNON_Y_INTERCEPT) * CANNON_SLOPE_MULTIPLIER;
 }

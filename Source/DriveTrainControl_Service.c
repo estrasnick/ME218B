@@ -364,7 +364,7 @@ void DriveControl_PeriodicInterruptResponse(void){
 	
 	//printf("Req. duty: %d, %d\r\n", RequestedDuty_Left, RequestedDuty_Right);
 	//Implement Control Response Similtaneously
-	//implementControlResponse(RequestedDuty_Left, RequestedDuty_Right);
+	implementControlResponse(RequestedDuty_Left, RequestedDuty_Right);
 }
 
 /***************************************************************************
@@ -423,7 +423,7 @@ static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm,
 		}
 */
 	
-	return 0; //clamp(RequestedDuty, 0, 100);
+	return clamp(RequestedDuty, 0, 100);
 }
 
 //Actually Command the PWM Changes
