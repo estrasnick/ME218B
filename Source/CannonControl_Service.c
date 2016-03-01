@@ -23,17 +23,21 @@
 //Define Gains
 #define STARTUP_P_GAIN 2.5f
 
-#define CONTROL_P_GAIN .00025f
-#define CONTROL_D_GAIN 0.95f
-#define I_GAIN .00000025f
+#define CONTROL_P_GAIN_BELOW .00055f
+#define CONTROL_D_GAIN_BELOW 0.00f
+#define I_GAIN_BELOW .0000095f
+
+#define CONTROL_P_GAIN_ABOVE .0000035f
+#define CONTROL_D_GAIN_ABOVE 0.000015f
+#define I_GAIN_ABOVE .000055f
 
 #define INTEGRAL_CLAMP_MIN -100
 #define INTEGRAL_CLAMP_MAX 100
 
 //Cannon Test Speeds in RPM
 #define CANNON_STOP_SPEED 0
-#define CANNON_TEST_PWM 20
-#define CANNON_TEST_RPM 2500
+#define CANNON_TEST_PWM 30
+#define CANNON_TEST_RPM 3500
 
 #define CANNON_RPM_TOLERANCE 2000
 
@@ -256,18 +260,12 @@ static void calculateControlResponse(float currentRPM){
 	//Calculate Error (absolute)
 	RPMError = fabs(RPMTarget) - currentRPM; //fabs is absolute value
 
-	/*
-	//If the RPM error is zero and hasn't been before then post that we are at the correct speed
-	if ((RPMError == 0) & (LastError != 0)){
-		printf("Post ES_CANNON_READY \n\r"); 
-		ES_Event ThisEvent;
-		ThisEvent.EventType = ES_CANNON_READY;
-		PostMasterSM(ThisEvent);
-	}*/
-
+	//Depending on if we are below or above our target, change the value of our paramaters
+	bool above = (RPMError <= 0);
 	
+
 	//Determine Integral Term
-	integralTerm += I_GAIN * RPMError;
+	integralTerm += (above ? I_GAIN_ABOVE : I_GAIN_BELOW ) * RPMError;
 	integralTerm = clamp(integralTerm, INTEGRAL_CLAMP_MIN, INTEGRAL_CLAMP_MAX); /* anti-windup */
 	
 	
@@ -275,7 +273,7 @@ static void calculateControlResponse(float currentRPM){
 	static float D_GAIN ;
 	//if (RPMError > 0)
 	//{
-		D_GAIN = CONTROL_D_GAIN;
+	D_GAIN = above ? CONTROL_D_GAIN_ABOVE : CONTROL_D_GAIN_BELOW;
 	//} else {
 	//	D_GAIN = 0;
 	//}
@@ -286,13 +284,16 @@ static void calculateControlResponse(float currentRPM){
 	{
 		P_GAIN = STARTUP_P_GAIN;
 	} else {
-		P_GAIN = CONTROL_P_GAIN;
+		P_GAIN = above ? CONTROL_P_GAIN_ABOVE*fabs(RPMError) : CONTROL_P_GAIN_BELOW;
 	}
 	
 	
-	float proportionalResponse = P_GAIN*RPMError*fabs(RPMError);
+	float proportionalResponse = P_GAIN*RPMError;
 	float derviativeResponse = D_GAIN * (RPMError-LastError);
 	float integralResponse = integralTerm;
+	
+	if(RPMError-LastError != 0){
+	}
 	
 	//As we cannot brake, ie. only of one direction of control, lets
 	float RequestedDuty = 0;
@@ -311,17 +312,33 @@ static void calculateControlResponse(float currentRPM){
 	
 	
 		//For Printing
-	static uint8_t i;
-	i++; //add to i
-	if (i > 250){
-		printf("TargetRPM: %f, CurrentRPM: %f,  RPMError: %f,    duty: %f,     P: %f ,     D: %f 	    I: %f \n\r", RPMTarget, currentRPM, RPMError, RequestedDuty, proportionalResponse, derviativeResponse, integralTerm);
-			i = 0; //reset i
-	}
 	
+	static float vals[10][7];
+	static uint8_t i;
+	//add to i
+	if (i > 90 && i <= 100)
+	{
+		vals[i - 91][0] = RPMTarget;
+		vals[i - 91][1] = currentRPM;
+		vals[i - 91][2] = RPMError;
+		vals[i - 91][3] = RequestedDuty;
+		vals[i - 91][4] = proportionalResponse;
+		vals[i - 91][5] = derviativeResponse;
+		vals[i - 91][6] = integralResponse;
+	}
+	else if (i > 100){
+		for (int j = 0; j < 10; j++)
+		{
+			printf("TargetRPM: %f, CurrentRPM: %f,  RPMError: %f, duty: %f,   P: %f ,     D: %f 	    I: %f \n\r", vals[j][0], vals[j][1], vals[j][2], vals[j][3], vals[j][4], vals[j][5], vals[j][6]);
+		}
+		printf("\r\n");
+		i = 0; //reset i
+	}
+	i++; 
 	
 	//Save the Last Error
 	LastError = RPMError;
-		
+	
 	//Call the Set PWM Function on the clamped RequestedDuty Value
 	SetPWM_Cannon(clamp(RequestedDuty, -100, 100)); //cast as a uint8_t so that we don't get decimals
 	//SetPWM_Cannon(CANNON_TEST_PWM);

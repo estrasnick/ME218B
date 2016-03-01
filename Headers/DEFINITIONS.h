@@ -179,7 +179,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 
 //PERIODIC INTERRUPT TIMES (microseconds)
 #define DRIVE_CONTROL_INTERRUPT_PERIOD 2000
-#define CANNON_CONTROL_INTERRUPT_PERIOD 20
+#define CANNON_CONTROL_INTERRUPT_PERIOD 3000
 #define NULL_INTERRUPT_PERIOD 0
 
 //Timer Definitions
