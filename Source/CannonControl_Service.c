@@ -23,12 +23,12 @@
 //Define Gains
 #define STARTUP_P_GAIN 2.5f
 
-#define CONTROL_P_GAIN .000095f
-#define CONTROL_D_GAIN 0.0035f
-#define I_GAIN .000075f
+#define CONTROL_P_GAIN .00025f
+#define CONTROL_D_GAIN 0.95f
+#define I_GAIN .00000025f
 
-#define INTEGRAL_CLAMP_MIN 0
-#define INTEGRAL_CLAMP_MAX 250
+#define INTEGRAL_CLAMP_MIN -100
+#define INTEGRAL_CLAMP_MAX 100
 
 //Cannon Test Speeds in RPM
 #define CANNON_STOP_SPEED 0
@@ -273,32 +273,33 @@ static void calculateControlResponse(float currentRPM){
 	
 	//if we are below the target use D gain if not set it to zero
 	static float D_GAIN ;
-	if (RPMError > 0)
-	{
+	//if (RPMError > 0)
+	//{
 		D_GAIN = CONTROL_D_GAIN;
-	} else {
-		D_GAIN = 0;
-	}
+	//} else {
+	//	D_GAIN = 0;
+	//}
 	
 	//if the RPM Error is less than 50% of the target RPM then assume we are in start up
 	static float P_GAIN ;
 	if (RPMError > .25 * RPMTarget)
 	{
 		P_GAIN = STARTUP_P_GAIN;
-		D_GAIN = 0; //don't want any derviative gain
 	} else {
 		P_GAIN = CONTROL_P_GAIN;
 	}
 	
-
 	
+	float proportionalResponse = P_GAIN*RPMError*fabs(RPMError);
+	float derviativeResponse = D_GAIN * (RPMError-LastError);
+	float integralResponse = integralTerm;
 	
 	//As we cannot brake, ie. only of one direction of control, lets
-	uint8_t RequestedDuty = 0;
-//	if (RPMError > 0){
+	float RequestedDuty = 0;
+	//if (RPMError > 0){
 		//Calculate Desired Duty Cycle
-		RequestedDuty = P_GAIN*RPMError + D_GAIN * (RPMError-LastError) + 	integralTerm;		//(P_GAIN * ((RPMError)+integralTerm+(D_GAIN * (RPMError-LastError))));
-//	}
+		RequestedDuty =  proportionalResponse + derviativeResponse + 	integralTerm;		//(P_GAIN * ((RPMError)+integralTerm+(D_GAIN * (RPMError-LastError))));
+	//}
 
 	/*
 	static int i;
@@ -312,8 +313,8 @@ static void calculateControlResponse(float currentRPM){
 		//For Printing
 	static uint8_t i;
 	i++; //add to i
-	if (i > 150){
-		printf("TargetRPM: %f, 		CurrentRPM: %f,     RPMError: %f,      duty: %d, 		integralTerm: %f \n\r", RPMTarget, currentRPM, RPMError, RequestedDuty, integralTerm);
+	if (i > 250){
+		printf("TargetRPM: %f, CurrentRPM: %f,  RPMError: %f,    duty: %f,     P: %f ,     D: %f 	    I: %f \n\r", RPMTarget, currentRPM, RPMError, RequestedDuty, proportionalResponse, derviativeResponse, integralTerm);
 			i = 0; //reset i
 	}
 	
@@ -322,7 +323,7 @@ static void calculateControlResponse(float currentRPM){
 	LastError = RPMError;
 		
 	//Call the Set PWM Function on the clamped RequestedDuty Value
-	SetPWM_Cannon(clamp(RequestedDuty, 0, 100));
+	SetPWM_Cannon(clamp(RequestedDuty, -100, 100)); //cast as a uint8_t so that we don't get decimals
 	//SetPWM_Cannon(CANNON_TEST_PWM);
 	//SetPWM_Cannon(0);
 }
