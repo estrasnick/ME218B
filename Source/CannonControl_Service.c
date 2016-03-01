@@ -22,14 +22,15 @@
 /*----------------------------- Module Defines ----------------------------*/
 //Define Gains
 #define STARTUP_P_GAIN 2.5f
+#define STARTUP_THRESH .15f
 
-#define CONTROL_P_GAIN_BELOW .00055f
+#define CONTROL_P_GAIN_BELOW .00145f
 #define CONTROL_D_GAIN_BELOW 0.00f
-#define I_GAIN_BELOW .0000095f
+#define I_GAIN_BELOW .000095f
 
-#define CONTROL_P_GAIN_ABOVE .0000035f
+#define CONTROL_P_GAIN_ABOVE .0000001f
 #define CONTROL_D_GAIN_ABOVE 0.000015f
-#define I_GAIN_ABOVE .000055f
+#define I_GAIN_ABOVE .00055f
 
 #define INTEGRAL_CLAMP_MIN -100
 #define INTEGRAL_CLAMP_MAX 100
@@ -37,9 +38,9 @@
 //Cannon Test Speeds in RPM
 #define CANNON_STOP_SPEED 0
 #define CANNON_TEST_PWM 30
-#define CANNON_TEST_RPM 3500
+#define CANNON_TEST_RPM 3036
 
-#define CANNON_RPM_TOLERANCE 2000
+#define CANNON_RPM_TOLERANCE 70
 
 /*---------------------------- Module Functions ---------------------------*/
 /* prototypes for private functions for this service.They should be functions
@@ -280,7 +281,7 @@ static void calculateControlResponse(float currentRPM){
 	
 	//if the RPM Error is less than 50% of the target RPM then assume we are in start up
 	static float P_GAIN ;
-	if (RPMError > .25 * RPMTarget)
+	if (RPMError > (STARTUP_THRESH) * RPMTarget)
 	{
 		P_GAIN = STARTUP_P_GAIN;
 	} else {
@@ -340,7 +341,7 @@ static void calculateControlResponse(float currentRPM){
 	LastError = RPMError;
 	
 	//Call the Set PWM Function on the clamped RequestedDuty Value
-	SetPWM_Cannon(clamp(RequestedDuty, -100, 100)); //cast as a uint8_t so that we don't get decimals
+	SetPWM_Cannon(clamp(RequestedDuty, -50, 50)); //cast as a uint8_t so that we don't get decimals
 	//SetPWM_Cannon(CANNON_TEST_PWM);
 	//SetPWM_Cannon(0);
 }
