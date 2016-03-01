@@ -439,5 +439,7 @@ static uint8_t PS_Frequency_Codes[] = {
 #define HEIGHT_OF_FIELD 4.375
 	
 #define BACKUP_DISTANCE_TICKS 250
+
+#define DISTANCE_FROM_BEACON_TO_BUCKET_CENTER 8.5
 	
 #endif
