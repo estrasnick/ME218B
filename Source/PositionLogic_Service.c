@@ -287,6 +287,8 @@ static void CalculateAbsolutePosition()
 	float delta;
 	float tempAngle;
 	float atan;
+	float myTempX;
+	float myTempY;
 	
 	//Perform Calculations with SW corner being used as the axis
 	BMinusC = ToRadians(ToAppropriateRange(B - C));
@@ -307,9 +309,11 @@ static void CalculateAbsolutePosition()
 	printf("ABSOLUTE POSITION BEFORE ROTATION MATRIX: X: %f, Y: %f, theta: %f\n\r", myX, myY, myTheta);	
 	
 	//Peform Rotations and Appropriate Shifts
-	myX = (myX*cos(ToRadians(thetaShift)) - myY*sin(ToRadians(thetaShift))) + xShift;
-	myY = (myX*sin(ToRadians(thetaShift)) + myY*cos(ToRadians(thetaShift))) + yShift;	
+	myTempX = (myX*cos(ToRadians(thetaShift)) - myY*sin(ToRadians(thetaShift))) + xShift;
+	myTempY = (myX*sin(ToRadians(thetaShift)) + myY*cos(ToRadians(thetaShift))) + yShift;	
 	myTheta = ToAppropriateRange(myTheta + thetaShift); 
+	myX = myTempX;
+	myY = myTempY;
 	
 	//print our absolute position
 	printf("ABSOLUTE POSITION: X: %f, Y: %f, theta: %f\n\r", myX, myY, myTheta);	
