@@ -8,7 +8,7 @@ AttackStrategy Header File
 
 // typedefs for the states
 // State definitions for use with the query function
-typedef enum { Wait4AttackPhase_t, Attack_t, Wait4NextAttack_t } AttackStrategyState_t ;
+typedef enum { Wait4AttackPhase_t, Rev_t, Attack_t, Wait4NextAttack_t } AttackStrategyState_t ;
 
 
 // Public Function Prototypes

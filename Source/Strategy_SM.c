@@ -30,6 +30,7 @@
 #include "PWM_Service.h"
 #include "HallEffect_SM.h"
 #include "DriveTrainControl_Service.h"
+#include "AttackStrategy_SM.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 // define constants for the states for this machine
@@ -68,6 +69,8 @@ static uint8_t timePeriod = 0;
 
 static uint8_t retryCount;
 
+static uint8_t PositionTimeoutCount;
+
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
  Function
@@ -89,12 +92,23 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
    ES_Event EntryEventKind = { ES_ENTRY, 0 };// default to normal entry to new state
    ES_Event ReturnEvent = CurrentEvent; // assume we are not consuming event
 
+	 if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == POSITION_CHECK))
+	 {
+		 PositionTimeoutCount++;
+		 if (PositionTimeoutCount >= POSITION_TIMEOUT_THRESHOLD)
+		 {
+			 printf("Position timeout; executing backup!\r\n");
+			 PositionTimeoutCount = 0;
+			 ExecuteBackup();
+		 }
+	 }
+	 
 	 if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == GAME_TIMER))
 	 {
 		 if (timePeriod == 0)
 		 {
 			 ES_Timer_InitTimer(GAME_TIMER, GAME_TIMER_T);
-			 ES_Timer_InitTimer(ATTACK_PHASE_TIMER, ATTACK_PHASE_T);
+			 ES_Timer_InitTimer(ATTACK_PHASE_TIMER, REV_T);
 			 timePeriod = 1;
 		 }
 		 else if (timePeriod == 1)
@@ -120,6 +134,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 		 NextState = HandleCollision_t;
 		 MakeTransition = true;
 	 }
+	 
 	 else
 	 {
 		 switch ( CurrentState )
@@ -136,7 +151,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 						//Check for Specific Events
 						if (CurrentEvent.EventType == ES_TRANSACTION_COMPLETE)
 						{
-							if (isGameStarted())
+							if (CheckGameStarted())
 							{
 								if (IsZeroed())
 								{
@@ -257,7 +272,8 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 							printf("Arrived at target\r\n");
 							
 							// Since we have traveled, we are now allowed to stop for a station again
-							SetAllowStop(true);
+							printf("Resetting allow stop\r\n");
+							SetAllowStopReset(true);
 							
 							NextState = ChooseDestination_t;
 							MakeTransition = true;
@@ -430,7 +446,7 @@ static ES_Event DuringChooseDestination_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-			if (IsAbsolutePosition())
+			if (IsAbsolutePosition() && (QueryAttackStrategySM() != Attack_t))
 				{
 					ChooseDestination();
 				// after that start any lower level machines that run in this state
@@ -464,7 +480,7 @@ static ES_Event DuringChooseDestination_t( ES_Event Event)
 				
 				if ((Event.EventType == ES_TIMEOUT) && (Event.EventParam == POSITION_CHECK))
 				{
-					if (IsAbsolutePosition())
+					if (IsAbsolutePosition() && (QueryAttackStrategySM() != Attack_t))
 					{
 						ChooseDestination();
 					}
@@ -609,7 +625,7 @@ static ES_Event DuringHandleCollision_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-        setTargetEncoderTicks(BACKUP_DISTANCE_TICKS, BACKUP_DISTANCE_TICKS, true, true);
+        setTargetEncoderTicks(BACK_UP_TICKS, BACK_UP_TICKS, true, true);
 				MarkObstructed(TargetStation);
         // after that start any lower level machines that run in this state
         

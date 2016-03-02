@@ -24,6 +24,8 @@
 #include "DriveTrainControl_Service.h"
 #include "Master_SM.h"
 #include "Attack_SM.h"
+#include "CannonControl_Service.h"
+#include "DEFINITIONS.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 // define constants for the states for this machine
@@ -37,6 +39,7 @@
    behavior of this state machine
 */
 static ES_Event DuringWait4AttackPhase_t( ES_Event Event);
+static ES_Event DuringRev_t( ES_Event Event);
 static ES_Event DuringAttack_t( ES_Event Event);
 static ES_Event DuringWait4NextAttack_t( ES_Event Event);
 
@@ -72,6 +75,23 @@ ES_Event RunAttackStrategySM( ES_Event CurrentEvent )
        case Wait4AttackPhase_t :     
          // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
          CurrentEvent = DuringWait4AttackPhase_t(CurrentEvent);
+			 
+         //Process Any Events
+         if ( (CurrentEvent.EventType != ES_NO_EVENT ) && (attackingEnabled))//If an event is active and attacking is enabled
+         {	
+						//Check for Specific Events
+            if (((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == ATTACK_PHASE_TIMER)) || (CurrentEvent.EventType == ES_MANUAL_SHOOT))
+						{
+							printf("Starting rev");
+							NextState = Rev_t;
+							MakeTransition = true;
+						}
+         }
+         break;
+				 
+			case Rev_t :     
+         // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
+         CurrentEvent = DuringRev_t(CurrentEvent);
 			 
          //Process Any Events
          if ( (CurrentEvent.EventType != ES_NO_EVENT ) && (attackingEnabled))//If an event is active and attacking is enabled
@@ -223,6 +243,44 @@ static ES_Event DuringWait4AttackPhase_t( ES_Event Event)
     return(ReturnEvent);
 }
 
+
+static ES_Event DuringRev_t( ES_Event Event)
+{
+    ES_Event ReturnEvent = Event; // assme no re-mapping or comsumption
+
+    // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
+    if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
+    {
+        // implement any entry actions required for this state machine
+				ES_Timer_InitTimer(ATTACK_PHASE_TIMER, ATTACK_PHASE_T);
+				setTargetCannonSpeed(REV_SPEED);
+			
+        // after that start any lower level machines that run in this state
+        //StartLowerLevelSM( Event );
+        // repeat the StartxxxSM() functions for concurrent state machines
+        // on the lower level
+    }
+    else if ( Event.EventType == ES_EXIT )
+    {
+        // on exit, give the lower levels a chance to clean up first
+        //RunLowerLevelSM(Event);
+        // repeat for any concurrently running state machines
+        // now do any local exit functionality
+      
+    }else
+    // do the 'during' function for this state
+    {
+        // run any lower level state machine
+        // ReturnEvent = RunLowerLevelSM(Event);
+      
+        // repeat for any concurrent lower level machines
+      
+        // do any activity that is repeated as long as we are in this state
+    }
+    // return either Event, if you don't want to allow the lower level machine
+    // to remap the current event, or ReturnEvent if you do want to allow it.
+    return(ReturnEvent);
+}
 
 static ES_Event DuringAttack_t( ES_Event Event)
 {

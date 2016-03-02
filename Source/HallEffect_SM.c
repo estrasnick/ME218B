@@ -34,7 +34,7 @@
 
 #define ENTRY_STATE Measure_t
 
-#define PERIOD_MEASURING_ERROR_TOLERANCE 10 //in micr
+#define PERIOD_MEASURING_ERROR_TOLERANCE 8 //in micr
 #define NUMBER_PULSES_TO_STOP 4
 #define NUMBER_HALL_EFFECT_SENSORS 4
 #define NUMBER_FREQUENCIES 16
@@ -95,6 +95,7 @@ uint32_t HallEffect_P[] = {
 	
 	
 static bool AllowStop = true;
+static bool AllowReset = true;
 	
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -125,9 +126,14 @@ ES_Event RunHallEffectSM( ES_Event CurrentEvent )
 	 	 	 buckets[i] = 0;
 	 	 }
 		 
-		 ES_Event ResetEvent;
-		 ResetEvent.EventType = ES_RESET_DESTINATION;
-		 PostMasterSM(ResetEvent);
+		 if (AllowReset)
+		 {
+			 printf("Resetting destination due to hall measure\r\n");
+			 ES_Event ResetEvent;
+			 ResetEvent.EventType = ES_RESET_DESTINATION;
+			 PostMasterSM(ResetEvent);
+			 AllowReset = false;
+		 }
 	 }
 	 else
 	 {
@@ -437,6 +443,7 @@ void updateBuckets(uint32_t CurrentPeriod){
 				if (AllowStop)
 				{
 					setTargetDriveSpeed(0.0, 0.0);
+					printf("Stopping to measure\r\n");
 					ResetEncoderTicks();
 					AllowStop = false;
 				}
@@ -478,11 +485,11 @@ void updateBuckets(uint32_t CurrentPeriod){
 	}
 }
 
-void SetAllowStop(bool allow)
+void SetAllowStopReset(bool allow)
 {
 	AllowStop = allow;
+	AllowReset = allow;
 }
-
 
 //Tolerance Check
 static bool toleranceCheck(uint32_t value, uint32_t target, uint32_t tol){

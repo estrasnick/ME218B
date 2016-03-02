@@ -23,10 +23,10 @@
 /*----------------------------- Module Defines ----------------------------*/
 
 #define PERIOD_MEASURING_ERROR_TOLERANCE 10 //in microseconds
-#define NUMBER_PULSES_TO_BE_ALIGNED 5
+#define NUMBER_PULSES_TO_BE_ALIGNED 6
 #define NUMBER_PHOTOTRANSISTORS 1
 #define NUMBER_BEACON_FREQUENCIES 4
-#define NUMBER_PULSES_FOR_BUCKET 3
+#define NUMBER_PULSES_FOR_BUCKET 4
 
 #define BEACON_F_NW 1450
 #define BEACON_F_NE 1700  
@@ -63,7 +63,7 @@ static bool TimeForUpdate(void);
 
 static void ResetAverage(void);
 
-static float CalculateAverage(void);
+static float CalculateAverage(uint8_t which);
 
 /*---------------------------- Module Variables ---------------------------*/
 // with the introduction of Gen2, we need a module level Priority variable
@@ -84,14 +84,14 @@ static uint8_t LastBeacon = NULL_BEACON;
 
 static bool AligningToBucket = false;
 
-static uint32_t NumberSamples;
-static float Sum;
-
-static uint8_t LastBeacon;
-
 static uint8_t buckets[NUMBER_BEACON_FREQUENCIES];
 
+static uint8_t numSamples[NUMBER_BEACON_FREQUENCIES];
+static float sums[NUMBER_BEACON_FREQUENCIES];
+
 static uint8_t LastUpdatedBeacon = NULL_BEACON;
+
+static bool Bucketing = true;
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -151,22 +151,24 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 	{
 		switch (LastBeacon){
 				case (BEACON_INDEX_NW):
-					printf("\r\nNum ticks Beacon NW: %d\n\r\r\n", NumberSamples);
+					printf("\r\nNum ticks Beacon NW: %d\n\r\r\n", numSamples[LastBeacon]);
 				break;
 				case (BEACON_INDEX_NE):
-					printf("\r\nNum ticks Beacon NE: %d\n\r\r\n", NumberSamples);
+					printf("\r\nNum ticks Beacon NE: %d\n\r\r\n", numSamples[LastBeacon]);
 				break;
 				case (BEACON_INDEX_SE):
-					printf("\r\nNum ticks Beacon SE: %d\n\r\r\n", NumberSamples);
+					printf("\r\nNum ticks Beacon SE: %d\n\r\r\n", numSamples[LastBeacon]);
 				break;
 				case (BEACON_INDEX_SW):
-					printf("\r\nNum ticks Beacon SW: %d\n\r", NumberSamples);
+					printf("\r\nNum ticks Beacon SW: %d\n\r", numSamples[LastBeacon]);
+				case (NULL_BEACON):
+					printf("Trying to average the null beacon?\r\n");
 				break;
 			}
-		if (NumberSamples >= NUMBER_PULSES_TO_BE_ALIGNED)
+		if (numSamples[LastBeacon] >= NUMBER_PULSES_TO_BE_ALIGNED)
 		{
 			beacons[LastBeacon].lastUpdateTime = captureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
-			beacons[LastBeacon].lastEncoderAngle = CalculateAverage();
+			beacons[LastBeacon].lastEncoderAngle = CalculateAverage(LastBeacon);
 			switch (LastBeacon){
 				case (BEACON_INDEX_NW):
 					printf("\r\nAverage for Beacon NW: %f\n\r\r\n", beacons[LastBeacon].lastEncoderAngle);
@@ -196,13 +198,11 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 			
 		}
 		
-		for (int j = 0; j < NUMBER_BEACON_FREQUENCIES; j++)
-		{
-			buckets[j] = 0;
-		}
 		ResetAverage();
+		Bucketing = true;
 		
 		LastBeacon = NULL_BEACON;
+		ES_Timer_StopTimer(AVERAGE_BEACONS_TIMER);
 	}
 	else if (ThisEvent.EventType == ES_ALIGN_TO_BUCKET)
 	{
@@ -292,14 +292,18 @@ void PhotoTransistor_InterruptResponse(void)
 	//Store the Last Cpature
 	LastCapture = ThisCapture;
 	
+	//Iterate Through the different frequency options
 	for (int i = 0; i < NUMBER_BEACON_FREQUENCIES; i++)
 	{
 		if (ToleranceCheck(Period, beacons[i].period, PERIOD_MEASURING_ERROR_TOLERANCE))
 		{
-			buckets[i]++;
-			if (AligningToBucket && NumberSamples >= NUMBER_PULSES_FOR_BUCKET)
+			if (Bucketing)
 			{
-				if (((MyColor() == COLOR_BLUE) && (LastBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (LastBeacon == BEACON_INDEX_SE)))
+				buckets[i]++;
+			}
+			if ((AligningToBucket) && (buckets[i] >= NUMBER_PULSES_FOR_BUCKET))
+			{
+				if (((MyColor() == COLOR_BLUE) && (i == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (i == BEACON_INDEX_SE)))
 				{ 
 					printf("Aligned to bucket!\r\n");
 					clearDriveAligningToBucket();
@@ -307,21 +311,32 @@ void PhotoTransistor_InterruptResponse(void)
 					AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
 					PostMasterSM(AlignedEvent);
 					
+					AligningToBucket = false;
+					
 					for (int j = 0; j < NUMBER_BEACON_FREQUENCIES; j++)
 					{
 						buckets[j] = 0;
 					}
 					ResetAverage();
+					Bucketing = true;
 					LastBeacon = NULL_BEACON;
+					ES_Timer_StopTimer(AVERAGE_BEACONS_TIMER);
+					return;
 				}
 			}
-			else if (buckets[i] > NUMBER_PULSES_TO_BE_ALIGNED && LastBeacon == NULL_BEACON)
+			else if (buckets[i] >= NUMBER_PULSES_TO_BE_ALIGNED && LastBeacon == NULL_BEACON && !AligningToBucket)
 			{
 				LastBeacon = i;
+				for (int j = 0; j < NUMBER_BEACON_FREQUENCIES; j++)
+				{
+					buckets[j] = 0;
+				}
+				ES_Timer_InitTimer(AVERAGE_BEACONS_TIMER, AVERAGE_BEACONS_T);
+				Bucketing = false;
 			}
-			Sum += GetPeriscopeAngle();
-			NumberSamples++;
-			ES_Timer_InitTimer(AVERAGE_BEACONS_TIMER, AVERAGE_BEACONS_T);
+			sums[i] += GetPeriscopeAngle();
+			numSamples[i]++;
+			ES_Timer_SetTimer(AVERAGE_BEACONS_TIMER, AVERAGE_BEACONS_T);
 		}
 	}
 		
@@ -439,8 +454,11 @@ void ResetUpdateTimes(void)
 
 void ResetAverage(void)
 {
-	Sum = 0;
-	NumberSamples = 0;
+	for (int i = 0; i < NUMBER_BEACON_FREQUENCIES; i++)
+	{
+		sums[i] = 0;
+		numSamples[i] = 0;
+	}
 }
 
 void ResetAligningToBucket(void)
@@ -448,7 +466,21 @@ void ResetAligningToBucket(void)
 	AligningToBucket = false;
 }
 
-static float CalculateAverage(void)
+// Manually set beacon angles. Used for testing
+void SetBeaconAngles(float A, float B, float C)
+{
+	beacons[0].lastUpdateTime = 3;
+	beacons[1].lastUpdateTime = 2;
+	beacons[2].lastUpdateTime = 1;
+	
+	beacons[0].lastEncoderAngle = A;
+	beacons[1].lastEncoderAngle = B;
+	beacons[2].lastEncoderAngle = C;
+	
+	LastUpdatedBeacon = 0;
+}
+
+static float CalculateAverage(uint8_t which)
 {
 	/*
 	switch (LastBeacon){
@@ -465,5 +497,5 @@ static float CalculateAverage(void)
 				printf("Adding to Beacon SW: %f\n\r", angle);
 			break;
 		}*/
-	return Sum / NumberSamples;
+	return sums[which] / numSamples[which];
 }

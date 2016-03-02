@@ -31,6 +31,7 @@
 #include "PositionLogic_Service.h"
 #include "PWM_Service.h"
 #include "AttackStrategy_SM.h"
+#include "PhotoTransistor_Service.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 
@@ -145,6 +146,7 @@ ES_Event RunMapKeys( ES_Event ThisEvent )
 											 printf("Commanding: ES_PS_DETECTED, Event Param = 0 \n\r");                     
 											 break;
 						case 'K' : ThisEvent.EventType = ES_CALCULATE_POSITION; 
+											 SetBeaconAngles(270, 180, 90);
 											 printf("Commanding: ES_CALCULATE_POSITION, Event Param = 0 \n\r");                     
 											 break;
 						case '3' : ThisEvent.EventType = ES_NO_EVENT; 

@@ -31,6 +31,8 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define TICKS_PER_MS 40000ul
 #define MICROSECONDS_DIVISOR 1000
 
+#define NELEMS(x)  (sizeof(x) / sizeof((x)[0]))
+
 //*******************************************************************************************
 //--------------------------------- TESTING MODE --------------------------------------
 //*******************************************************************************************
@@ -168,7 +170,7 @@ Definitions header file for any definitiosn taht should be included throughout e
 //PRIORITIES
 #define DRIVE_ENCODER_INTERRUPT_PRIORITY 1
 #define PERISCOPE_ENCODER_INTERRUPT_PRIORITY 0
-#define CANNON_ENCODER_INTERRUPT_PRIORITY 1
+#define CANNON_ENCODER_INTERRUPT_PRIORITY 0
 
 #define PHOTOTRANSISTOR_INTERRUPT_PRIORITY	0
 
@@ -177,9 +179,10 @@ Definitions header file for any definitiosn taht should be included throughout e
 #define DRIVE_CONTROL_INTERRUPT_PRIORITY 2
 #define CANNON_CONTROL_INTERRUPT_PRIORITY 2
 
+
 //PERIODIC INTERRUPT TIMES (microseconds)
 #define DRIVE_CONTROL_INTERRUPT_PERIOD 2000
-#define CANNON_CONTROL_INTERRUPT_PERIOD 3000
+#define CANNON_CONTROL_INTERRUPT_PERIOD 8000
 #define NULL_INTERRUPT_PERIOD 0
 
 //Timer Definitions
@@ -435,12 +438,14 @@ static uint8_t PS_Frequency_Codes[] = {
 	
 #define HEIGHT_OF_BUCKET 19.5
 #define HEIGHT_OF_FIELD 4.375
-	
-#define BACKUP_DISTANCE_TICKS 250
 
 #define DISTANCE_FROM_BEACON_TO_BUCKET_CENTER 8.5f
 
 #define CANNON_Y_INTERCEPT 59.576f
 #define CANNON_SLOPE_MULTIPLIER 24.57f
+
+#define POSITION_TIMEOUT_THRESHOLD 50
+
+#define REV_SPEED 3000
 	
 #endif

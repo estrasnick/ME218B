@@ -66,6 +66,8 @@ static PS_Struct PS_Array[] = {
 	{.location_code = CONCORD_CODE, .location_x = 87.6f, .location_y = 72.6f, 		.claimed_status = Unclaimed_b, .byte = 4, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F, .obstructed = false}
 };
 
+static bool GameStarted;
+
 /*------------------------------ Module Code ------------------------------*/
 
 //Check my color
@@ -80,14 +82,19 @@ uint8_t MyColor()
 }	
 
 //Check if Game Started
-bool isGameStarted()
+void UpdateGameStarted()
 {
 	uint8_t *byte;
 	byte = getResponseArray();
 	
-	printf("Game Started: %d \n\r", ((*(byte + 3) & BIT0HI) == BIT0HI));
+	//printf("Game Started: %d \n\r", ((*(byte + 4) & BIT0HI) == BIT0HI));
 	
-	return ((*(byte + 4) & BIT0HI) == BIT0HI) ;
+	GameStarted =  ((*(byte + 4) & BIT0HI) == BIT0HI) ;
+}
+
+bool CheckGameStarted(void)
+{
+	return GameStarted;
 }
 
 void UpdateADStatus(void)

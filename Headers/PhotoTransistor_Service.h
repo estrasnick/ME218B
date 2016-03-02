@@ -40,6 +40,8 @@ float GetBeaconAngle_A(uint8_t beaconIndex);
 float GetBeaconAngle_B(uint8_t beaconIndex);
 float GetBeaconAngle_C(uint8_t beaconIndex);
 
+void SetBeaconAngles(float A, float B, float C);
+
 int getXShift(uint8_t beaconIndex);
 int getYShift(uint8_t beaconIndex);
 int getThetaShift(uint8_t beaconIndex);

@@ -35,7 +35,7 @@
 #define ROTATE_90_TIME 500
 #define ROTATE_45_TIME 300
 
-#define STALL_THRESHOLD 5
+#define STALL_THRESHOLD 4
 
 /*---------------------------- Module Functions ---------------------------*/
 /* prototypes for private functions for this service.They should be functions
@@ -59,9 +59,6 @@ static uint32_t Right_LastCapture;
 //Encoder Tick Counters
 static uint32_t LeftEncoderTicks;
 static uint32_t RightEncoderTicks;
-
-//Motor Stopped Timer (milliseconds)
-static uint8_t motor_stopped_timer = 150; //ie, if no encoder ticks received within this amount we post an event
 
 //Target RPM (negative implies backwards)
 static float RPMTarget_Left;
@@ -208,15 +205,16 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 			StallCounter_Left++;
 			if (StallCounter_Left > STALL_THRESHOLD)
 			{
+				ES_Timer_StopTimer(MOTOR_STOPPED_R);
 				printf("Collision detected!");
 				ES_Event CollisionEvent;
 				CollisionEvent.EventType = ES_COLLISION;
-				//PostMasterSM(CollisionEvent);
+				PostMasterSM(CollisionEvent);
 				StallCounter_Left = 0;
 			}
 			else
 			{
-				ES_Timer_InitTimer(MOTOR_STOPPED_L, motor_stopped_timer);
+				ES_Timer_InitTimer(MOTOR_STOPPED_L, MOTOR_STOPPED_T);
 			}
 		}
 	}
@@ -234,15 +232,16 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 			StallCounter_Right++;
 			if (StallCounter_Right > STALL_THRESHOLD)
 			{
+				ES_Timer_StopTimer(MOTOR_STOPPED_L);
 				printf("Collision detected!");
 				ES_Event CollisionEvent;
 				CollisionEvent.EventType = ES_COLLISION;
-				//PostMasterSM(CollisionEvent);
+				PostMasterSM(CollisionEvent);
 				StallCounter_Right = 0;
 			}
 			else
 			{
-				ES_Timer_InitTimer(MOTOR_STOPPED_R, motor_stopped_timer);
+				ES_Timer_InitTimer(MOTOR_STOPPED_R, MOTOR_STOPPED_T);
 			}
 		}
 	}
@@ -266,7 +265,7 @@ void DriveEncoder_Left_InterruptResponse(void){
 	StallCounter_Left = 0;
 	
 	// Check if we've reached our target, and if so, stop
-	if (LeftEncoderTicks >= TargetTicks_Left && (!AligningToBucket))
+	if (LeftEncoderTicks >= TargetTicks_Left && (!AligningToBucket) && TargetTicks_Left != 0)
 	{
 		printf("Left encoder reached destination: %d\r\n", TargetTicks_Left);
 		setTargetEncoderTicks(0, 0, false, false);
@@ -290,7 +289,7 @@ void DriveEncoder_Left_InterruptResponse(void){
 	Left_LastCapture = ThisCapture;
 	
 	//Start the Motor Stopped Timer Again
-	ES_Timer_InitTimer(MOTOR_STOPPED_L, motor_stopped_timer);
+	ES_Timer_SetTimer(MOTOR_STOPPED_L, MOTOR_STOPPED_T);
 	
 }
 
@@ -309,7 +308,7 @@ void DriveEncoder_Right_InterruptResponse(void){
 	StallCounter_Right = 0;
 	
 	// Check if we've reached our target, and if so, stop
-	if (RightEncoderTicks >= TargetTicks_Right && (!AligningToBucket))
+	if (RightEncoderTicks >= TargetTicks_Right && (!AligningToBucket) && TargetTicks_Right != 0)
 	{
 		printf("Right encoder reached destination: %d\r\n", TargetTicks_Right);
 		setTargetEncoderTicks(0, 0, false, false);
@@ -335,10 +334,7 @@ void DriveEncoder_Right_InterruptResponse(void){
 	Right_LastCapture = ThisCapture;
 	
 	//Start the Motor Stopped Timer Again
-	ES_Timer_InitTimer(MOTOR_STOPPED_R, motor_stopped_timer);
-	
-	
-
+	ES_Timer_SetTimer(MOTOR_STOPPED_R, MOTOR_STOPPED_T);
 }
 
 //Interrupt Response to Manage our Control Feedback loop to the motors
@@ -457,8 +453,8 @@ void setTargetDriveSpeed(float newRPMTarget_left, float newRPMTarget_right){
 	
 	if (newRPMTarget_left != 0 && newRPMTarget_right != 0)
 	{
-		ES_Timer_InitTimer(MOTOR_STOPPED_L, motor_stopped_timer);
-		ES_Timer_InitTimer(MOTOR_STOPPED_R, motor_stopped_timer);
+		ES_Timer_InitTimer(MOTOR_STOPPED_L, MOTOR_STOPPED_T);
+		ES_Timer_InitTimer(MOTOR_STOPPED_R, MOTOR_STOPPED_T);
 		ResetAbsolutePosition();
 		integralTerm_Left = 0;
 		integralTerm_Right = 0;

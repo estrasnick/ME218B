@@ -60,6 +60,23 @@ static float TargetY;
 
 static bool AbsolutePosition = false;
 
+static uint8_t backupIndex;
+
+typedef struct {
+	uint32_t leftTicks;
+	uint32_t rightTicks;
+	bool leftNeg;
+	bool rightNeg;
+} backupPlan;
+
+static backupPlan backupArray[] = 
+{
+	{.leftTicks = BACK_UP_TICKS, .rightTicks = BACK_UP_TICKS << 1, .leftNeg = false, .rightNeg = false},
+	{.leftTicks = BACK_UP_TICKS << 1, .rightTicks = BACK_UP_TICKS, .leftNeg = false, .rightNeg = false},
+	{.leftTicks = BACK_UP_TICKS, .rightTicks = BACK_UP_TICKS << 1, .leftNeg = true, .rightNeg = true},
+	{.leftTicks = BACK_UP_TICKS << 1, .rightTicks = BACK_UP_TICKS, .leftNeg = true, .rightNeg = true}
+};
+
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
  Function
@@ -198,6 +215,19 @@ float getY(void)
 }
 
 /***************************************************************************
+ Reposition if we are having trouble getting a position
+ ***************************************************************************/
+void ExecuteBackup(void)
+{
+	setTargetEncoderTicks(backupArray[backupIndex].leftTicks, backupArray[backupIndex].rightTicks, backupArray[backupIndex].leftNeg, backupArray[backupIndex].rightNeg);
+	backupIndex++;
+	if (backupIndex >= NELEMS(backupArray))
+	{
+		backupIndex = 0;
+	}
+}
+
+/***************************************************************************
  Check if our latest position was determined via triangulation
  ***************************************************************************/
 bool IsAbsolutePosition(void)
@@ -288,7 +318,7 @@ static void CalculateAbsolutePosition()
 	if ((myX < 0) || (myY < 0) || (myX > 96) || (myY > 96))
 	{
 		printf("Oops. We calculated an invalid position.");
-		setTargetEncoderTicks(BACK_UP_TICKS, BACK_UP_TICKS, true, true);
+		ExecuteBackup();
 	}
 	else
 	{
@@ -482,3 +512,5 @@ static void DriveToTarget(void)
 		setTargetEncoderTicks(ticks, ticks, true, true);
 	}
 }
+
+

@@ -24,6 +24,7 @@ void ResetAbsolutePosition(void);
 float DistanceToPoint(float TargetX, float TargetY);
 float DetermineDistanceToBucket(void);
 float ToAppropriateRange(float angle);
+void ExecuteBackup(void);
 
 #endif 
 

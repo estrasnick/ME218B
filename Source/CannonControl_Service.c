@@ -22,23 +22,23 @@
 /*----------------------------- Module Defines ----------------------------*/
 //Define Gains
 #define STARTUP_P_GAIN 2.5f
-#define STARTUP_THRESH .15f
+#define STARTUP_THRESH .2f
 
-#define CONTROL_P_GAIN_BELOW .00145f
-#define CONTROL_D_GAIN_BELOW 0.00f
+#define CONTROL_P_GAIN_BELOW .00415f
+#define CONTROL_D_GAIN_BELOW 0.00005f
 #define I_GAIN_BELOW .000095f
 
 #define CONTROL_P_GAIN_ABOVE .0000001f
 #define CONTROL_D_GAIN_ABOVE 0.000015f
-#define I_GAIN_ABOVE .00055f
+#define I_GAIN_ABOVE .000125f
 
 #define INTEGRAL_CLAMP_MIN -100
 #define INTEGRAL_CLAMP_MAX 100
 
 //Cannon Test Speeds in RPM
-#define CANNON_STOP_SPEED 2500
+#define CANNON_STOP_SPEED 3500
 #define CANNON_TEST_PWM 30
-#define CANNON_TEST_RPM 3036
+#define CANNON_TEST_RPM 2000
 
 #define CANNON_RPM_TOLERANCE 70
 
@@ -68,6 +68,8 @@ float integralTerm = 0.0; /* integrator control effort */
 
 bool Revving = false;
 
+
+
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
  Function
@@ -96,8 +98,9 @@ bool InitCannonControlService ( uint8_t Priority )
 	InitPeriodic(CANNON_CONTROL_INTERRUPT_PARAMATERS);
 	
 	//Start the Cannon at Rest
-	setTargetCannonSpeed(0.0);	//thsi should be zero but we are experimenting for testing
-	
+	//setTargetCannonSpeed(CANNON_TEST_RPM);	//thsi should be zero but we are experimenting for testing
+	setTargetCannonSpeed(0);	//thsi should be zero but we are experimenting for testing
+		
 	//Set Hopper to proper position
 	SetPWM_Hopper(HOPPER_DEFAULT_DUTY);
 	
@@ -164,7 +167,7 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
 				{
 					//For Actual Implementation
 					Revving = false;
-					setTargetCannonSpeed(CANNON_STOP_SPEED);
+					setTargetCannonSpeed(REV_SPEED);
 					
 					//For Testing 
 					//setTargetCannonSpeed(0);
@@ -313,6 +316,7 @@ static void calculateControlResponse(float currentRPM){
 	
 	
 		//For Printing
+	
 	if (RPMTarget != 0)
 	{
 		static float vals[10][7];
@@ -342,7 +346,11 @@ static void calculateControlResponse(float currentRPM){
 	LastError = RPMError;
 	
 	//Call the Set PWM Function on the clamped RequestedDuty Value
-	SetPWM_Cannon(clamp(RequestedDuty, -50, 50)); //cast as a uint8_t so that we don't get decimals
+	if (RPMTarget != 0)
+	{
+		SetPWM_Cannon(clamp(RequestedDuty, -50, 50));
+	}
+		 //cast as a uint8_t so that we don't get decimals
 	//SetPWM_Cannon(CANNON_TEST_PWM);
 	//SetPWM_Cannon(0);
 }

@@ -307,6 +307,7 @@ static ES_Event DuringCampaignStatus_t( ES_Event Event)
 			
         // repeat for any concurrently running state machines
         // now do any local exit functionality
+				UpdateGameStarted();
 				UpdateADStatus();
 				updatePSStatuses();
     }else

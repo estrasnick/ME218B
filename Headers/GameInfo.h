@@ -9,7 +9,8 @@ GameInfo Header File
 
 // Public Function Prototypes
 uint8_t MyColor(void);
-bool isGameStarted(void);
+void UpdateGameStarted(void);
+bool CheckGameStarted(void);
 void UpdateADStatus(void);
 bool AmIBlocked(void);
 bool IsEnemyBlocked(void);
