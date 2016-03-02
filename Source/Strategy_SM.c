@@ -258,7 +258,6 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 							
 							// Since we have traveled, we are now allowed to stop for a station again
 							printf("Resetting allow stop\r\n");
-							SetAllowStopReset();
 							
 							NextState = ChooseDestination_t;
 							MakeTransition = true;
@@ -547,14 +546,14 @@ static ES_Event DuringChooseDestination_t( ES_Event Event)
 				
 				if ((Event.EventType == ES_TIMEOUT) && (Event.EventParam == POSITION_CHECK))
 				{
-					printf("Query attack strat: %d\r\n", QueryAttackStrategySM());
+					//printf("Query attack strat: %d\r\n", QueryAttackStrategySM());
 					if (IsAbsolutePosition() && (QueryAttackStrategySM() != Attack_t))
 					{
 						ChooseDestination();
 					}
 					else if (QueryAttackStrategySM() != Attack_t)
 					{
-						printf("waiting on position\r\n");
+						//printf("waiting on position\r\n");
 						ES_Timer_InitTimer(POSITION_CHECK, POSITION_CHECK_T);
 					}
 				}

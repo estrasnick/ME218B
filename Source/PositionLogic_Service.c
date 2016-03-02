@@ -514,6 +514,8 @@ static void AlignToTarget(void)
 static void DriveToTarget(void)
 {
 	uint32_t ticks = ConvertInchesToEncoderTicks(DetermineDistanceToTarget());
+	
+	printf("Changing ticks from %d", ticks);
 	if (ticks >= HALL_SENSOR_OFFSET_IN_TICKS)
 	{
 		ticks -= HALL_SENSOR_OFFSET_IN_TICKS;
@@ -524,6 +526,7 @@ static void DriveToTarget(void)
 		ticks = HALL_SENSOR_OFFSET_IN_TICKS - ticks;
 		setTargetEncoderTicks(ticks, ticks, true, true);
 	}
+	printf(" to %d\r\n", ticks);
 }
 
 

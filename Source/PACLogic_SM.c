@@ -155,8 +155,6 @@ ES_Event RunPACLogicSM( ES_Event CurrentEvent )
 								ResetDestinationEvent.EventType = ES_RESET_DESTINATION;
 								PostMasterSM(ResetDestinationEvent);
 								
-								disableHEInterrupts();
-								
 								NextState = Waiting4Command_t;
 								MakeTransition = true;
 							}

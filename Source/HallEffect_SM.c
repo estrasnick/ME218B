@@ -93,10 +93,6 @@ uint32_t HallEffect_P[] = {
 	uint32_t lastCaptureInnerRight;
 	uint32_t lastCaptureOuterRight;
 	
-	
-static bool AllowStop = true;
-static bool AllowReset = true;
-	
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
  Function
@@ -125,15 +121,6 @@ ES_Event RunHallEffectSM( ES_Event CurrentEvent )
 	 	 {
 	 	 	 buckets[i] = 0;
 	 	 }
-		 
-		 if (AllowReset && QueryAttackStrategySM() != Attack_t)
-		 {
-			 printf("Resetting destination due to hall measure\r\n");
-			 ES_Event ResetEvent;
-			 ResetEvent.EventType = ES_RESET_DESTINATION;
-			 PostMasterSM(ResetEvent);
-			 AllowReset = false;
-		 }
 		 
 		 ES_Event MeasureEvent;
 		 MeasureEvent.EventType = ES_PS_MEASURING;
@@ -453,13 +440,6 @@ void updateBuckets(uint32_t CurrentPeriod){
 	for (int i = 0; i < NUMBER_FREQUENCIES; i++){
 			if (toleranceCheck(CurrentPeriod, HallEffect_P[i], PERIOD_MEASURING_ERROR_TOLERANCE))
 			{
-				if (AllowStop)
-				{
-					setTargetDriveSpeed(0.0, 0.0);
-					printf("Stopping to measure\r\n");
-					ResetEncoderTicks();
-					AllowStop = false;
-				}
 				buckets[i]++;
 				if (buckets[i] > NUMBER_PULSES_TO_STOP)
 				{
@@ -495,13 +475,6 @@ void updateBuckets(uint32_t CurrentPeriod){
 				return;
 			}
 	}
-}
-
-void SetAllowStopReset(void)
-{
-	AllowStop = true;
-	AllowReset = true;
-	//enableHEInterrupts();
 }
 
 //Tolerance Check

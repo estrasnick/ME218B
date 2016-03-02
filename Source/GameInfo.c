@@ -100,7 +100,7 @@ void UpdateGameStarted()
 		PostMasterSM(StartEvent);
 	}
 	
-	printf("Game Started value is: %d\r\n", GameStarted);
+	//printf("Game Started value is: %d\r\n", GameStarted);
 }
 
 bool CheckGameStarted(void)
