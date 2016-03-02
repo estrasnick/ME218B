@@ -95,12 +95,19 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 
 	 if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == POSITION_CHECK))
 	 {
-		 PositionTimeoutCount++;
-		 if (PositionTimeoutCount >= POSITION_TIMEOUT_THRESHOLD)
+		 if (!IsAbsolutePosition())
 		 {
-			 printf("Position timeout; executing backup!\r\n");
+			 PositionTimeoutCount++;
+			 if (PositionTimeoutCount >= POSITION_TIMEOUT_THRESHOLD)
+			 {
+				 printf("Position timeout; executing backup!\r\n");
+				 PositionTimeoutCount = 0;
+				 ExecuteBackup();
+			 }
+		 }
+		 else
+		 {
 			 PositionTimeoutCount = 0;
-			 ExecuteBackup();
 		 }
 	 }
 	 
@@ -128,6 +135,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 	 else if (CurrentEvent.EventType == ES_RESET_DESTINATION)
 	 {
 		 printf("We reset our destination\r\n");
+		 printf("rp1\r\n");
 		 ResumePositioning();
 		 NextState = ChooseDestination_t;
 		 MakeTransition = true;
@@ -216,6 +224,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 						else if (CurrentEvent.EventType == ES_PS_DETECTED)
 						{
 							printf("ES_PS_DETECTED in FaceTarget\r\n");
+							printf("rp2\r\n");
 							ResumePositioning();
 							
 							NextState = StationCapture_t; //ie. we want to exit and reenter
@@ -238,16 +247,18 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 						{
 							NextState = StationCapture_t; //ie. we want to exit and reenter
 							MakeTransition = true;
+							printf("rp3\r\n");
 							ResumePositioning();
 						}
 						else if (CurrentEvent.EventType == ES_ARRIVED)
 						{
 							ResumePositioning();
+							printf("rp4\r\n");
 							printf("Arrived at target\r\n");
 							
 							// Since we have traveled, we are now allowed to stop for a station again
 							printf("Resetting allow stop\r\n");
-							SetAllowStopReset(true);
+							SetAllowStopReset();
 							
 							NextState = ChooseDestination_t;
 							MakeTransition = true;
@@ -290,6 +301,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 				 	NextState = StationCapture_t; //ie. we want to exit and reenter
 				 	MakeTransition = true;
 				 	ResumePositioning();
+					 printf("rp5\r\n");
 				 }
 				 else if (CurrentEvent.EventType == ES_ARRIVED)
 				 {
@@ -380,6 +392,7 @@ static ES_Event DuringWait4Start_t( ES_Event Event)
     // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
+			
         // implement any entry actions required for this state machine
 				GPIO_Clear(GAME_BASE, GAME_STATUS_PIN);
 				RequireZero();
@@ -420,12 +433,14 @@ static ES_Event DuringWait4Zero_t( ES_Event Event)
     // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
+				
         // implement any entry actions required for this state machine
 				if (IsZeroed())
 				{
 					printf("Game is Started, Choose Destination 1\n\r");
 					
 					ResumePositioning();
+					printf("rp6\r\n");
 					ES_Event ZeroEvent;
 					ZeroEvent.EventType = ES_ZEROED;
 					PostMasterSM(ZeroEvent);
@@ -447,7 +462,12 @@ static ES_Event DuringWait4Zero_t( ES_Event Event)
         
         // repeat for any concurrently running state machines
         // now do any local exit functionality
-				
+				enableCaptureInterrupt(HALLSENSOR_INNER_LEFT_INTERRUPT_PARAMATERS);
+				enableCaptureInterrupt(HALLSENSOR_INNER_RIGHT_INTERRUPT_PARAMATERS);
+				enableCaptureInterrupt(HALLSENSOR_OUTER_LEFT_INTERRUPT_PARAMATERS);
+				enableCaptureInterrupt(HALLSENSOR_OUTER_RIGHT_INTERRUPT_PARAMATERS);
+			  
+				enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
     }else
     // do the 'during' function for this state
     {
@@ -463,6 +483,7 @@ static ES_Event DuringWait4Zero_t( ES_Event Event)
 					printf("Game is Started, Choose Destination 1\n\r");
 					
 					ResumePositioning();
+					printf("rp7\r\n");
 					
 					ES_Event ZeroEvent;
 					ZeroEvent.EventType = ES_ZEROED;
@@ -492,14 +513,15 @@ static ES_Event DuringChooseDestination_t( ES_Event Event)
     {
         // implement any entry actions required for this state machine
 			if (IsAbsolutePosition() && (QueryAttackStrategySM() != Attack_t))
-				{
-					ChooseDestination();
-				// after that start any lower level machines that run in this state
-				}
-				else
-				{
-					ES_Timer_InitTimer(POSITION_CHECK, POSITION_CHECK_T);
-				}
+			{
+				ChooseDestination();
+			// after that start any lower level machines that run in this state
+			}
+			else if (QueryAttackStrategySM() != Attack_t)
+			{
+				printf("need position first\r\n");
+				ES_Timer_InitTimer(POSITION_CHECK, POSITION_CHECK_T);
+			}
         // repeat the StartxxxSM() functions for concurrent state machines
         // on the lower level
 				
@@ -525,12 +547,14 @@ static ES_Event DuringChooseDestination_t( ES_Event Event)
 				
 				if ((Event.EventType == ES_TIMEOUT) && (Event.EventParam == POSITION_CHECK))
 				{
+					printf("Query attack strat: %d\r\n", QueryAttackStrategySM());
 					if (IsAbsolutePosition() && (QueryAttackStrategySM() != Attack_t))
 					{
 						ChooseDestination();
 					}
-					else
+					else if (QueryAttackStrategySM() != Attack_t)
 					{
+						printf("waiting on position\r\n");
 						ES_Timer_InitTimer(POSITION_CHECK, POSITION_CHECK_T);
 					}
 				}

@@ -290,7 +290,7 @@ static ES_Event DuringAttack_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-			
+				ES_Timer_StopTimer(POSITION_CHECK);
         // after that start any lower level machines that run in this state
         //StartLowerLevelSM( Event );
 				StartAttackSM(Event);

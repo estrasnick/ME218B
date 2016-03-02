@@ -21,6 +21,8 @@
 #include "PeriscopeControl_Service.h"
 #include "GameInfo.h"
 #include "Strategy_SM.h"
+#include "DriveTrainControl_Service.h"
+#include "AttackStrategy_SM.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 
@@ -219,6 +221,13 @@ float getY(void)
  ***************************************************************************/
 void ExecuteBackup(void)
 {
+	if (QueryAttackStrategySM() == Attack_t)
+	{
+		return;
+	}
+	
+	PausePositioning();
+	SetBackingUp(true);
 	setTargetEncoderTicks(backupArray[backupIndex].leftTicks, backupArray[backupIndex].rightTicks, backupArray[backupIndex].leftNeg, backupArray[backupIndex].rightNeg);
 	backupIndex++;
 	if (backupIndex >= NELEMS(backupArray))

@@ -126,7 +126,7 @@ ES_Event RunHallEffectSM( ES_Event CurrentEvent )
 	 	 	 buckets[i] = 0;
 	 	 }
 		 
-		 if (AllowReset)
+		 if (AllowReset && QueryAttackStrategySM() != Attack_t)
 		 {
 			 printf("Resetting destination due to hall measure\r\n");
 			 ES_Event ResetEvent;
@@ -134,6 +134,10 @@ ES_Event RunHallEffectSM( ES_Event CurrentEvent )
 			 PostMasterSM(ResetEvent);
 			 AllowReset = false;
 		 }
+		 
+		 ES_Event MeasureEvent;
+		 MeasureEvent.EventType = ES_PS_MEASURING;
+		 PostMasterSM(MeasureEvent);
 	 }
 	 else
 	 {
@@ -207,6 +211,8 @@ void StartHallEffectSM ( ES_Event CurrentEvent )
   //Initialize the Hall Effect Interrupts
 	initializeHEInterrupts();
 		
+	disableHEInterrupts();
+	
 	// to implement entry to a history state or directly to a substate
    // you can modify the initialization of the CurrentState variable
    // otherwise just start in the entry state every time the state machine
@@ -255,6 +261,7 @@ static ES_Event DuringMeasure_t( ES_Event Event)
         // implement any entry actions required for this state machine
 				//Enable all our Hall Effect Interrupts
 				enableHEInterrupts();
+					
 			
         // after that start any lower level machines that run in this state
         //StartLowerLevelSM( Event );
@@ -460,7 +467,7 @@ void updateBuckets(uint32_t CurrentPeriod){
 					if (!checkOwnFrequency(i)){
 						//Disable the Interrupts
 						disableHEInterrupts();
-						
+						ES_Timer_StopTimer(HALL_EFFECT_TIMEOUT_TIMER);
 						//printf("Checked own frequency table, didn't match. Post that new PS was detected: %d Sensor %d \n\r", periodMatchIndex, sensor_index);
 						 
 						//Post to master that we detected a polling station
@@ -471,7 +478,6 @@ void updateBuckets(uint32_t CurrentPeriod){
 						SetTargetFrequencyIndex(i);
 						
 						PostMasterSM(ThisEvent);
-						
 						
 					}
 					else
@@ -491,10 +497,11 @@ void updateBuckets(uint32_t CurrentPeriod){
 	}
 }
 
-void SetAllowStopReset(bool allow)
+void SetAllowStopReset(void)
 {
-	AllowStop = allow;
-	AllowReset = allow;
+	AllowStop = true;
+	AllowReset = true;
+	//enableHEInterrupts();
 }
 
 //Tolerance Check

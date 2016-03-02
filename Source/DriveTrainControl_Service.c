@@ -21,6 +21,7 @@
 #include "inc/hw_timer.h"
 #include "PositionLogic_Service.h"
 #include "PhotoTransistor_Service.h"
+#include "Strategy_SM.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 //Define Gains
@@ -78,6 +79,7 @@ static float LastError_Right = 0;
 static bool isMoving = false; //initialize to false
 
 static bool AligningToBucket = false;
+static bool BackingUp = false;
 
 static uint8_t StallCounter_Left = 0;
 static uint8_t StallCounter_Right = 0;
@@ -271,14 +273,23 @@ void DriveEncoder_Left_InterruptResponse(void){
 		printf("Left encoder reached destination: %d\r\n", TargetTicks_Left);
 		setTargetEncoderTicks(0, 0, false, false);
 		//if (RPMTarget_Right == 0)
-		//{
+		if (!BackingUp)
+		{
 			ES_Event NewEvent;
 			NewEvent.EventType = ES_ARRIVED;
 			PostMasterSM(NewEvent);
 			isMoving = false;
 			ResetEncoderTicks();
 			ResetUpdateTimes();
-		//}
+		}
+		else
+		{
+			BackingUp = false;
+			ES_Event NewEvent;
+			NewEvent.EventType = ES_RESET_DESTINATION;
+			PostMasterSM(NewEvent);
+			printf("rp8\r\n");
+		}
 	}
 	
 	// now grab the captured value and calculate the period
@@ -289,6 +300,22 @@ void DriveEncoder_Left_InterruptResponse(void){
  //printf("ThisCapture: %d, LastCapture: %d, Period: %d\r\n", ThisCapture, Left_LastCapture, Left_Period);
 	// update LastCapture to prepare for the next edge
 	Left_LastCapture = ThisCapture;
+	
+	/*
+	//Store the last direction we were moving in
+	static uint8_t lastDirection;
+	uint8_t currentDirection = HWREG(DRIVE_BASE+(GPIO_O_DATA + ALL_BITS));
+	//Check if we experienced a sudden change in direction
+	if (lastDirection != currentDirection){
+				ES_Event CollisionEvent;
+				CollisionEvent.EventType = ES_COLLISION;
+				PostMasterSM(CollisionEvent);
+	}
+	lastDirection = currentDirection;
+*/
+	
+	
+	
 	
 	//Start the Motor Stopped Timer Again
 	ES_Timer_SetTimer(MOTOR_STOPPED_L, MOTOR_STOPPED_T);
@@ -316,7 +343,9 @@ void DriveEncoder_Right_InterruptResponse(void){
 		setTargetEncoderTicks(0, 0, false, false);
 		
 		//if (RPMTarget_Left == 0)
-		//{
+		//
+		if (!BackingUp)
+		{
 			ES_Event NewEvent;
 			NewEvent.EventType = ES_ARRIVED;
 			PostMasterSM(NewEvent);
@@ -324,6 +353,15 @@ void DriveEncoder_Right_InterruptResponse(void){
 			ResetEncoderTicks();
 			ResetUpdateTimes();
 		//}
+		}
+		else
+		{
+			BackingUp = false;
+			ES_Event NewEvent;
+			NewEvent.EventType = ES_RESET_DESTINATION;
+			PostMasterSM(NewEvent);
+			printf("rp9\r\n");
+		}
 	}
 	
 	// now grab the captured value and calculate the period
@@ -336,12 +374,24 @@ void DriveEncoder_Right_InterruptResponse(void){
 	// update LastCapture to prepare for the next edge
 	Right_LastCapture = ThisCapture;
 	
+	/*//Store the last direction we were moving in
+	static uint8_t lastDirection;
+	uint8_t currentDirection = HWREG(DRIVE_BASE+(GPIO_O_DATA + ALL_BITS));
+	//Check if we experienced a sudden change in direction
+	if (lastDirection != currentDirection){
+				ES_Event CollisionEvent;
+				CollisionEvent.EventType = ES_COLLISION;
+				PostMasterSM(CollisionEvent);
+	}
+	lastDirection = currentDirection;
+	*/
+	
 	//Start the Motor Stopped Timer Again
 	ES_Timer_SetTimer(MOTOR_STOPPED_R, MOTOR_STOPPED_T);
 }
 
 //Interrupt Response to Manage our Control Feedback loop to the motors
-void DriveControl_PeriodicInterruptResponse(void){
+void DriveControl_PeriodicInterruptResponse(void) {
 	//Print for testing
 	
 	// start by clearing the source of the interrupt
@@ -477,7 +527,7 @@ void setTargetDriveSpeed(float newRPMTarget_left, float newRPMTarget_right){
 void setDriveToAlignToBucket(void)
 {
 	AligningToBucket = true;
-	setTargetDriveSpeed(.7f * DEFAULT_DRIVE_RPM, .7f * -DEFAULT_DRIVE_RPM);
+	setTargetDriveSpeed(.9f * DEFAULT_DRIVE_RPM, .9f * -DEFAULT_DRIVE_RPM);
 } 
 
 /****************************************************************************
@@ -560,5 +610,10 @@ void ResetEncoderTicks()
 bool IsMoving(void)
 {
 	return isMoving;
+}
+
+void SetBackingUp(bool val)
+{
+	BackingUp = val;
 }
 

@@ -91,7 +91,7 @@ void UpdateGameStarted()
 	
 	//printf("Game Started: %d \n\r", ((*(byte + 4) & BIT0HI) == BIT0HI));
 	
-	GameStarted =  ((*(byte + 4) & BIT0HI) == BIT0HI) ;
+	GameStarted = ((*(byte + 4) & BIT0HI) == BIT0HI) ;
 	
 	if (GameStarted)
 	{

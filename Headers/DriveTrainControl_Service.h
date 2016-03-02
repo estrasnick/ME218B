@@ -26,6 +26,7 @@ uint32_t GetLeftEncoderTicks(void);
 uint32_t GetRightEncoderTicks(void);
 void ResetEncoderTicks(void);
 bool IsMoving(void);
+void SetBackingUp(bool val);
 
 #endif 
 

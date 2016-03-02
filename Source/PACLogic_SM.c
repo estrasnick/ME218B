@@ -34,7 +34,7 @@
 // and any other local defines
 
 #define ENTRY_STATE Waiting4Command_t
-#define CAMPAIGN_STATUS_REQUEST_TIMER 100 //set to 100 ms
+#define CAMPAIGN_STATUS_REQUEST_TIMER 400 //set to 100 ms
 
 #define BITS_PER_NIBBLE 4
 /*---------------------------- Module Functions ---------------------------*/
@@ -155,6 +155,8 @@ ES_Event RunPACLogicSM( ES_Event CurrentEvent )
 								ResetDestinationEvent.EventType = ES_RESET_DESTINATION;
 								PostMasterSM(ResetDestinationEvent);
 								
+								disableHEInterrupts();
+								
 								NextState = Waiting4Command_t;
 								MakeTransition = true;
 							}
@@ -249,6 +251,10 @@ static ES_Event DuringWaiting4Command_t( ES_Event Event)
 				//Start the Timer for the Campaign Status
 				ES_Timer_InitTimer(CAMPAIGN_STATUS_CHECK, CAMPAIGN_STATUS_REQUEST_TIMER);
 			
+				//Post to Start Measuring to Make sure we always go back to measuring
+				ES_Event ThisEvent;
+				ThisEvent.EventType = ES_PS_MEASURING;
+				PostMasterSM(ThisEvent);
 			
         // after that start any lower level machines that run in this state
         //StartLowerLevelSM( Event );

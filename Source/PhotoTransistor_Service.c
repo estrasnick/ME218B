@@ -110,6 +110,8 @@ bool InitPhotoTransistorService ( uint8_t Priority )
 
   InitInputCapture(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 	
+	disableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
+	
 	// post the initial transition event
   ThisEvent.EventType = ES_INIT;
   if (ES_PostToService( MyPriority, ThisEvent) == true)

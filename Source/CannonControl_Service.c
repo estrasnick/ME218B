@@ -36,9 +36,9 @@
 #define INTEGRAL_CLAMP_MAX 100
 
 //Cannon Test Speeds in RPM
-#define CANNON_TEST_PWM 30
+#define CANNON_TEST_PWM 25
 #define CANNON_TEST_RPM 3500
-#define CANNON_RPM_TOLERANCE 70
+#define CANNON_RPM_TOLERANCE 500
 
 /*---------------------------- Module Functions ---------------------------*/
 /* prototypes for private functions for this service.They should be functions
@@ -49,6 +49,7 @@ static void calculateControlResponse(float currentRPM);
 static float CalculateRPM(void);
 static bool SpeedCheck(float rpm);
 static float DetermineCannonSpeed(void);
+static uint16_t SpeedCheckTimeoutCounter;
 
 /*---------------------------- Module Variables ---------------------------*/
 // with the introduction of Gen2, we need a module level Priority variable
@@ -244,6 +245,19 @@ void CannonControl_PeriodicInterruptResponse(void){
 			NewEvent.EventType = ES_CANNON_READY;
 			PostMasterSM(NewEvent);
 			Revving = false;
+			SpeedCheckTimeoutCounter = 0;
+		}
+		else
+		{
+			SpeedCheckTimeoutCounter++;
+			if (SpeedCheckTimeoutCounter > SPEED_CHECK_LIMIT)
+			{
+				ES_Event NewEvent;
+				NewEvent.EventType = ES_CANNON_READY;
+				PostMasterSM(NewEvent);
+				Revving = false;
+				SpeedCheckTimeoutCounter = 0;
+			}
 		}
 	}
 	
@@ -314,7 +328,7 @@ static void calculateControlResponse(float currentRPM){
 	
 	
 		//For Printing
-	
+	/*
 	if (RPMTarget != 0)
 	{
 		static float vals[10][7];
@@ -339,7 +353,9 @@ static void calculateControlResponse(float currentRPM){
 			i = 0; //reset i
 		}
 		i++; 
-	}
+	}*/
+	
+	
 	//Save the Last Error
 	LastError = RPMError;
 	
