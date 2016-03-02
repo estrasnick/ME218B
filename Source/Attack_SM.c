@@ -228,7 +228,7 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event)
 			if (IsAbsolutePosition())
 			{
 				//Pause our Positioning using the Periscope
-				printf("entering attack state machine\r\n");
+				printf("entering attack state machine. Strategy state is %d\r\n", QueryStrategySM());
 				LatchPeriscope();
 				SetAttemptingToStop(true);
 				

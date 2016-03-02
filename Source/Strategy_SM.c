@@ -51,6 +51,7 @@
    behavior of this state machine
 */
 static ES_Event DuringWait4Start_t( ES_Event Event);
+static ES_Event DuringWait4Zero_t( ES_Event Event);
 static ES_Event DuringChooseDestination_t( ES_Event Event);
 static ES_Event DuringFaceTarget_t( ES_Event Event);
 static ES_Event DuringTravel_t( ES_Event Event);
@@ -118,6 +119,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 		 }
 		 else
 		 {
+			 printf("Game over, restarting in waiting state\r\n");
 			 NextState = Wait4Start_t;
 			 MakeTransition = true;
 			 timePeriod = 0;
@@ -125,6 +127,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 	 }
 	 else if (CurrentEvent.EventType == ES_RESET_DESTINATION)
 	 {
+		 printf("We reset our destination\r\n");
 		 ResumePositioning();
 		 NextState = ChooseDestination_t;
 		 MakeTransition = true;
@@ -149,56 +152,27 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 				 if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
 				 {	
 						//Check for Specific Events
-						if (CurrentEvent.EventType == ES_TRANSACTION_COMPLETE)
+						if (CurrentEvent.EventType == ES_GAME_STARTED || CurrentEvent.EventType == ES_MANUAL_START)
 						{
-							if (CheckGameStarted())
-							{
-								if (IsZeroed())
-								{
-									printf("Game is Started, Choose Destination \n\r");
-									
-									ResumePositioning();
-									NextState = ChooseDestination_t;
-									MakeTransition = true;
-								}
-								else
-								{
-									//printf("Not yet zeroed\r\n");
-									ES_Timer_InitTimer(CHECK_ZERO_TIMER, CHECK_ZERO_T);
-								}
-							}
+							NextState = Wait4Zero_t;
+							MakeTransition = true;
 						}
-						else if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == CHECK_ZERO_TIMER))
+				 }
+				 break;
+			 }
+			 
+			 case Wait4Zero_t : 
+			 {			 
+				 // Execute During function for state one. ES_ENTRY & ES_EXIT are processed here
+				 CurrentEvent = DuringWait4Zero_t(CurrentEvent);
+			 
+				 //Process Any Events
+				 if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
+				 {	
+						if (CurrentEvent.EventType == ES_ZEROED)
 						{
-							if (IsZeroed())
-							{
-								printf("Game is Started, Choose Destination \n\r");
-								
-								ResumePositioning();
-								NextState = ChooseDestination_t;
-								MakeTransition = true;
-							}
-							else
-							{
-								//printf("Not yet zeroed\r\n");
-								ES_Timer_InitTimer(CHECK_ZERO_TIMER, CHECK_ZERO_T);
-							}
-						}
-						else if (CurrentEvent.EventType == ES_MANUAL_START)
-						{
-							if (IsZeroed())
-								{
-									printf("Game is Started, Choose Destination \n\r");
-									
-									ResumePositioning();
-									NextState = ChooseDestination_t;
-									MakeTransition = true;
-								}
-								else
-								{
-									//printf("Not yet zeroed\r\n");
-									ES_Timer_InitTimer(CHECK_ZERO_TIMER, CHECK_ZERO_T);
-								}
+							NextState = ChooseDestination_t;
+							MakeTransition = true;
 						}
 				 }
 				 break;
@@ -312,6 +286,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 				 
 				 if (CurrentEvent.EventType == ES_PS_DETECTED)
 				 {
+					printf("PS detected in handlecollision\r\n");
 				 	NextState = StationCapture_t; //ie. we want to exit and reenter
 				 	MakeTransition = true;
 				 	ResumePositioning();
@@ -437,6 +412,76 @@ static ES_Event DuringWait4Start_t( ES_Event Event)
     // to remap the current event, or ReturnEvent if you do want to allow it.
     return(ReturnEvent);
 }
+
+static ES_Event DuringWait4Zero_t( ES_Event Event)
+{
+    ES_Event ReturnEvent = Event; // assme no re-mapping or comsumption
+
+    // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
+    if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
+    {
+        // implement any entry actions required for this state machine
+				if (IsZeroed())
+				{
+					printf("Game is Started, Choose Destination 1\n\r");
+					
+					ResumePositioning();
+					ES_Event ZeroEvent;
+					ZeroEvent.EventType = ES_ZEROED;
+					PostMasterSM(ZeroEvent);
+				}
+				else
+				{
+					//printf("Not yet zeroed\r\n");
+					ES_Timer_InitTimer(CHECK_ZERO_TIMER, CHECK_ZERO_T);
+				}
+        // after that start any lower level machines that run in this state
+        
+        // repeat the StartxxxSM() functions for concurrent state machines
+        // on the lower level
+				
+    }
+    else if ( Event.EventType == ES_EXIT )
+    {
+        // on exit, give the lower levels a chance to clean up first
+        
+        // repeat for any concurrently running state machines
+        // now do any local exit functionality
+				
+    }else
+    // do the 'during' function for this state
+    {
+        // run any lower level state machine
+      
+        // repeat for any concurrent lower level machines
+      
+        // do any activity that is repeated as long as we are in this state
+			if ((Event.EventType == ES_TIMEOUT) && (Event.EventParam == CHECK_ZERO_TIMER))
+			{
+				if (IsZeroed())
+				{
+					printf("Game is Started, Choose Destination 1\n\r");
+					
+					ResumePositioning();
+					
+					ES_Event ZeroEvent;
+					ZeroEvent.EventType = ES_ZEROED;
+					PostMasterSM(ZeroEvent);
+				}
+				else
+				{
+					//printf("Not yet zeroed\r\n");
+					ES_Timer_InitTimer(CHECK_ZERO_TIMER, CHECK_ZERO_T);
+				}
+			}
+    }
+    // return either Event, if you don't want to allow the lower level machine
+    // to remap the current event, or ReturnEvent if you do want to allow it.
+    return(ReturnEvent);
+}
+
+
+
 
 static ES_Event DuringChooseDestination_t( ES_Event Event)
 {
@@ -678,7 +723,8 @@ static void ChooseDestination(void)
 		{			
 			priority = (PRI_CAPTURE_HISTORY_MULTIPLIER * PositionInQueue(i))
 			+ (RETRY_MULTIPLIER * ((i == TargetStation) ? retryCount : 0))
-			+ (PRI_DISTANCE_MULTIPLIER * DistanceToPoint(GetStationX(i), GetStationY(i)));
+			+ (PRI_DISTANCE_MULTIPLIER * DistanceToPoint(GetStationX(i), GetStationY(i))
+			+ GetIntrinsicPriority(i));
 		}
 		
 		if (priority < bestPriority)

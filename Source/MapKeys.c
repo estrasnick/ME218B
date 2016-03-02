@@ -158,9 +158,11 @@ ES_Event RunMapKeys( ES_Event ThisEvent )
 											 printf("Commanding: Stop Cannon \n\r");                     
 											 break;
 						case '1' : ThisEvent.EventType = ES_NO_EVENT; 
+											printf("Load Hopper");
 											SetPWM_Hopper(HOPPER_LOAD_DUTY);             
 											 break;
 						case '2' : ThisEvent.EventType = ES_NO_EVENT; 
+											printf("Shoot Hopper");
 											SetPWM_Hopper(HOPPER_DEFAULT_DUTY);             
 											 break;
 						case 'J' : ThisEvent.EventType = ES_NO_EVENT; 

@@ -24,22 +24,20 @@
 #define STARTUP_P_GAIN 2.5f
 #define STARTUP_THRESH .2f
 
-#define CONTROL_P_GAIN_BELOW .00415f
-#define CONTROL_D_GAIN_BELOW 0.00005f
+#define CONTROL_P_GAIN_BELOW .00145f
+#define CONTROL_D_GAIN_BELOW 0.0000f
 #define I_GAIN_BELOW .000095f
 
 #define CONTROL_P_GAIN_ABOVE .0000001f
 #define CONTROL_D_GAIN_ABOVE 0.000015f
-#define I_GAIN_ABOVE .000125f
+#define I_GAIN_ABOVE .00055f
 
 #define INTEGRAL_CLAMP_MIN -100
 #define INTEGRAL_CLAMP_MAX 100
 
 //Cannon Test Speeds in RPM
-#define CANNON_STOP_SPEED 3500
 #define CANNON_TEST_PWM 30
-#define CANNON_TEST_RPM 2000
-
+#define CANNON_TEST_RPM 3500
 #define CANNON_RPM_TOLERANCE 70
 
 /*---------------------------- Module Functions ---------------------------*/
@@ -98,8 +96,8 @@ bool InitCannonControlService ( uint8_t Priority )
 	InitPeriodic(CANNON_CONTROL_INTERRUPT_PARAMATERS);
 	
 	//Start the Cannon at Rest
-	//setTargetCannonSpeed(CANNON_TEST_RPM);	//thsi should be zero but we are experimenting for testing
-	setTargetCannonSpeed(0);	//thsi should be zero but we are experimenting for testing
+	setTargetCannonSpeed(CANNON_TEST_RPM);	//thsi should be zero but we are experimenting for testing
+	//setTargetCannonSpeed(0);	//thsi should be zero but we are experimenting for testing
 		
 	//Set Hopper to proper position
 	SetPWM_Hopper(HOPPER_DEFAULT_DUTY);

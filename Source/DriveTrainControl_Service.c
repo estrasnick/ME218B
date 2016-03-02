@@ -20,6 +20,7 @@
 
 #include "inc/hw_timer.h"
 #include "PositionLogic_Service.h"
+#include "PhotoTransistor_Service.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 //Define Gains
@@ -276,6 +277,7 @@ void DriveEncoder_Left_InterruptResponse(void){
 			PostMasterSM(NewEvent);
 			isMoving = false;
 			ResetEncoderTicks();
+			ResetUpdateTimes();
 		//}
 	}
 	
@@ -320,6 +322,7 @@ void DriveEncoder_Right_InterruptResponse(void){
 			PostMasterSM(NewEvent);
 			isMoving = false;
 			ResetEncoderTicks();
+			ResetUpdateTimes();
 		//}
 	}
 	
@@ -474,7 +477,7 @@ void setTargetDriveSpeed(float newRPMTarget_left, float newRPMTarget_right){
 void setDriveToAlignToBucket(void)
 {
 	AligningToBucket = true;
-	setTargetDriveSpeed(DEFAULT_DRIVE_RPM, -DEFAULT_DRIVE_RPM);
+	setTargetDriveSpeed(.7f * DEFAULT_DRIVE_RPM, .7f * -DEFAULT_DRIVE_RPM);
 } 
 
 /****************************************************************************

@@ -20,6 +20,7 @@
 #include "Helpers.h"
 #include "DEFINITIONS.h"
 #include "PositionLogic_Service.h"
+#include "Master_SM.h"
 
 
 /*----------------------------- Module Defines ----------------------------*/
@@ -39,6 +40,7 @@ typedef struct {
 	uint8_t bit2;	
 	uint8_t f_index;
 	bool obstructed;
+	uint32_t instrinsicPriority;
 } PS_Struct;
 
 /*---------------------------- Module Functions ---------------------------*/
@@ -55,18 +57,18 @@ static bool MyBlockStatus;
 static bool EnemyBlockStatus;
 
 static PS_Struct PS_Array[] = {
-	{.location_code = SACREMENTO_CODE, .location_x = 6.0f, .location_y = 55.8f, 	.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F, .obstructed = false},
-	{.location_code = SEATTLE_CODE, .location_x = 9.0f, .location_y = 88.5f, 			.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT5HI, .bit2 = BIT4HI, .f_index = NULL_F, .obstructed = false},
-	{.location_code = BILLINGS_CODE, .location_x = 29.1f, .location_y = 75.8f, 		.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT3HI, .bit2 = BIT2HI, .f_index = NULL_F, .obstructed = false},
-	{.location_code = DENVER_CODE, .location_x = 33.3f, .location_y = 53.8f, 			.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT1HI, .bit2 = BIT0HI, .f_index = NULL_F, .obstructed = false},
-	{.location_code = DALLAS_CODE, .location_x = 45.3f, .location_y = 29.4f, 			.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F, .obstructed = false},
-	{.location_code = CHICAGO_CODE, .location_x = 61.8f, .location_y = 60.8f, 		.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT5HI, .bit2 = BIT4HI, .f_index = NULL_F, .obstructed = false},
-	{.location_code = MIAMI_CODE, .location_x = 80.8f, .location_y = 9.2f, 				.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT3HI, .bit2 = BIT2HI, .f_index = NULL_F, .obstructed = false},
-	{.location_code = WASHINGTON_CODE, .location_x = 81.5f, .location_y = 55.2f, 	.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT1HI, .bit2 = BIT0HI, .f_index = NULL_F, .obstructed = false},
-	{.location_code = CONCORD_CODE, .location_x = 87.6f, .location_y = 72.6f, 		.claimed_status = Unclaimed_b, .byte = 4, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F, .obstructed = false}
+	{.location_code = SACREMENTO_CODE, .location_x = 6.0f, .location_y = 55.8f, 	.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F, .obstructed = false, .instrinsicPriority = 700},
+	{.location_code = SEATTLE_CODE, .location_x = 9.0f, .location_y = 88.5f, 			.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT5HI, .bit2 = BIT4HI, .f_index = NULL_F, .obstructed = false, .instrinsicPriority = 700},
+	{.location_code = BILLINGS_CODE, .location_x = 29.1f, .location_y = 75.8f, 		.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT3HI, .bit2 = BIT2HI, .f_index = NULL_F, .obstructed = false, .instrinsicPriority = 0},
+	{.location_code = DENVER_CODE, .location_x = 33.3f, .location_y = 53.8f, 			.claimed_status = Unclaimed_b, .byte = 2, .bit1 = BIT1HI, .bit2 = BIT0HI, .f_index = NULL_F, .obstructed = false, .instrinsicPriority = 0},
+	{.location_code = DALLAS_CODE, .location_x = 45.3f, .location_y = 29.4f, 			.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F, .obstructed = false, .instrinsicPriority = 0},
+	{.location_code = CHICAGO_CODE, .location_x = 61.8f, .location_y = 60.8f, 		.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT5HI, .bit2 = BIT4HI, .f_index = NULL_F, .obstructed = false, .instrinsicPriority = 0},
+	{.location_code = MIAMI_CODE, .location_x = 80.8f, .location_y = 9.2f, 				.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT3HI, .bit2 = BIT2HI, .f_index = NULL_F, .obstructed = false, .instrinsicPriority = 700},
+	{.location_code = WASHINGTON_CODE, .location_x = 81.5f, .location_y = 55.2f, 	.claimed_status = Unclaimed_b, .byte = 3, .bit1 = BIT1HI, .bit2 = BIT0HI, .f_index = NULL_F, .obstructed = false, .instrinsicPriority = 0},
+	{.location_code = CONCORD_CODE, .location_x = 87.6f, .location_y = 72.6f, 		.claimed_status = Unclaimed_b, .byte = 4, .bit1 = BIT7HI, .bit2 = BIT6HI, .f_index = NULL_F, .obstructed = false, .instrinsicPriority = 0}
 };
 
-static bool GameStarted;
+static bool GameStarted = false;
 
 /*------------------------------ Module Code ------------------------------*/
 
@@ -90,6 +92,15 @@ void UpdateGameStarted()
 	//printf("Game Started: %d \n\r", ((*(byte + 4) & BIT0HI) == BIT0HI));
 	
 	GameStarted =  ((*(byte + 4) & BIT0HI) == BIT0HI) ;
+	
+	if (GameStarted)
+	{
+		ES_Event StartEvent;
+		StartEvent.EventType = ES_GAME_STARTED;
+		PostMasterSM(StartEvent);
+	}
+	
+	printf("Game Started value is: %d\r\n", GameStarted);
 }
 
 bool CheckGameStarted(void)
@@ -155,6 +166,11 @@ bool IsObstructed(uint8_t which)
 void MarkObstructed(uint8_t which)
 {
 	PS_Array[which].obstructed = true;
+}
+
+uint32_t GetIntrinsicPriority(uint8_t which)
+{
+	return PS_Array[which].instrinsicPriority;
 }
 
 // Returns true iff we are not currently near a station that we own

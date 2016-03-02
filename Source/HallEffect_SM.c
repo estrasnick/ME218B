@@ -436,6 +436,12 @@ void HE_OuterRight_InterruptResponse(void){
 Update the Array with Periods to shift everything down whenever we get a new one
  ***************************************************************************/
 void updateBuckets(uint32_t CurrentPeriod){
+	
+	if (!CheckGameStarted())
+	{
+		return;
+	}
+	
 	//Shift Periods Down
 	for (int i = 0; i < NUMBER_FREQUENCIES; i++){
 			if (toleranceCheck(CurrentPeriod, HallEffect_P[i], PERIOD_MEASURING_ERROR_TOLERANCE))
