@@ -116,7 +116,7 @@ ES_Event RunStrategySM( ES_Event CurrentEvent )
 		 if (timePeriod == 0)
 		 {
 			 ES_Timer_InitTimer(GAME_TIMER, GAME_TIMER_T);
-			 ES_Timer_InitTimer(ATTACK_PHASE_TIMER, REV_T);
+			 //ES_Timer_InitTimer(ATTACK_PHASE_TIMER, REV_T);
 			 timePeriod = 1;
 		 }
 		 else if (timePeriod == 1)
@@ -734,25 +734,15 @@ static void ChooseDestination(void)
 		uint32_t priority;
 		
 		//If we own the station or it is undefined, ie. not used
-		
-		// FOR GRADING SESSION:		
-		if (i == 0 || i == 1 || i == 6 || i == 8)
+
+		// CHANGE VALUES BACK TO MAX AFTER GRADING
+		if ((GetStationOwner(i) == MyColor()) | (GetStationOwner(i) == Undefined_b))
 		{
 			priority = 0xffffffff;
 		}
-		
-		
-		
-		
-		
-		// CHANGE VALUES BACK TO MAX AFTER GRADING
-		else if ((GetStationOwner(i) == MyColor()) | (GetStationOwner(i) == Undefined_b))
-		{
-			priority = 0x00ffffff;
-		}
 		else if (IsObstructed(i))
 		{
-			priority = 0x00ffffff - 1;
+			priority = 0xffffffff - 1;
 		}
 		else
 		{			
