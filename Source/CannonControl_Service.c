@@ -38,7 +38,7 @@
 //Cannon Test Speeds in RPM
 #define CANNON_TEST_PWM 25
 #define CANNON_TEST_RPM 3500
-#define CANNON_RPM_TOLERANCE 500
+#define CANNON_RPM_TOLERANCE 200
 
 /*---------------------------- Module Functions ---------------------------*/
 /* prototypes for private functions for this service.They should be functions
@@ -401,5 +401,7 @@ static bool SpeedCheck(float rpm)
 
 static float DetermineCannonSpeed(void)
 {	
-	return (DetermineDistanceToBucket() + DISTANCE_FROM_BEACON_TO_BUCKET_CENTER + CANNON_Y_INTERCEPT) * CANNON_SLOPE_MULTIPLIER;
+	float dist = (DetermineDistanceToBucket() + DISTANCE_FROM_BEACON_TO_BUCKET_CENTER);
+	printf("dist is %f. Setting rpm to %f\r\n", dist, dist * dist * CANNON_SLOPE_MULTIPLIER);
+	return dist * dist * CANNON_SLOPE_MULTIPLIER;
 }

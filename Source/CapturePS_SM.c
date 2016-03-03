@@ -101,11 +101,11 @@ ES_Event RunCapturePSSM( ES_Event CurrentEvent )
 								//Check if we were acknowledged and the location is correct
 								if ((checkAcknowledged() == ACK_b) && (checkLocation()))
 								{
-									printf("Polling Station Confirmed 1: Switching Frequencies \n\r");
+									//printf("Polling Station Confirmed 1: Switching Frequencies \n\r");
 									NextState = Measuring2_t;
 									MakeTransition = true;
 								} else {	//if not exit and go back to measuring									
-									printf("Got a NACK, go back to measuring1_t \n\r");
+									//printf("Got a NACK, go back to measuring1_t \n\r");
 									NextState = Measuring1_t;
 									MakeTransition = true;
 								}
@@ -142,7 +142,7 @@ ES_Event RunCapturePSSM( ES_Event CurrentEvent )
 								//Check if we were acknowledged and the location is correct
 								if ((checkAcknowledged() == ACK_b) && (checkLocation()))
 								{
-									printf("Polling Station Confirmed 2: Captured, time to move on \n\r");
+									//printf("Polling Station Confirmed 2: Captured, time to move on \n\r");
 								
 									storedLocation = getLocation();
 									SetStationOwner(storedLocation, MyColor());
@@ -169,7 +169,7 @@ ES_Event RunCapturePSSM( ES_Event CurrentEvent )
 						{		
 									//Update Our Own Frequency with what we just remeasured
 									updateCapturedFrequency(storedLocation, GetTargetFrequencyIndex());
-									printf("Setting station owner for location: %d to color %d\r\n", getLocation(), MyColor());
+									//printf("Setting station owner for location: %d to color %d\r\n", getLocation(), MyColor());
 									
 									//Now Post that we Captured and it's time to move on
 									ES_Event ThisEvent;
@@ -251,7 +251,7 @@ static ES_Event DuringMeasuring1_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-        printf("Entering DuringMeasuring1_t \n\r");
+        //printf("Entering DuringMeasuring1_t \n\r");
 				ES_Timer_InitTimer(MEASURING_TIMEOUT_TIMER, MEASURING_TIMEOUT_T);
         // after that start any lower level machines that run in this state
         //StartLowerLevelSM( Event );
@@ -288,7 +288,7 @@ static ES_Event DuringRequest1_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-        printf("Entering DuringRequest1_t \n\r");
+        //printf("Entering DuringRequest1_t \n\r");
         // after that start any lower level machines that run in this state
         StartRequestSM(Event);
         // repeat the StartxxxSM() functions for concurrent state machines
@@ -329,7 +329,7 @@ static ES_Event DuringMeasuring2_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-        printf("Entering DuringMeasuring2_t \n\r");
+        //printf("Entering DuringMeasuring2_t \n\r");
 				ES_Timer_InitTimer(MEASURING_TIMEOUT_TIMER, MEASURING_TIMEOUT_T);
 			
         // after that start any lower level machines that run in this state
@@ -368,7 +368,7 @@ static ES_Event DuringRequest2_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-        printf("Entering DuringRequest2_t \n\r");
+        //printf("Entering DuringRequest2_t \n\r");
         // after that start any lower level machines that run in this state
          StartRequestSM(Event);
         // repeat the StartxxxSM() functions for concurrent state machines
@@ -410,7 +410,7 @@ static ES_Event DuringMeasuring3_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-        printf("Entering DuringMeasuring3_t \n\r");
+        //printf("Entering DuringMeasuring3_t \n\r");
 				ES_Timer_InitTimer(MEASURING_TIMEOUT_TIMER, MEASURING_TIMEOUT_T);
 			
         // after that start any lower level machines that run in this state

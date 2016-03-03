@@ -97,7 +97,7 @@ bool InitPositionLogicService ( uint8_t Priority )
 
   MyPriority = Priority;
   
-	printf("Position Logic Initialized \n\r");
+	//printf("Position Logic Initialized \n\r");
 
 	// post the initial transition event
   ThisEvent.EventType = ES_INIT;
@@ -166,7 +166,7 @@ ES_Event RunPositionLogicService( ES_Event ThisEvent )
 		}*/
 		case ES_FACE_TARGET:
 		{
-			printf("Facing target\r\n");
+			////printf("Facing target\r\n");
 			AlignToTarget();
 			break;
 		}
@@ -274,7 +274,7 @@ static void CalculateAbsolutePosition()
 	// in the middle of the calculations
 	disableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 
-	printf("Calculating position...\r\n");
+	////printf("Calculating position...\r\n");
 
 	//Get our A, B, and C Encoder Angles
 	uint8_t lastBeaconIndex = mostRecentBeaconUpdate();
@@ -282,7 +282,7 @@ static void CalculateAbsolutePosition()
 	float B =  GetBeaconAngle_B(lastBeaconIndex);
 	float C =  GetBeaconAngle_C(lastBeaconIndex);
 	
-	printf("lastBeaconIndex: %d \n\r", lastBeaconIndex);
+	////printf("lastBeaconIndex: %d \n\r", lastBeaconIndex);
 	
 	//Get our Shifts for the rotation matrix
 	int xShift = getXShift(lastBeaconIndex);
@@ -315,7 +315,7 @@ static void CalculateAbsolutePosition()
 	
 	myTheta = ToAppropriateRange(ToDegrees(ToRadians(360 - B) + gamma + BMinusC - (.5f * PI)));
 	
-	printf("ABSOLUTE POSITION BEFORE ROTATION MATRIX: X: %f, Y: %f, theta: %f\n\r", myX, myY, myTheta);	
+	////printf("ABSOLUTE POSITION BEFORE ROTATION MATRIX: X: %f, Y: %f, theta: %f\n\r", myX, myY, myTheta);	
 	
 	//Peform Rotations and Appropriate Shifts
 	myTempX = (myX*cos(ToRadians(thetaShift)) - myY*sin(ToRadians(thetaShift))) + xShift;
@@ -325,12 +325,12 @@ static void CalculateAbsolutePosition()
 	myY = myTempY;
 	
 	//print our absolute position
-	printf("ABSOLUTE POSITION: X: %f, Y: %f, theta: %f\n\r", myX, myY, myTheta);	
-	printf("Last angle 'A' was: %d, A was: %f, B was: %f, C was: %f, gamma was: %f\r\n", lastBeaconIndex, A, B, C, ToDegrees(gamma));
+	//printf("ABSOLUTE POSITION: X: %f, Y: %f, theta: %f\n\r", myX, myY, myTheta);	
+	////printf("Last angle 'A' was: %d, A was: %f, B was: %f, C was: %f, gamma was: %f\r\n", lastBeaconIndex, A, B, C, ToDegrees(gamma));
 	
 	if ((myX < 0) || (myY < 0) || (myX > 96) || (myY > 96))
 	{
-		printf("Oops. We calculated an invalid position.");
+		////printf("Oops. We calculated an invalid position.");
 		ExecuteBackup();
 	}
 	else
@@ -353,7 +353,7 @@ Relative Position Calculations (ie. Encoder Distance Travelled Calculations)
 // details
 /*static void CalculateRelativePosition()
 {
-	printf("RELATIVE POSITION!\r\n");
+	//printf("RELATIVE POSITION!\r\n");
 	uint32_t leftEncoderTicks;
 	uint32_t rightEncoderTicks;
 	float L1;
@@ -462,7 +462,7 @@ static uint32_t EncoderTicksForGivenAngle(float angle)
 
 float DetermineDistanceToBucket(void)
 {
-	printf("Target x: %f, Target y: %f, My x: %f, My y: %f\r\n", TargetX, TargetY, myX, myY);
+	//////printf("Target x: %f, Target y: %f, My x: %f, My y: %f\r\n", TargetX, TargetY, myX, myY);
 	float yDist = (MyColor() ? 102.3 : -6.3) - myY;
 	float xDist = (MyColor() ? -6.3 : 102) - myX;
 	
@@ -471,7 +471,7 @@ float DetermineDistanceToBucket(void)
 
 static float DetermineDistanceToTarget(void)
 {
-	printf("Target x: %f, Target y: %f, My x: %f, My y: %f\r\n", TargetX, TargetY, myX, myY);
+	//printf("Target x: %f, Target y: %f, My x: %f, My y: %f\r\n", TargetX, TargetY, myX, myY);
 	float yDist = TargetY - myY;
 	float xDist = TargetX - myX;
 	
@@ -483,10 +483,10 @@ static float DetermineAngleToTarget(float distanceToTarget)
 	float theta = ToAppropriateRange(ToDegrees(asin((TargetY - myY)/distanceToTarget)));
 	if ((TargetX - myX) < 0)
 	{
-		printf("less than 0\r\n");
+		////printf("less than 0\r\n");
 		theta = ToAppropriateRange(180 - theta);
 	}
-	//printf("theta is: %f\r\n", ToAppropriateRange(theta));
+	////printf("theta is: %f\r\n", ToAppropriateRange(theta));
 	return ToAppropriateRange(myTheta - theta);
 }
 /*
@@ -495,18 +495,18 @@ static float DetermineAngleToBucket(float distanceToBucket)
 	float theta = ToAppropriateRange(ToDegrees(asin(((MyColor() ? 96 : 0) - myY)/distanceToBucket)));
 	if (((MyColor() ? 0 : 96) - myX) < 0)
 	{
-		printf("less than 0\r\n");
+		//printf("less than 0\r\n");
 		theta = ToAppropriateRange(180 - theta);
 	}
-	//printf("theta is: %f\r\n", ToAppropriateRange(theta));
+	////printf("theta is: %f\r\n", ToAppropriateRange(theta));
 	return ToAppropriateRange(myTheta - theta);
 }*/
 
 static void AlignToTarget(void)
 {
-	//printf("Distance to Target: %f\r\n", DetermineDistanceToTarget());
+	////printf("Distance to Target: %f\r\n", DetermineDistanceToTarget());
 	float angle = DetermineAngleToTarget(DetermineDistanceToTarget());
-	printf("Angle to Target: %f\r\n", angle);
+	////printf("Angle to Target: %f\r\n", angle);
 	uint32_t ticks = EncoderTicksForGivenAngle(angle);
 	setTargetEncoderTicks(ticks, ticks, false, true);
 }
@@ -515,7 +515,7 @@ static void DriveToTarget(void)
 {
 	uint32_t ticks = ConvertInchesToEncoderTicks(DetermineDistanceToTarget());
 	
-	printf("Changing ticks from %d", ticks);
+	//printf("Changing ticks from %d", ticks);
 	if (ticks >= HALL_SENSOR_OFFSET_IN_TICKS)
 	{
 		ticks -= HALL_SENSOR_OFFSET_IN_TICKS;
@@ -526,7 +526,7 @@ static void DriveToTarget(void)
 		ticks = HALL_SENSOR_OFFSET_IN_TICKS - ticks;
 		setTargetEncoderTicks(ticks, ticks, true, true);
 	}
-	printf(" to %d\r\n", ticks);
+	//printf(" to %d\r\n", ticks);
 }
 
 

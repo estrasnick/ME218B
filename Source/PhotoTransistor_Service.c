@@ -151,6 +151,7 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
   
 	if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == AVERAGE_BEACONS_TIMER))
 	{
+		/*
 		switch (LastBeacon){
 				case (BEACON_INDEX_NW):
 					printf("\r\nNum ticks Beacon NW: %d\n\r\r\n", numSamples[LastBeacon]);
@@ -166,11 +167,12 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 				case (NULL_BEACON):
 					printf("Trying to average the null beacon?\r\n");
 				break;
-			}
+			}*/
 		if (numSamples[LastBeacon] >= NUMBER_PULSES_TO_BE_ALIGNED)
 		{
 			beacons[LastBeacon].lastUpdateTime = captureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 			beacons[LastBeacon].lastEncoderAngle = CalculateAverage(LastBeacon);
+			/*
 			switch (LastBeacon){
 				case (BEACON_INDEX_NW):
 					printf("\r\nAverage for Beacon NW: %f\n\r\r\n", beacons[LastBeacon].lastEncoderAngle);
@@ -186,7 +188,7 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 				break;
 				
 			}
-			printf("Beacon Last Update Time: %d\n\r", beacons[LastBeacon].lastUpdateTime);
+			printf("Beacon Last Update Time: %d\n\r", beacons[LastBeacon].lastUpdateTime);*/
 			
 			LastUpdatedBeacon = LastBeacon;
 			
@@ -407,7 +409,7 @@ static bool TimeForUpdate()
 	uint8_t indexC = beacons[mostRecentBeaconUpdate()].priorBeacons[1];
 	uint32_t beaconCUpdateTime = beacons[indexC].lastUpdateTime;
 	
-	printf("Most recent beacon is: %d. Update times are A: %d, B: %d, C: %d\r\n", mostRecentBeaconUpdate(), beaconAUpdateTime, beaconBUpdateTime, beaconCUpdateTime);
+	//printf("Most recent beacon is: %d. Update times are A: %d, B: %d, C: %d\r\n", mostRecentBeaconUpdate(), beaconAUpdateTime, beaconBUpdateTime, beaconCUpdateTime);
 	
 	//Determine if Sequence has been met
 	//if none of the update times were zero

@@ -149,7 +149,7 @@ ES_Event RunPACLogicSM( ES_Event CurrentEvent )
 							}
 							else if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == MEASURING_TIMEOUT_TIMER))
 							{
-								printf("TAKING TOO LONG TO CAPTURE, MOVE ON! \n\r");
+								////printf("TAKING TOO LONG TO CAPTURE, MOVE ON! \n\r");
 								
 								ES_Event ResetDestinationEvent;
 								ResetDestinationEvent.EventType = ES_RESET_DESTINATION;
@@ -197,10 +197,10 @@ void StartPACLogicSM ( ES_Event CurrentEvent )
    	//Initiate Deferral Queue
 		ES_InitDeferralQueueWith(DeferralQueue, ARRAY_SIZE(DeferralQueue));
 		
-		printf("Attempt SPI Initialized \n\r");
+		//printf("Attempt SPI Initialized \n\r");
 		//Perform SPI Initialization
 		SPI_Init();
-		printf("SPI Initialized \n\r");
+		//printf("SPI Initialized \n\r");
 		
 		// to implement entry to a history state or directly to a substate
    // you can modify the initialization of the CurrentState variable
@@ -240,7 +240,7 @@ static ES_Event DuringWaiting4Command_t( ES_Event Event)
     // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
-				//printf("Entering Waiting4Command \n\r");
+				////printf("Entering Waiting4Command \n\r");
 			
         // implement any entry actions required for this state machine
 				//Recall Deferred Events
@@ -289,7 +289,7 @@ static ES_Event DuringCampaignStatus_t( ES_Event Event)
     // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
-        //printf("Entering DuringCampaignStatus \n\r");
+        ////printf("Entering DuringCampaignStatus \n\r");
 				// implement any entry actions required for this state machine
 				//Post to an ES_SendCmd
 				ES_Event ThisEvent;
@@ -335,7 +335,7 @@ static ES_Event DuringCapture_t( ES_Event Event)
     // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
-        printf("Entering DuringCapture_t \n\r");
+        ////printf("Entering DuringCapture_t \n\r");
 				
 				// implement any entry actions required for this state machine
         ES_Timer_InitTimer(CAPTURE_TIMEOUT_TIMER, CAPTURE_TIMEOUT_T);

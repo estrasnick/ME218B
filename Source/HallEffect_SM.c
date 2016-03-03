@@ -443,7 +443,7 @@ void updateBuckets(uint32_t CurrentPeriod){
 				buckets[i]++;
 				if (buckets[i] > NUMBER_PULSES_TO_STOP)
 				{
-					printf("Choosing bucket:%d \r\n", i);
+					//printf("Choosing bucket:%d \r\n", i);
 					if (!checkOwnFrequency(i)){
 						//Disable the Interrupts
 						disableHEInterrupts();

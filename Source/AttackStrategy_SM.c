@@ -49,6 +49,9 @@ static ES_Event DuringWait4NextAttack_t( ES_Event Event);
 static AttackStrategyState_t CurrentState;
 
 static bool attackingEnabled = true;
+
+static uint8_t shotCounter = 0;
+
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
  Function
@@ -82,7 +85,7 @@ ES_Event RunAttackStrategySM( ES_Event CurrentEvent )
 						//Check for Specific Events
             if (((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == ATTACK_PHASE_TIMER)) || (CurrentEvent.EventType == ES_MANUAL_SHOOT))
 						{
-							printf("Starting rev");
+							////////printf("Starting rev");
 							NextState = Rev_t;
 							MakeTransition = true;
 						}
@@ -304,7 +307,12 @@ static ES_Event DuringAttack_t( ES_Event Event)
 			ReturnEvent = RunAttackSM(Event);
 			// repeat for any concurrently running state machines
 			// now do any local exit functionality
-			ES_Timer_InitTimer(ATTACK_PHASE_TIMER, NEXT_SHOT_T);
+			
+			shotCounter++;
+			if (shotCounter < 5)
+			{
+				ES_Timer_InitTimer(ATTACK_PHASE_TIMER, NEXT_SHOT_T);
+			}
 			
 			
 			ES_Event ResetEvent;
