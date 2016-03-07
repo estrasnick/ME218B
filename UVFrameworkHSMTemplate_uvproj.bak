@@ -721,6 +721,11 @@
               <FilePath>.\Headers\Request_SM.h</FilePath>
             </File>
             <File>
+              <FileName>SendingByte_SM.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Headers\SendingByte_SM.h</FilePath>
+            </File>
+            <File>
               <FileName>SendingCMD_SM.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Headers\SendingCMD_SM.h</FilePath>
@@ -746,9 +751,34 @@
               <FilePath>.\Headers\PositionLogic_Service.h</FilePath>
             </File>
             <File>
+              <FileName>PWMFlywheel_Service.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Headers\PWMFlywheel_Service.h</FilePath>
+            </File>
+            <File>
               <FileName>Helpers.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Headers\Helpers.h</FilePath>
+            </File>
+            <File>
+              <FileName>PWMHopper_Service.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Headers\PWMHopper_Service.h</FilePath>
+            </File>
+            <File>
+              <FileName>PWMPeriscope_Service.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Headers\PWMPeriscope_Service.h</FilePath>
+            </File>
+            <File>
+              <FileName>PWMCannonAngle_Service.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Headers\PWMCannonAngle_Service.h</FilePath>
+            </File>
+            <File>
+              <FileName>PWMPowerTrain_Service.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Headers\PWMPowerTrain_Service.h</FilePath>
             </File>
             <File>
               <FileName>PhotoTransistor_Service.h</FileName>

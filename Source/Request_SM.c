@@ -3,7 +3,8 @@
    Request.c
 
  Description
-   This is the top level state machine of the PAC Logic controlling communication with the SUPER PAC
+   A state machine which represents the various phases of attempting a 
+		request with the PAC
 
  Notes
 
@@ -193,9 +194,6 @@ static ES_Event DuringRequest_t( ES_Event Event)
 				ES_Event ThisEvent;
 				ThisEvent.EventType = ES_SEND_CMD;
 				ThisEvent.EventParam = GetRequestCommand(MyColor(), MyColor(), GetTargetFrequencyIndex());
-				printf("Color: %d \n\r", MyColor());
-				printf("Target Frequency Indexed: %d \n\r", GetTargetFrequencyIndex());
-				printf("Frequency Code Sent: %x \n\r", PS_Frequency_Codes[GetTargetFrequencyIndex()]);
 				PostMasterSM(ThisEvent);
     }
     else if ( Event.EventType == ES_EXIT )
@@ -204,17 +202,6 @@ static ES_Event DuringRequest_t( ES_Event Event)
         RunSendingCMDSM(Event);
         // repeat for any concurrently running state machines
         // now do any local exit functionality
-      
-				//Get the Response Array and print it
-				uint8_t *byte;
-				byte = getResponseArray();
-
-				printf("Byte Received from Request Request:  %x, %x, %x, %x, %x \n\r", 
-				*(byte + 0), 
-				*(byte + 1), 
-				*(byte + 2), 
-				*(byte + 3), 
-				*(byte + 4));
 			
     }else
     // do the 'during' function for this state
@@ -224,8 +211,6 @@ static ES_Event DuringRequest_t( ES_Event Event)
       
         // repeat for any concurrent lower level machines
 
-      
-			
         // do any activity that is repeated as long as we are in this state
     }
     // return either Event, if you don't want to allow the lower level machine
@@ -259,19 +244,7 @@ static ES_Event DuringQuery_t( ES_Event Event)
         // repeat for any concurrently running state machines
         // now do any local exit functionality
 							//Get the Response Array and print it
-			
-				uint8_t *byte;
-				byte = getResponseArray();
-			
-			/*
-				printf("Querying:  %x, %x, %x, %x, %x \n\r", 
-				*(byte + 0), 
-				*(byte + 1), 
-				*(byte + 2), 
-				*(byte + 3), 
-				*(byte + 4));
-			*/
-      
+
     }else
     // do the 'during' function for this state
     {

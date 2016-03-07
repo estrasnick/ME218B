@@ -2,7 +2,7 @@
  Module
    PhotoTransistor_Service.c
  Description
-		
+	 Manages the phototransistor and its capture of beacon information
 ****************************************************************************/
 /*----------------------------- Include Files -----------------------------*/
 /* include header files for this state machine as well as any machines at the
@@ -52,10 +52,6 @@
 /* prototypes for private functions for this service.They should be functions
    relevant to the behavior of this service
 */
-
-//static void UpdateLastPeriod(uint32_t period);
-
-//static bool IsBeaconMatch(uint8_t beaconIndex);
 
 static bool ToleranceCheck(uint32_t period, uint32_t targetPeriod, uint8_t tolerance);
 
@@ -149,50 +145,22 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
   ES_Event ReturnEvent;
   ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
   
+	// If we have stopped seeing pulses, it's time to evaluate whether we saw a beacon
 	if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == AVERAGE_BEACONS_TIMER))
 	{
-		/*
-		switch (LastBeacon){
-				case (BEACON_INDEX_NW):
-					printf("\r\nNum ticks Beacon NW: %d\n\r\r\n", numSamples[LastBeacon]);
-				break;
-				case (BEACON_INDEX_NE):
-					printf("\r\nNum ticks Beacon NE: %d\n\r\r\n", numSamples[LastBeacon]);
-				break;
-				case (BEACON_INDEX_SE):
-					printf("\r\nNum ticks Beacon SE: %d\n\r\r\n", numSamples[LastBeacon]);
-				break;
-				case (BEACON_INDEX_SW):
-					printf("\r\nNum ticks Beacon SW: %d\n\r", numSamples[LastBeacon]);
-				case (NULL_BEACON):
-					printf("Trying to average the null beacon?\r\n");
-				break;
-			}*/
+		// If the beacon we were interested in had enough pulses
 		if (numSamples[LastBeacon] >= NUMBER_PULSES_TO_BE_ALIGNED)
 		{
+			// set the last update time for the beacon
 			beacons[LastBeacon].lastUpdateTime = captureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
-			beacons[LastBeacon].lastEncoderAngle = CalculateAverage(LastBeacon);
-			/*
-			switch (LastBeacon){
-				case (BEACON_INDEX_NW):
-					printf("\r\nAverage for Beacon NW: %f\n\r\r\n", beacons[LastBeacon].lastEncoderAngle);
-				break;
-				case (BEACON_INDEX_NE):
-					printf("\r\nAverage for Beacon NE: %f\n\r\r\n", beacons[LastBeacon].lastEncoderAngle);
-				break;
-				case (BEACON_INDEX_SE):
-					printf("\r\nAverage for Beacon SE: %f\n\r\r\n", beacons[LastBeacon].lastEncoderAngle);
-				break;
-				case (BEACON_INDEX_SW):
-					printf("\r\nAverage for Beacon SW: %f\n\r", beacons[LastBeacon].lastEncoderAngle);
-				break;
-				
-			}
-			printf("Beacon Last Update Time: %d\n\r", beacons[LastBeacon].lastUpdateTime);*/
 			
+			// set the angle to the beacon based on the average of all pulses measured
+			beacons[LastBeacon].lastEncoderAngle = CalculateAverage(LastBeacon);
+			
+			// Store this beacon as the last updated beacon
 			LastUpdatedBeacon = LastBeacon;
 			
-			// Determine if we should recalculate our position and angle based on whethe or not we have received 3 consecutive pulses
+			// Determine if we should recalculate our position and angle based on whether or not we have received 3 consecutive pulses
 			if (TimeForUpdate())
 			{
 				ES_Event NewEvent;
@@ -202,14 +170,20 @@ ES_Event RunPhotoTransistorService( ES_Event ThisEvent )
 			
 		}
 		
+		// Reset stored average information
 		ResetAverage();
+		
+		// Reallow new beacons to be recorded
 		Bucketing = true;
 		
 		LastBeacon = NULL_BEACON;
+		
 		ES_Timer_StopTimer(AVERAGE_BEACONS_TIMER);
 	}
 	else if (ThisEvent.EventType == ES_ALIGN_TO_BUCKET)
 	{
+		// If we are trying to align to the bucket for a shot, 
+		//  shift the way we handle interrupts
 		AligningToBucket = true;
 		enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 	}
@@ -281,7 +255,7 @@ int getThetaShift(uint8_t beaconIndex){
 /***************************************************************************
  private functions
  ***************************************************************************/
-//The interrupt response for uor phototransistor
+//The interrupt response for our phototransistor
 void PhotoTransistor_InterruptResponse(void)
 {
 	// Clear Interrupt
@@ -299,104 +273,84 @@ void PhotoTransistor_InterruptResponse(void)
 	//Iterate Through the different frequency options
 	for (int i = 0; i < NUMBER_BEACON_FREQUENCIES; i++)
 	{
+		// If the period matches a beacon period
 		if (ToleranceCheck(Period, beacons[i].period, PERIOD_MEASURING_ERROR_TOLERANCE))
 		{
+			// If we're searching for a beacon
 			if (Bucketing)
 			{
 				buckets[i]++;
 			}
+			
+			// If we're supposed to align to the bucket, and the number of pulses we've seen for
+			//  this beacon is greater than our threshold
 			if ((AligningToBucket) && (buckets[i] >= NUMBER_PULSES_FOR_BUCKET))
 			{
+				// If this is the beacon corresponding to our target bucket
 				if (((MyColor() == COLOR_BLUE) && (i == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (i == BEACON_INDEX_SE)))
 				{ 
-					printf("Aligned to bucket!\r\n");
+					// stop our drive
 					clearDriveAligningToBucket();
+					
+					// Post an aligned event
 					ES_Event AlignedEvent;
 					AlignedEvent.EventType = ES_ALIGNED_TO_BUCKET;
 					PostMasterSM(AlignedEvent);
 					
+					// stop aligning
 					AligningToBucket = false;
 					
+					// reset all buckets
 					for (int j = 0; j < NUMBER_BEACON_FREQUENCIES; j++)
 					{
 						buckets[j] = 0;
 					}
+					
+					// reset average information
 					ResetAverage();
+					
+					// return to searching for beacons
 					Bucketing = true;
 					LastBeacon = NULL_BEACON;
 					ES_Timer_StopTimer(AVERAGE_BEACONS_TIMER);
 					return;
 				}
 			}
+			// If we're not aligning to a bucket, and the number of pulses we've seen for this
+			//  beacon is greater than our threshold
 			else if (buckets[i] >= NUMBER_PULSES_TO_BE_ALIGNED && LastBeacon == NULL_BEACON && !AligningToBucket)
 			{
+				// store the beacon to be recorded
 				LastBeacon = i;
+				
+				// reset all buckets
 				for (int j = 0; j < NUMBER_BEACON_FREQUENCIES; j++)
 				{
 					buckets[j] = 0;
 				}
+				
+				// restart the timer to evaluate the beacon 
 				ES_Timer_InitTimer(AVERAGE_BEACONS_TIMER, AVERAGE_BEACONS_T);
 				Bucketing = false;
 			}
+			
+			// increment the sum of all encoder angles for this beacon
 			sums[i] += GetPeriscopeAngle();
+			
+			// increment the number of pulses seen for this beacon
 			numSamples[i]++;
+			
+			// If the evaluation timer is already running, restart it
 			ES_Timer_SetTimer(AVERAGE_BEACONS_TIMER, AVERAGE_BEACONS_T);
 		}
 	}
 		
-		/*
-		if (((MyColor() == COLOR_BLUE) && (matchingBeacon == BEACON_INDEX_NW)) || ((MyColor() == COLOR_RED) && (matchingBeacon == BEACON_INDEX_SE)))
-		{
-			printf("Bucket beacon found!\r\n");
-		}*/
-		
-		/*
-		//Print which Beacon
-		switch (beacons[matchingBeacon].period){
-			case (BEACON_P_NW):
-				printf("BEACON_P_NW \n\r");
-			break;
-			case (BEACON_P_NE):
-				printf("BEACON_P_NE \n\r");
-			break;
-			case (BEACON_P_SE):
-				printf("BEACON_P_SE \n\r");
-			break;
-			case (BEACON_P_SW):
-				printf("BEACON_P_SW \n\r");
-			break;
-		}
-		*/
 }
 
-/*
-//Update the Last Period by shiting every value down and ours into the 0th index
-static void UpdateLastPeriod(uint32_t period)
-{
-	for (int i = NUMBER_CONSECUTIVE_PULSES_2STORE - 1; i > 0; i--)
-	{
-		PhotoTransistor_LastPeriods[i] = PhotoTransistor_LastPeriods[i-1];
-	}
-	PhotoTransistor_LastPeriods[0] = period;
-}*/
-
-
-/*
-static bool IsBeaconMatch(uint8_t beaconIndex)
-{
-	for (int j = 0; j < NUMBER_PULSES_TO_BE_ALIGNED; j++)
-	{
-		//printf("matching period: %d against target %d\r\n", PhotoTransistor_LastPeriods[j], beacons[beaconIndex].period);
-		if (!ToleranceCheck(PhotoTransistor_LastPeriods[j], beacons[beaconIndex].period, PERIOD_MEASURING_ERROR_TOLERANCE))
-		{
-			return false;
-		}
-	}
-	return true;
-}*/
-
+// Determine if we have enough beacon information to calculate our absolute position
 static bool TimeForUpdate()
 {
+	// If we're supposed to align to the bucket, don't calculate position
 	if (AligningToBucket)
 	{
 			return false;
@@ -408,35 +362,15 @@ static bool TimeForUpdate()
 	uint32_t beaconBUpdateTime = beacons[indexB].lastUpdateTime;
 	uint8_t indexC = beacons[mostRecentBeaconUpdate()].priorBeacons[1];
 	uint32_t beaconCUpdateTime = beacons[indexC].lastUpdateTime;
-	
-	//printf("Most recent beacon is: %d. Update times are A: %d, B: %d, C: %d\r\n", mostRecentBeaconUpdate(), beaconAUpdateTime, beaconBUpdateTime, beaconCUpdateTime);
-	
+
 	//Determine if Sequence has been met
 	//if none of the update times were zero
-	if ((beaconAUpdateTime != 0) && (beaconBUpdateTime != 0) && (beaconCUpdateTime != 0)){
-		return true;
-	} else {
-		return false;
-	}
-	//Update only if got last three in sequence
-	//return ((beaconAUpdateTime > beaconBUpdateTime && (beaconBUpdateTime > beaconCUpdateTime)) && beaconCUpdateTime > 0);
+	return ((beaconAUpdateTime != 0) && (beaconBUpdateTime != 0) && (beaconCUpdateTime != 0));
 }
 
 
 //Takes nothing as a paramater and returns the index of the beacon most recently updated
 uint8_t mostRecentBeaconUpdate(void){
-	/*
-	//First Check which Was the last updated Beacon
-	uint8_t mostRecentBeaconUpdated = NULL_BEACON;	//by default we assume the first beacon is the most recently updated 
-	uint32_t mostRecentUpdateTime = 0;
-	for (uint8_t i = 0; i < 4; i++){
-		if (GetLastUpdateTime(i) > mostRecentUpdateTime){
-			//Set the mostRecentBeaconUpdate to i
-			mostRecentBeaconUpdated = i;
-			mostRecentUpdateTime = GetLastUpdateTime(i);
-		}
-	}
-	return mostRecentBeaconUpdated;*/
 	return LastUpdatedBeacon;
 }
 
@@ -448,6 +382,8 @@ static bool ToleranceCheck(uint32_t period, uint32_t targetPeriod, uint8_t toler
 	return ((period <= targetPeriod + tolerance) && (period >= targetPeriod - tolerance));
 }
 
+// reset the update times for each beacon, so that we must see new beacons to 
+// calculate position
 void ResetUpdateTimes(void)
 {
 	for (int i = 0; i < NUMBER_BEACON_FREQUENCIES; i++)
@@ -456,6 +392,7 @@ void ResetUpdateTimes(void)
 	}
 }
 
+// reset average information for all beacons
 void ResetAverage(void)
 {
 	for (int i = 0; i < NUMBER_BEACON_FREQUENCIES; i++)
@@ -465,6 +402,7 @@ void ResetAverage(void)
 	}
 }
 
+// Clear the aligning to bucket flag
 void ResetAligningToBucket(void)
 {
 	AligningToBucket = false;
@@ -484,22 +422,8 @@ void SetBeaconAngles(float A, float B, float C)
 	LastUpdatedBeacon = 0;
 }
 
+// Return the average of all encoder angles seen for a given beacon
 static float CalculateAverage(uint8_t which)
 {
-	/*
-	switch (LastBeacon){
-			case (BEACON_INDEX_NW):
-				printf("Adding to Beacon NW: %f\n\r", angle);
-			break;
-			case (BEACON_INDEX_NE):
-				printf("Adding to Beacon NE: %f\n\r", angle);
-			break;
-			case (BEACON_INDEX_SE):
-				printf("Adding to Beacon SE: %f\n\r", angle);
-			break;
-			case (BEACON_INDEX_SW):
-				printf("Adding to Beacon SW: %f\n\r", angle);
-			break;
-		}*/
 	return sums[which] / numSamples[which];
 }

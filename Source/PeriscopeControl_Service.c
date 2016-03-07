@@ -3,7 +3,8 @@
    PeriscopeControl_Service.c
 
  Description
-		
+		Controls the periscope motor, as well as the mechanical servo
+		  which latches the periscope for zeroing
 ****************************************************************************/
 /*----------------------------- Include Files -----------------------------*/
 /* include header files for this state machine as well as any machines at the
@@ -22,7 +23,7 @@
 #include <Math.h>
 
 /*----------------------------- Module Defines ----------------------------*/
-
+#define PERISCOPE_FULL_ROTATION_ENCODER_TICKS 1000
 
 /*---------------------------- Module Functions ---------------------------*/
 /* prototypes for private functions for this service.They should be functions
@@ -66,15 +67,8 @@ bool InitPeriscopeControlService ( uint8_t Priority )
 	InitInputCapture(PERISCOPE_ENCODER_INTERRUPT_PARAMATERS_1);
 	InitInputCapture(PERISCOPE_ENCODER_INTERRUPT_PARAMATERS_2);
 	
-	/*
-	//Start the Periscope
-	printf("Initialize the Periscope as Not Spinning\r\n");
-	SetPWM_Periscope(0); 
-	*/
-	
+	// Wait for all initializations to finish before starting the periscope
 	ES_Timer_InitTimer(START_PERISCOPE_TIMER, START_PERISCOPE_T);
-	
-	printf("Periscope Service Initialized \n\r");
 	
 	// post the initial transition event
   ThisEvent.EventType = ES_INIT;
@@ -118,25 +112,34 @@ ES_Event RunPeriscopeControlService( ES_Event ThisEvent )
   ES_Event ReturnEvent;
   ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
 
+	// Start the periscope
 	if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == START_PERISCOPE_TIMER))
 	{
 		SetPWM_Periscope(PERISCOPE_PWM_DUTY);
 	}
+	// If the periscope has stopped
 	else if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == PERISCOPE_STOPPED_TIMER))
 	{
+		// If this was intentional (i.e. we are latching the periscope)
 		if (AttemptingToStop)
 		{
+			// Stop the motor
 			SetPWM_Periscope(0);
+			
+			// Reset periscope encoder ticks, zeroing the periscope
 			ResetPeriscopeEncoderTicks();
+			
+			// If we are supposed to align to the bucket, 
+			// post that we are ready to align
 			if (AligningToBucket)
 			{
 				ES_Event RotateEvent;
 				RotateEvent.EventType = ES_ALIGN_TO_BUCKET;
-				printf("Starting attack rotate\r\n");
 				setDriveToAlignToBucket();
 				PostPhotoTransistorService(RotateEvent);
 				AligningToBucket = false;
 			}
+			// Mark that we have zeroed the periscope
 			if (!isZeroed)
 			{
 				isZeroed = true;
@@ -167,70 +170,80 @@ ES_Event RunPeriscopeControlService( ES_Event ThisEvent )
 
 /***************************************************************************
 Interrupt Responses
+We use the quadrature on the optical encoder - not for determining direction,
+	but for finer resolution on our positioning
  ***************************************************************************/
 void PeriscopeEncoder_InterruptResponse_1(void){
 	// start by clearing the source of the interrupt, the input capture event
 	clearCaptureInterrupt(PERISCOPE_ENCODER_INTERRUPT_PARAMATERS_1);
+	
+	// increment encoder ticks
 	numTicks++;
+	
+	// restart the stall timer
+	// We don't need to do this on both encoder interrupts
 	ES_Timer_InitTimer(PERISCOPE_STOPPED_TIMER, PERISCOPE_STOPPED_T);
-	if (numTicks >= 1000)
+	
+	// If we have performed a full rotation, reset to zero
+	if (numTicks >= PERISCOPE_FULL_ROTATION_ENCODER_TICKS)
 	{
 		numTicks = 0;
 	}
-	//printf("Encoder angle is: %f\r\n", GetPeriscopeAngle());
 }
 
 void PeriscopeEncoder_InterruptResponse_2(void){
 	// start by clearing the source of the interrupt, the input capture event
 	clearCaptureInterrupt(PERISCOPE_ENCODER_INTERRUPT_PARAMATERS_2);
-	//printf("Num ticks is: %d\r\n", numTicks);
+	
+	// increment encoder ticks
 	numTicks++;
-	if (numTicks >= 1000)
+	
+	// If we have performed a full rotation, reset to zero
+	if (numTicks >= PERISCOPE_FULL_ROTATION_ENCODER_TICKS)
 	{
 		numTicks = 0;
 	}
 }
-/*
-void PeriscopeTapeSensor_InterruptResponse(void) {
-	clearCaptureInterrupt(PERISCOPE_TAPE_SENSOR_INTERRUPT_PARAMATERS);
-	
-	numTicks = 0;
-}*/
 
+// Return the current angle of the periscope
 float GetPeriscopeAngle(void)
 {
 	return (numTicks * 180.0) / (ENCODER_PULSES_PER_REV * PERISCOPE_GEAR_RATIO);
 }
 
+// reset the periscope angle
 void ResetPeriscopeEncoderTicks(void)
 {
 	numTicks = 0;
 }
 
+// Raise the latch servo
 void LatchPeriscope(void)
 {
-	printf("Latching periscope\r\n");
 	SetPWM_PeriscopeLatch(PERISCOPE_LATCH_DUTY);
 }
 
+// Lower the latch servo and restart the periscope
 void UnlatchPeriscope(void)
 {
-	printf("Unlatching periscope\r\n");
 	SetPWM_PeriscopeLatch(PERISCOPE_UNLATCH_DUTY);
 	SetPWM_Periscope(PERISCOPE_PWM_DUTY);
 }
 
+// mark that we require the periscope to be zeroed
 void RequireZero(void)
 {
 	isZeroed = false;
 	ES_Timer_InitTimer(PERISCOPE_STOPPED_TIMER, PERISCOPE_STOPPED_T);
 }
 
+// return iff the periscope has been zeroed
 bool IsZeroed(void)
 {
 	return isZeroed;
 }
 
+// set a flag that we wish to stop the periscope
 void SetAttemptingToStop(bool val)
 {
 	AttemptingToStop = val;

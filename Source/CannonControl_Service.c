@@ -3,7 +3,7 @@
    CannonControl_Service.c
 
  Description
-		
+		Controls the flywheel motor on our cannon
 ****************************************************************************/
 /*----------------------------- Include Files -----------------------------*/
 /* include header files for this state machine as well as any machines at the
@@ -97,8 +97,7 @@ bool InitCannonControlService ( uint8_t Priority )
 	InitPeriodic(CANNON_CONTROL_INTERRUPT_PARAMATERS);
 	
 	//Start the Cannon at Rest
-	setTargetCannonSpeed(CANNON_TEST_RPM);	//thsi should be zero but we are experimenting for testing
-	//setTargetCannonSpeed(0);	//thsi should be zero but we are experimenting for testing
+	setTargetCannonSpeed(0);
 		
 	//Set Hopper to proper position
 	SetPWM_Hopper(HOPPER_DEFAULT_DUTY);
@@ -145,6 +144,7 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
   ES_Event ReturnEvent;
   ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
 
+	// If the flywheel has stopped, set a zero period
 	if (ThisEvent.EventType == ES_TIMEOUT && ThisEvent.EventParam == CANNON_STOPPED_TIMER)
 	{
 		Period = 0;
@@ -172,17 +172,6 @@ ES_Event RunCannonControlService( ES_Event ThisEvent )
 					//setTargetCannonSpeed(0);
 				}
 				break;
-				case (ES_TIMEOUT):
-				{
-					//if the cannon is stoped
-					if (ThisEvent.EventParam == CANNON_STOPPED_TIMER){
-						printf(" \n\r \n\r CANNON MOTOR STOPPED!!!! \n\r\n\r");
-						
-						//Set the Period to zero
-						Period = 0;
-					}
-				}
-				break;
 			}
 			
 			
@@ -201,25 +190,8 @@ void CannonEncoder_InterruptResponse(void){
 	// now grab the captured value and calculate the period
 	ThisCapture = captureInterrupt(CANNON_ENCODER_INTERRUPT_PARAMATERS);
 
-
   //Update the Period based on the difference between the two rising edges
-	uint32_t tempPeriod = ThisCapture - LastCapture;
-
-	//Tracker for how many times in sequence we think we have missed encoder ticks
-	static uint8_t numTimesMissed;
-	
-	//Check to See if We Have Missed any Encoder Ticks by comparing the last period to the new period and making sure this hasn't happened twice
-	if ((tempPeriod > 1.5 * Period) && numTimesMissed < 3){
-		//printf(" \n\r I think the cannon missed an encoder tick \n\r");
-		numTimesMissed++;
-		//don't update the period
-	} else {
-		//Set the Period equal to the new Period
-		Period = tempPeriod;
-		
-		//Set the error flag to zero
-		numTimesMissed = 0;
-	}
+	Period = ThisCapture - LastCapture;
 		
 	// update LastCapture to prepare for the next edge
 	LastCapture = ThisCapture;
@@ -237,8 +209,10 @@ void CannonControl_PeriodicInterruptResponse(void){
 	static float currentRPM;
 	currentRPM = CalculateRPM();
 	
+	// If we're supposed to get the cannon up to speed
 	if (Revving)
 	{
+		// If the cannon is at its target speed, post it
 		if (SpeedCheck(currentRPM))
 		{
 			ES_Event NewEvent;
@@ -249,6 +223,7 @@ void CannonControl_PeriodicInterruptResponse(void){
 		}
 		else
 		{
+			// Otherwise, increment a timeout counter
 			SpeedCheckTimeoutCounter++;
 			if (SpeedCheckTimeoutCounter > SPEED_CHECK_LIMIT)
 			{
@@ -261,7 +236,7 @@ void CannonControl_PeriodicInterruptResponse(void){
 		}
 	}
 	
-	//Calculate Control Response individually
+	//Calculate Control Response
 	calculateControlResponse(currentRPM);
 }
 
@@ -311,50 +286,8 @@ static void calculateControlResponse(float currentRPM){
 	if(RPMError-LastError != 0){
 	}
 	
-	//As we cannot brake, ie. only of one direction of control, lets
-	float RequestedDuty = 0;
-	//if (RPMError > 0){
-		//Calculate Desired Duty Cycle
-		RequestedDuty =  proportionalResponse + derviativeResponse + 	integralTerm;		//(P_GAIN * ((RPMError)+integralTerm+(D_GAIN * (RPMError-LastError))));
-	//}
+	float RequestedDuty = proportionalResponse + derviativeResponse + 	integralTerm;		//(P_GAIN * ((RPMError)+integralTerm+(D_GAIN * (RPMError-LastError))));
 
-	/*
-	static int i;
-	if (i++ >= 100)
-	{
-		printf("CANNON RPM: %f, duty: %d\r\n", currentRPM, RequestedDuty);
-		i = 0;
-	}*/
-	
-	
-		//For Printing
-	/*
-	if (RPMTarget != 0)
-	{
-		static float vals[10][7];
-		static uint8_t i;
-		//add to i
-		if (i > 90 && i <= 100)
-		{
-			vals[i - 91][0] = RPMTarget;
-			vals[i - 91][1] = currentRPM;
-			vals[i - 91][2] = RPMError;
-			vals[i - 91][3] = RequestedDuty;
-			vals[i - 91][4] = proportionalResponse;
-			vals[i - 91][5] = derviativeResponse;
-			vals[i - 91][6] = integralResponse;
-		}
-		else if (i > 100){
-			for (int j = 0; j < 10; j++)
-			{
-				printf("TargetRPM: %f, CurrentRPM: %f,  RPMError: %f, duty: %f,   P: %f ,     D: %f 	    I: %f \n\r", vals[j][0], vals[j][1], vals[j][2], vals[j][3], vals[j][4], vals[j][5], vals[j][6]);
-			}
-			printf("\r\n");
-			i = 0; //reset i
-		}
-		i++; 
-	}*/
-	
 	
 	//Save the Last Error
 	LastError = RPMError;
@@ -364,9 +297,6 @@ static void calculateControlResponse(float currentRPM){
 	{
 		SetPWM_Cannon(clamp(RequestedDuty, -50, 50));
 	}
-		 //cast as a uint8_t so that we don't get decimals
-	//SetPWM_Cannon(CANNON_TEST_PWM);
-	//SetPWM_Cannon(0);
 }
 
 
@@ -399,9 +329,10 @@ static bool SpeedCheck(float rpm)
 	return (rpm <= RPMTarget + CANNON_RPM_TOLERANCE) && (rpm >= RPMTarget - CANNON_RPM_TOLERANCE);
 }
 
+// Determine how fast the cannon should rev given its distance to the bucket
+// Use a quadratic relationship
 static float DetermineCannonSpeed(void)
 {	
 	float dist = (DetermineDistanceToBucket() + DISTANCE_FROM_BEACON_TO_BUCKET_CENTER);
-	printf("dist is %f. Setting rpm to %f\r\n", dist, dist * dist * CANNON_SLOPE_MULTIPLIER);
 	return dist * dist * CANNON_SLOPE_MULTIPLIER;
 }

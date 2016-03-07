@@ -23,7 +23,7 @@
 #include "SendingCMD_SM.h"
 #include "Strategy_SM.h"
 
-// Initializes at GPIO Port
+// Initializes GPIO Ports/Pins
 void GPIO_Init(uint8_t SYSCTL, int port_base, uint8_t bits, uint8_t direction)
 {
 	//Enable the Port Pins
@@ -138,6 +138,7 @@ static AFSELUnit PWMInfo[] = {
 	{.clear_mask = 0xffff0fff, .newval = (5<<(3*BITS_PER_NYBBLE)), .rcgc = SYSCTL_RCGCGPIO_R5, .base = GPIO_PORTF_BASE, .pin = GPIO_PIN_3}
 };
 
+// Initialize a PWM unit
 void InitPWM(uint8_t module, uint8_t block, uint8_t generator, uint32_t period)
 {
 	// Enable clock to PWM
@@ -291,6 +292,7 @@ static NVICInfo TimerNVIC[] = {
 	{.nvic_priority = NVIC_PRI26, .nvic_enable = NVIC_EN3, .nvic_enable_bit = BIT9HI, .priority_shift = 13}
 };
 
+// Initialize input capture on a wide timer
 void InitInputCapture(
 	uint8_t timer_num, 
 	uint8_t timer_letter,
@@ -518,6 +520,7 @@ Acknowledge_b checkAcknowledged(){
 	return (RS & BIT7HI) ? ((RS & BIT6HI) ? Busy_b : Blocked_b ) : ((RS & BIT6HI) ? ACK_b : NACK_b );
 }
 
+// Return the location from the last request status
 uint8_t getLocation() {
 	uint8_t *byte;
 	byte = getResponseArray();

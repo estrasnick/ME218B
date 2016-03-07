@@ -3,6 +3,7 @@
    PositionLogic_Service.c
 
  Description
+	Handles all positioning logic for the robot
 		
 ****************************************************************************/
 /*----------------------------- Include Files -----------------------------*/
@@ -148,6 +149,8 @@ ES_Event RunPositionLogicService( ES_Event ThisEvent )
 			CalculateAbsolutePosition();
 			break;
 		}
+		// Relative positioning was removed from the competition version of 
+		// the software
 		/*
 		case ES_TIMEOUT:
 		{
@@ -166,7 +169,6 @@ ES_Event RunPositionLogicService( ES_Event ThisEvent )
 		}*/
 		case ES_FACE_TARGET:
 		{
-			////printf("Facing target\r\n");
 			AlignToTarget();
 			break;
 		}
@@ -226,9 +228,17 @@ void ExecuteBackup(void)
 		return;
 	}
 	
+	// pause positioning
 	PausePositioning();
+	
+	// tell the drivetrain service that we are backing up
 	SetBackingUp(true);
+	
+	// set the backup drive
 	setTargetEncoderTicks(backupArray[backupIndex].leftTicks, backupArray[backupIndex].rightTicks, backupArray[backupIndex].leftNeg, backupArray[backupIndex].rightNeg);
+	
+	// move to the next entry in the backup array, so that we don't always
+	// back up in the same direction
 	backupIndex++;
 	if (backupIndex >= NELEMS(backupArray))
 	{
@@ -274,15 +284,11 @@ static void CalculateAbsolutePosition()
 	// in the middle of the calculations
 	disableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 
-	////printf("Calculating position...\r\n");
-
 	//Get our A, B, and C Encoder Angles
 	uint8_t lastBeaconIndex = mostRecentBeaconUpdate();
 	float A =  GetBeaconAngle_A(lastBeaconIndex);
 	float B =  GetBeaconAngle_B(lastBeaconIndex);
 	float C =  GetBeaconAngle_C(lastBeaconIndex);
-	
-	////printf("lastBeaconIndex: %d \n\r", lastBeaconIndex);
 	
 	//Get our Shifts for the rotation matrix
 	int xShift = getXShift(lastBeaconIndex);
@@ -315,35 +321,33 @@ static void CalculateAbsolutePosition()
 	
 	myTheta = ToAppropriateRange(ToDegrees(ToRadians(360 - B) + gamma + BMinusC - (.5f * PI)));
 	
-	////printf("ABSOLUTE POSITION BEFORE ROTATION MATRIX: X: %f, Y: %f, theta: %f\n\r", myX, myY, myTheta);	
-	
-	//Peform Rotations and Appropriate Shifts
+	//Peform Rotations and Appropriate Shifts to account for any 3 beacons used
 	myTempX = (myX*cos(ToRadians(thetaShift)) - myY*sin(ToRadians(thetaShift))) + xShift;
 	myTempY = (myX*sin(ToRadians(thetaShift)) + myY*cos(ToRadians(thetaShift))) + yShift;	
 	myTheta = ToAppropriateRange(myTheta + thetaShift); 
 	myX = myTempX;
-	myY = myTempY;
-	
-	//print our absolute position
-	//printf("ABSOLUTE POSITION: X: %f, Y: %f, theta: %f\n\r", myX, myY, myTheta);	
-	////printf("Last angle 'A' was: %d, A was: %f, B was: %f, C was: %f, gamma was: %f\r\n", lastBeaconIndex, A, B, C, ToDegrees(gamma));
 	
 	if ((myX < 0) || (myY < 0) || (myX > 96) || (myY > 96))
 	{
-		////printf("Oops. We calculated an invalid position.");
+		// If we calculated an invalid position, backup
 		ExecuteBackup();
 	}
 	else
 	{
+		// Otherwise, mark that we now have our absolute position
 		AbsolutePosition = true;
 	}
 	
+	// Reset all beacon information
 	ResetUpdateTimes();
 	
 	// Reenable the phototransistor interrupts
 	enableCaptureInterrupt(PHOTOTRANSISTOR_INTERRUPT_PARAMATERS);
 }
 
+
+// Note: Relative positioning was removed from the competition version of 
+// the software
 
 /***************************************************************************
 Relative Position Calculations (ie. Encoder Distance Travelled Calculations)
@@ -455,38 +459,38 @@ float ToAppropriateRange(float angle)
 	return angle;
 }*/
 
+// Returns the number of encoder ticks needed to rotate a given angle
 static uint32_t EncoderTicksForGivenAngle(float angle)
 {
 	return (ToRadians(angle) * DISTANCE_BETWEEN_WHEELS * DRIVE_GEAR_RATIO * ENCODER_PULSES_PER_REV) / (2 * WHEEL_CIRCUMFERENCE);
 }
 
+// Returns the current distance to our target AD bucket
 float DetermineDistanceToBucket(void)
 {
-	//////printf("Target x: %f, Target y: %f, My x: %f, My y: %f\r\n", TargetX, TargetY, myX, myY);
 	float yDist = (MyColor() ? 102.3 : -6.3) - myY;
 	float xDist = (MyColor() ? -6.3 : 102) - myX;
 	
 	return sqrt((yDist * yDist) + (xDist * xDist));
 }
 
+// Returns the current distance to the target
 static float DetermineDistanceToTarget(void)
 {
-	//printf("Target x: %f, Target y: %f, My x: %f, My y: %f\r\n", TargetX, TargetY, myX, myY);
 	float yDist = TargetY - myY;
 	float xDist = TargetX - myX;
 	
 	return sqrt((yDist * yDist) + (xDist * xDist));
 }
 
+// Returns the angle to the target relative to our current bearing
 static float DetermineAngleToTarget(float distanceToTarget)
 {
 	float theta = ToAppropriateRange(ToDegrees(asin((TargetY - myY)/distanceToTarget)));
 	if ((TargetX - myX) < 0)
 	{
-		////printf("less than 0\r\n");
 		theta = ToAppropriateRange(180 - theta);
 	}
-	////printf("theta is: %f\r\n", ToAppropriateRange(theta));
 	return ToAppropriateRange(myTheta - theta);
 }
 /*
@@ -502,20 +506,23 @@ static float DetermineAngleToBucket(float distanceToBucket)
 	return ToAppropriateRange(myTheta - theta);
 }*/
 
+// Rotate towards a target
 static void AlignToTarget(void)
 {
-	////printf("Distance to Target: %f\r\n", DetermineDistanceToTarget());
 	float angle = DetermineAngleToTarget(DetermineDistanceToTarget());
-	////printf("Angle to Target: %f\r\n", angle);
 	uint32_t ticks = EncoderTicksForGivenAngle(angle);
 	setTargetEncoderTicks(ticks, ticks, false, true);
 }
- 
+
+// Drive towards a target
 static void DriveToTarget(void)
 {
 	uint32_t ticks = ConvertInchesToEncoderTicks(DetermineDistanceToTarget());
 	
-	//printf("Changing ticks from %d", ticks);
+	// Our position is found at the center point of our robot. However, our
+	// sensors are at the front of the robot. As a result, when driving to a
+	// target we need to stop somewhat short in order to land with our hall
+	// sensors on the station.
 	if (ticks >= HALL_SENSOR_OFFSET_IN_TICKS)
 	{
 		ticks -= HALL_SENSOR_OFFSET_IN_TICKS;
@@ -526,7 +533,6 @@ static void DriveToTarget(void)
 		ticks = HALL_SENSOR_OFFSET_IN_TICKS - ticks;
 		setTargetEncoderTicks(ticks, ticks, true, true);
 	}
-	//printf(" to %d\r\n", ticks);
 }
 
 

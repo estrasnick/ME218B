@@ -1,9 +1,9 @@
 /****************************************************************************
  Module
-   CapturePS.c
+   CapturePS_SM.c
 
  Description
-   This is the top level state machine of the PAC Logic controlling communication with the SUPER PAC
+   Handles the various phases of trying to capture a polling station
 
  Notes
 
@@ -251,7 +251,6 @@ static ES_Event DuringMeasuring1_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-        //printf("Entering DuringMeasuring1_t \n\r");
 				ES_Timer_InitTimer(MEASURING_TIMEOUT_TIMER, MEASURING_TIMEOUT_T);
         // after that start any lower level machines that run in this state
         //StartLowerLevelSM( Event );
@@ -288,7 +287,6 @@ static ES_Event DuringRequest1_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-        //printf("Entering DuringRequest1_t \n\r");
         // after that start any lower level machines that run in this state
         StartRequestSM(Event);
         // repeat the StartxxxSM() functions for concurrent state machines
@@ -329,7 +327,6 @@ static ES_Event DuringMeasuring2_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-        //printf("Entering DuringMeasuring2_t \n\r");
 				ES_Timer_InitTimer(MEASURING_TIMEOUT_TIMER, MEASURING_TIMEOUT_T);
 			
         // after that start any lower level machines that run in this state
@@ -368,7 +365,6 @@ static ES_Event DuringRequest2_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-        //printf("Entering DuringRequest2_t \n\r");
         // after that start any lower level machines that run in this state
          StartRequestSM(Event);
         // repeat the StartxxxSM() functions for concurrent state machines
@@ -410,7 +406,6 @@ static ES_Event DuringMeasuring3_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
-        //printf("Entering DuringMeasuring3_t \n\r");
 				ES_Timer_InitTimer(MEASURING_TIMEOUT_TIMER, MEASURING_TIMEOUT_T);
 			
         // after that start any lower level machines that run in this state

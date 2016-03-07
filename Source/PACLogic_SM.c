@@ -80,6 +80,7 @@ ES_Event RunPACLogicSM( ES_Event CurrentEvent )
    ES_Event ReturnEvent = CurrentEvent; // assume we are not consuming event
 
 	 //If we are in our testing mode then we are going to ignore everything from the PAC
+	 // enable to use testing mode
 	// if (TESTING_MODE == false){	 
 	 
 	 if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == CAPTURE_TIMEOUT_TIMER))
@@ -149,7 +150,6 @@ ES_Event RunPACLogicSM( ES_Event CurrentEvent )
 							}
 							else if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == MEASURING_TIMEOUT_TIMER))
 							{
-								////printf("TAKING TOO LONG TO CAPTURE, MOVE ON! \n\r");
 								
 								ES_Event ResetDestinationEvent;
 								ResetDestinationEvent.EventType = ES_RESET_DESTINATION;
@@ -240,7 +240,6 @@ static ES_Event DuringWaiting4Command_t( ES_Event Event)
     // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
-				////printf("Entering Waiting4Command \n\r");
 			
         // implement any entry actions required for this state machine
 				//Recall Deferred Events
@@ -289,7 +288,6 @@ static ES_Event DuringCampaignStatus_t( ES_Event Event)
     // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
-        ////printf("Entering DuringCampaignStatus \n\r");
 				// implement any entry actions required for this state machine
 				//Post to an ES_SendCmd
 				ES_Event ThisEvent;
@@ -304,13 +302,13 @@ static ES_Event DuringCampaignStatus_t( ES_Event Event)
     }
     else if ( Event.EventType == ES_EXIT )
     {
-				//We Need to update the enemy queue now!!!!!
-			
         // on exit, give the lower levels a chance to clean up first
         RunSendingCMDSM( Event );
 			
         // repeat for any concurrently running state machines
         // now do any local exit functionality
+			
+			 // Update all game knowledge with the new campaign status info
 				UpdateGameStarted();
 				UpdateADStatus();
 				updatePSStatuses();
@@ -335,7 +333,6 @@ static ES_Event DuringCapture_t( ES_Event Event)
     // process ES_ENTRY, ES_ENTRY_HISTORY & ES_EXIT events
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
-        ////printf("Entering DuringCapture_t \n\r");
 				
 				// implement any entry actions required for this state machine
         ES_Timer_InitTimer(CAPTURE_TIMEOUT_TIMER, CAPTURE_TIMEOUT_T);
@@ -347,8 +344,6 @@ static ES_Event DuringCapture_t( ES_Event Event)
     }
     else if ( Event.EventType == ES_EXIT )
     {
-				//We Need to update the enemy queue now!!!!!
-			
         // on exit, give the lower levels a chance to clean up first
         RunCapturePSSM(Event);
 			
@@ -447,17 +442,19 @@ void SPI_Init(){
 /***************************************************************************
 SPI Functions 
  ***************************************************************************/
+// Return the result of the SPI data register
  uint8_t ReadDataRegister(void)
 {
 	return HWREG(SSI0_BASE+SSI_O_DR);
 }
 
+// Write to the SPI data register, starting a transfer
 void WriteDataRegister(uint8_t data)
 {
 	HWREG(SSI0_BASE+SSI_O_DR) = data;
 }
 
-
+// Interrupt response routine for the SPI end of transaction
 void SSI_InterruptResponse(void)
 {
 	HWREG(SSI0_BASE+SSI_O_ICR) = SSI_ICR_EOTIC;
@@ -476,6 +473,11 @@ uint8_t GetTargetFrequencyIndex()
 	return TargetFrequencyIndex;
 }
 
+/***************************************************************************
+SetTargetFrequencyIndex
+	Sets the frequency of the most recently encountered polling station
+	Used to know when we should ignore a given frequency on our hall sensors
+ ***************************************************************************/
 void SetTargetFrequencyIndex(uint8_t index)
 {
 	TargetFrequencyIndex  = index;

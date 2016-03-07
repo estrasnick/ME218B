@@ -1,4 +1,13 @@
-// Game Info mdoule
+/****************************************************************************
+ Module
+   GameInfo.c
+
+ Description
+   Manages various information about the current state of the game
+
+ Notes
+
+****************************************************************************/
 
 #include "ES_Configure.h"
 #include "ES_Framework.h"
@@ -34,13 +43,13 @@ typedef struct {
 	uint8_t location_code;
 	float location_x;
 	float location_y;
-	Claimed_b claimed_status;
-	uint8_t byte;
-	uint8_t bit1;
-	uint8_t bit2;	
-	uint8_t f_index;
-	bool obstructed;
-	uint32_t instrinsicPriority;
+	Claimed_b claimed_status; // who owns it
+	uint8_t byte; // which byte of the status reply contains it
+	uint8_t bit1; // bit1 of status reply
+	uint8_t bit2;	// bit2 of status reply
+	uint8_t f_index; // currently known frequency
+	bool obstructed; // is it known to be obstructed?
+	uint32_t instrinsicPriority; // intrinsic priority -- higher is worse
 } PS_Struct;
 
 /*---------------------------- Module Functions ---------------------------*/
@@ -89,25 +98,24 @@ void UpdateGameStarted()
 	uint8_t *byte;
 	byte = getResponseArray();
 	
-	//////printf("Game Started: %d \n\r", ((*(byte + 4) & BIT0HI) == BIT0HI));
-	
 	GameStarted = ((*(byte + 4) & BIT0HI) == BIT0HI) ;
 	
+	// If started, post it
 	if (GameStarted)
 	{
 		ES_Event StartEvent;
 		StartEvent.EventType = ES_GAME_STARTED;
 		PostMasterSM(StartEvent);
 	}
-	
-	////printf("Game Started value is: %d\r\n", GameStarted);
 }
 
+// return true iff the game is started
 bool CheckGameStarted(void)
 {
 	return GameStarted;
 }
 
+// Update our knowledge of who is disabled
 void UpdateADStatus(void)
 {
 	uint8_t *byte;
@@ -127,47 +135,55 @@ void UpdateADStatus(void)
 	}
 }
 
+// return true iff we are disabled
 bool AmIBlocked(void)
 {
 	return MyBlockStatus;
 }
 
+// return true iff enemy is disabled
 bool IsEnemyBlocked(void)
 {
 	return EnemyBlockStatus;
 }
 
+// set the owner of a station
 void SetStationOwner(uint8_t which, Claimed_b owner)
 {
 	PS_Array[which].claimed_status = owner;
 }
 
+// returns the owner of a station
 uint8_t GetStationOwner(uint8_t which)
 {
 	return PS_Array[which].claimed_status;
 }
 
+// returns the X location of a station
 float GetStationX(uint8_t which)
 {
 	return PS_Array[which].location_x;
 }
 
+// returns the Y location of a station
 float GetStationY(uint8_t which)
 {
 	return PS_Array[which].location_y;
 }
 
-
+// returns true iff a station is known to be obstructed
 bool IsObstructed(uint8_t which)
 {
 	return PS_Array[which].obstructed;
 }
 
+// marks that a station is obstructed
 void MarkObstructed(uint8_t which)
 {
 	PS_Array[which].obstructed = true;
 }
 
+// returns the intrinsic priority we have assigned to a station
 uint32_t GetIntrinsicPriority(uint8_t which)
 {
 	return PS_Array[which].instrinsicPriority;
@@ -180,22 +196,16 @@ bool NotByOurStation(void)
 	{
 		if (PS_Array[i].claimed_status == MyColor())
 		{
-			////printf("Found a station of our color\r\n");
 			if (DistanceToPoint(PS_Array[i].location_x, PS_Array[i].location_y) <= PROXIMITY_TO_OUR_STATION_THRESHOLD)
 			{
-				////printf("The distance is within our threshold: myx: %f, myy: %f, targetx: %f, targety: %f\r\n", getX(), getY(), PS_Array[i].location_x, PS_Array[i].location_y);
 				return false;
-			}
-			else
-			{
-				////printf("The distance is NOT within our threshold: myx: %f, myy: %f, targetx: %f, targety: %f\r\n", getX(), getY(), PS_Array[i].location_x, PS_Array[i].location_y);
 			}
 		}
 	}
 	return true;
 }
 
-//Update Location Statuses
+//Update polling station Statuses
 void updatePSStatuses(){
 	for (int i = 0; i < NUM_STATIONS; i++){
 		//Store Last Claimed Status
@@ -214,7 +224,7 @@ void updatePSStatuses(){
 	}
 }
 
-//Pass in byte and bits and returns whether or not claimed
+//Update the claimed status for a given station
 static void updateClaimedStatus(uint8_t index){
 	uint8_t *RA;
 	RA = getResponseArray();	
@@ -222,20 +232,14 @@ static void updateClaimedStatus(uint8_t index){
 	uint8_t byte = *(RA + PS_Array[index].byte);
 	uint8_t bit1 = PS_Array[index].bit1;
 	uint8_t bit2 = PS_Array[index].bit2;
-	/*
-	//printf("Response: ");
-	for (int i = 0; i < 5; i++)
-	{
-		//printf("%x, ", *(RA + i));
-	}
-	//printf("\r\n");
-	*/
+
 	PS_Array[index].claimed_status = (byte & bit1) ? ((byte & bit2) ?  Undefined_b : RED_b ) : ((byte & bit2) ? BLUE_b : Unclaimed_b );
 }
 
-//Update our Owned Frequencies
+//Update the known frequency at a station we have just captured
+// We use this information to make sure that we don't attempt a response
+//  to any frequencies that we own
 void updateCapturedFrequency(uint8_t station, uint8_t f_index){
-	////printf("Updating Captured Frequency Table. Station: %d,     Frequency Index: %d" , station, f_index);
 	PS_Array[station].f_index = f_index;
 }
 

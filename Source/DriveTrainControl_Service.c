@@ -3,6 +3,7 @@
    DriveTrainControl_Service.c
 
  Description
+		Controls the drive motors
 		
 ****************************************************************************/
 /*----------------------------- Include Files -----------------------------*/
@@ -160,24 +161,18 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 {
   ES_Event ReturnEvent;
   ReturnEvent.EventType = ES_NO_EVENT; // assume no errors
-	//printf("Drive train run function \r\n");
+	
 	//If we are in testing mode
 	if(TESTING_MODE){
 		
 		//If we receive any of these events (from keyboard presses)
 		switch (ThisEvent.EventType){
 			case (ES_DRIVE_FULL_SPEED):
-				printf("Driving forward full speed\r\n");
 				SetPWM_DriveLeft(FULL_SPEED, LEFT_DRIVE_FORWARD_PIN_DIRECTION);
 				SetPWM_DriveRight(FULL_SPEED, RIGHT_DRIVE_FORWARD_PIN_DIRECTION);
 				break;
 			case (ES_DRIVE_HALF_SPEED):
-				printf("Driving forward half speed\r\n");
-				setTargetEncoderTicks(250, 250, 0, 0);
-				//setTargetDriveSpeed(80, 80);
-				//SetPWM_DriveLeft(HALF_SPEED_L, LEFT_DRIVE_FORWARD_PIN_DIRECTION);
-				//SetPWM_DriveRight(HALF_SPEED_R, RIGHT_DRIVE_FORWARD_PIN_DIRECTION);		
-				
+				setTargetEncoderTicks(250, 250, 0, 0);	
 				break;
 			case (ES_REVERSE_HALF_SPEED):
 				printf("Driving reverse half speed\r\n");
@@ -186,30 +181,30 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 				break;
 			case (ES_STOP_DRIVE):
 				setTargetDriveSpeed(0, 0);
-				//SetPWM_DriveLeft(STOP_SPEED, LEFT_DRIVE_FORWARD_PIN_DIRECTION);
-				//SetPWM_DriveRight(STOP_SPEED, RIGHT_DRIVE_FORWARD_PIN_DIRECTION);
 				break;
 			default:
 				break;
 		}
 	}
 	
+	// If the left motor timed out
 	if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == MOTOR_STOPPED_L))
 	{
-		//printf("MOTOR_STOPPED left timer\r\n");
+		// Give it a zero period
 		EnterCritical();
 		Left_Period = 0;
 		Left_LastCapture = 0;
 		ExitCritical();
 		
-		printf("Left motor stopped\r\n");
+		// If it wasn't supposed to stop, update the stall counter
 		if (RPMTarget_Left != 0)
 		{
 			StallCounter_Left++;
+			
+			// if the motor has stalled, report a collision
 			if (StallCounter_Left > STALL_THRESHOLD)
 			{
 				ES_Timer_StopTimer(MOTOR_STOPPED_R);
-				printf("Collision detected!");
 				ES_Event CollisionEvent;
 				CollisionEvent.EventType = ES_COLLISION;
 				PostMasterSM(CollisionEvent);
@@ -221,22 +216,24 @@ ES_Event RunDriveTrainControlService( ES_Event ThisEvent )
 			}
 		}
 	}
+	// if the right motor timed out
 	else if ((ThisEvent.EventType == ES_TIMEOUT) && (ThisEvent.EventParam == MOTOR_STOPPED_R))
 	{
-		//printf("MOTOR_STOPPED right timer\r\n");
+		// Give it a zero period
 		EnterCritical();
 		Right_Period = 0;
 		Right_LastCapture = 0;
 		ExitCritical();
 		
-		printf("Right motor stopped\r\n");
+		// If it wasn't supposed to stop, update the stall counter
 		if (RPMTarget_Right != 0)
 		{
 			StallCounter_Right++;
+			
+			// if the motor has stalled, report a collision
 			if (StallCounter_Right > STALL_THRESHOLD)
 			{
 				ES_Timer_StopTimer(MOTOR_STOPPED_L);
-				printf("Collision detected!");
 				ES_Event CollisionEvent;
 				CollisionEvent.EventType = ES_COLLISION;
 				PostMasterSM(CollisionEvent);
@@ -260,7 +257,6 @@ void DriveEncoder_Left_InterruptResponse(void){
 
 	// start by clearing the source of the interrupt, the input capture event
 	clearCaptureInterrupt(DRIVE_LEFT_ENCODER_INTERRUPT_PARAMATERS);
-	//printf("Left Encoder interrupt\r\n");
 	
 	// increment the encoder ticks that we have seen
 	LeftEncoderTicks++;
@@ -270,9 +266,9 @@ void DriveEncoder_Left_InterruptResponse(void){
 	// Check if we've reached our target, and if so, stop
 	if (LeftEncoderTicks >= TargetTicks_Left && (!AligningToBucket) && TargetTicks_Left != 0)
 	{
-		printf("Left encoder reached destination: %d\r\n", TargetTicks_Left);
 		setTargetEncoderTicks(0, 0, false, false);
-		//if (RPMTarget_Right == 0)
+		
+		// If this was not a backup operation
 		if (!BackingUp)
 		{
 			ES_Event NewEvent;
@@ -297,25 +293,9 @@ void DriveEncoder_Left_InterruptResponse(void){
 
   //Update the Period based on the difference between the two rising edges
 	Left_Period = ThisCapture - Left_LastCapture;
- //printf("ThisCapture: %d, LastCapture: %d, Period: %d\r\n", ThisCapture, Left_LastCapture, Left_Period);
+	
 	// update LastCapture to prepare for the next edge
-	Left_LastCapture = ThisCapture;
-	
-	/*
-	//Store the last direction we were moving in
-	static uint8_t lastDirection;
-	uint8_t currentDirection = HWREG(DRIVE_BASE+(GPIO_O_DATA + ALL_BITS));
-	//Check if we experienced a sudden change in direction
-	if (lastDirection != currentDirection){
-				ES_Event CollisionEvent;
-				CollisionEvent.EventType = ES_COLLISION;
-				PostMasterSM(CollisionEvent);
-	}
-	lastDirection = currentDirection;
-*/
-	
-	
-	
+	Left_LastCapture = ThisCapture;	
 	
 	//Start the Motor Stopped Timer Again
 	ES_Timer_SetTimer(MOTOR_STOPPED_L, MOTOR_STOPPED_T);
@@ -328,8 +308,6 @@ void DriveEncoder_Right_InterruptResponse(void){
 	
 	// start by clearing the source of the interrupt, the input capture event
 	clearCaptureInterrupt(DRIVE_RIGHT_ENCODER_INTERRUPT_PARAMATERS);
-
-	//printf("Right Encoder interrupt\r\n");
 	
 	// increment the encoder ticks that we have seen
 	RightEncoderTicks++;
@@ -339,11 +317,9 @@ void DriveEncoder_Right_InterruptResponse(void){
 	// Check if we've reached our target, and if so, stop
 	if (RightEncoderTicks >= TargetTicks_Right && (!AligningToBucket) && TargetTicks_Right != 0)
 	{
-		printf("Right encoder reached destination: %d\r\n", TargetTicks_Right);
 		setTargetEncoderTicks(0, 0, false, false);
 		
-		//if (RPMTarget_Left == 0)
-		//
+		// If this was not a backup operation
 		if (!BackingUp)
 		{
 			ES_Event NewEvent;
@@ -369,49 +345,24 @@ void DriveEncoder_Right_InterruptResponse(void){
 
   //Update the Period based on the difference between the two rising edges
 	Right_Period = ThisCapture - Right_LastCapture;
-	//printf("ThisCapture: %d, LastCapture: %d, Period: %d\r\n", ThisCapture, Right_LastCapture, Right_Period);
 
 	// update LastCapture to prepare for the next edge
 	Right_LastCapture = ThisCapture;
-	
-	/*//Store the last direction we were moving in
-	static uint8_t lastDirection;
-	uint8_t currentDirection = HWREG(DRIVE_BASE+(GPIO_O_DATA + ALL_BITS));
-	//Check if we experienced a sudden change in direction
-	if (lastDirection != currentDirection){
-				ES_Event CollisionEvent;
-				CollisionEvent.EventType = ES_COLLISION;
-				PostMasterSM(CollisionEvent);
-	}
-	lastDirection = currentDirection;
-	*/
-	
+
 	//Start the Motor Stopped Timer Again
 	ES_Timer_SetTimer(MOTOR_STOPPED_R, MOTOR_STOPPED_T);
 }
 
 //Interrupt Response to Manage our Control Feedback loop to the motors
 void DriveControl_PeriodicInterruptResponse(void) {
-	//Print for testing
 	
 	// start by clearing the source of the interrupt
 	clearPeriodicInterrupt(DRIVE_CONTROL_INTERRUPT_PARAMATERS);
 	
-	//printf("RPM Targets: %f, %f \n\r", RPMTarget_Left, RPMTarget_Right);
 	//Calculate Control Response individually
 	uint8_t RequestedDuty_Left = calculateControlResponse(Left_Period, integralTerm_Left, RPMTarget_Left, false);
 	uint8_t RequestedDuty_Right = calculateControlResponse(Right_Period, integralTerm_Right, RPMTarget_Right, true);
 
-	/*
-		static int i;
-		if (i++ > 100)
-		{
-			printf("Implementing control response: left=%d, right=%d\r\n", RequestedDuty_Left, RequestedDuty_Right);
-			printf("Left period was: %d, right period was: %d\r\n", Left_Period, Right_Period);
-			i=0;
-		}*/
-	
-	//printf("Req. duty: %d, %d\r\n", RequestedDuty_Left, RequestedDuty_Right);
 	//Implement Control Response Similtaneously
 	implementControlResponse(RequestedDuty_Left, RequestedDuty_Right);
 }
@@ -448,30 +399,6 @@ static uint8_t calculateControlResponse(uint32_t ThisPeriod, float integralTerm,
 		LastError_Left = RPMError;
 		integralTerm_Left = integralTerm;
 	}
-	/*
-	static int i;
-		if (i++ > 51)
-		{
-			if (isRight)
-			{
-				printf("\r\nRIGHT");
-			}
-			else
-			{
-				printf("\r\n LEFT");
-			}
-			printf("\n\r period %d", ThisPeriod);
-			printf("\n\r targetSpeed %f", targetSpeed);
-			printf("\n\r currentRPM %f", currentRPM);
-			printf("\n\r RPMError %f", RPMError);
-			printf("\r\n LastError %f", lastError);
-			printf("\n\r Integral Term %f", integralTerm);
-			printf("\r\n Requested duty %f", RequestedDuty);
-			printf("\n\r");
-			i = 0;
-		}
-*/
-	
 	return clamp(RequestedDuty, 0, 100);
 }
 
@@ -482,6 +409,7 @@ static void implementControlResponse(uint8_t left, uint8_t right){
 	SetPWM_DriveRight(right, (RPMTarget_Right > 0) ? RIGHT_DRIVE_FORWARD_PIN_DIRECTION : RIGHT_DRIVE_BACKWARD_PIN_DIRECTION);
 }
 
+// Calculate our current RPM given an encoder period
 static float CalculateRPM(uint32_t period) 
 {
 	if (period == 0)
@@ -545,7 +473,6 @@ void clearDriveAligningToBucket(void)
      Set the New Target Encoder Ticks
 ****************************************************************************/
 void setTargetEncoderTicks(uint32_t leftTicks, uint32_t rightTicks, bool negativeLeft, bool negativeRight){
-	//printf("Encoder ticks set to: %d, %d, direction %d, %d\r\n", leftTicks, rightTicks, negativeLeft, negativeRight);
 	isMoving = true;
 	
 	TargetTicks_Left = leftTicks;
@@ -612,6 +539,10 @@ bool IsMoving(void)
 	return isMoving;
 }
 
+/****************************************************************************
+ Function
+     Set the backup operation flag
+****************************************************************************/
 void SetBackingUp(bool val)
 {
 	BackingUp = val;

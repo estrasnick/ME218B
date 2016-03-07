@@ -1,9 +1,9 @@
 /****************************************************************************
  Module
-   PAC Logic.c
+   HallEffect_SM.c
 
  Description
-   This is the top level state machine of the PAC Logic controlling communication with the SUPER PAC
+   Manages the hall effect sensors and the identification of polling stations
 
  Notes
 
@@ -114,14 +114,15 @@ ES_Event RunHallEffectSM( ES_Event CurrentEvent )
    ES_Event EntryEventKind = { ES_ENTRY, 0 };// default to normal entry to new state
    ES_Event ReturnEvent = CurrentEvent; // assume we are not consuming event
 
+	 // If we stop seeing pulses on the hall sensor, reset
 	 if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == HALL_EFFECT_TIMEOUT_TIMER))
 	 {
-	 	 printf("Hall effect timeout; resetting buckets\r\n");
 	 	 for (int i = 0; i < NUMBER_FREQUENCIES; i++)
 	 	 {
 	 	 	 buckets[i] = 0;
 	 	 }
 		 
+		 // Go back to the measuring state
 		 ES_Event MeasureEvent;
 		 MeasureEvent.EventType = ES_PS_MEASURING;
 		 PostMasterSM(MeasureEvent);
@@ -138,9 +139,9 @@ ES_Event RunHallEffectSM( ES_Event CurrentEvent )
 					 if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
 					 {	
 							//Check for Specific Events
+							// If we detect a polling station frequency
 							if (CurrentEvent.EventType == ES_PS_DETECTED)
 							{
-								printf("PS detected with Frequency:%d !\r\n", CurrentEvent.EventParam);
 								MakeTransition = true;
 								NextState = Requesting_t;
 							}
@@ -155,6 +156,7 @@ ES_Event RunHallEffectSM( ES_Event CurrentEvent )
 					 if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
 					 {	
 							//Check for Specific Events
+							// If we are supposed to return to measuring
 							if (CurrentEvent.EventType == ES_PS_MEASURING)
 							{
 								MakeTransition = true;
@@ -197,7 +199,8 @@ void StartHallEffectSM ( ES_Event CurrentEvent )
 {
   //Initialize the Hall Effect Interrupts
 	initializeHEInterrupts();
-		
+	
+	// Disable the hall interrupts. They will restart when the game starts
 	disableHEInterrupts();
 	
 	// to implement entry to a history state or directly to a substate
@@ -438,46 +441,52 @@ void updateBuckets(uint32_t CurrentPeriod){
 	
 	//Shift Periods Down
 	for (int i = 0; i < NUMBER_FREQUENCIES; i++){
+			// If the period matches a legitimate period per the field spec
 			if (toleranceCheck(CurrentPeriod, HallEffect_P[i], PERIOD_MEASURING_ERROR_TOLERANCE))
 			{
+				// Increment the number of periods seen for that frequency
 				buckets[i]++;
+				
+				// If we have seen enough of a given frequency to consider it a match
 				if (buckets[i] > NUMBER_PULSES_TO_STOP)
 				{
-					//printf("Choosing bucket:%d \r\n", i);
+					// If we do not own this frequency
 					if (!checkOwnFrequency(i)){
 						//Disable the Interrupts
 						disableHEInterrupts();
+						
+						// Stop the timeout timer, as we have a match
 						ES_Timer_StopTimer(HALL_EFFECT_TIMEOUT_TIMER);
-						//printf("Checked own frequency table, didn't match. Post that new PS was detected: %d Sensor %d \n\r", periodMatchIndex, sensor_index);
 						 
 						//Post to master that we detected a polling station
 						ES_Event ThisEvent;
 						ThisEvent.EventType = ES_PS_DETECTED;
 						ThisEvent.EventParam = i; //Pass Index Over
+						
 						//set the target frequency index
 						SetTargetFrequencyIndex(i);
 						
 						PostMasterSM(ThisEvent);
 						
 					}
-					else
-					{
-						//printf("Matched an owned frequency: %d Sensor %d \n\r", periodMatchIndex, sensor_index);
-					}
-					// reset buckets
+					
+					// reset all buckets
 					for (int i = 0; i < NUMBER_FREQUENCIES; i++){
 						buckets[i] = 0;
 					}
 				}
-				
-				ES_Timer_InitTimer(HALL_EFFECT_TIMEOUT_TIMER, HALL_EFFECT_TIMEOUT_T);
+				else
+				{
+					// Restart the hall effect timeout timer
+					ES_Timer_InitTimer(HALL_EFFECT_TIMEOUT_TIMER, HALL_EFFECT_TIMEOUT_T);
+				}
 				
 				return;
 			}
 	}
 }
 
-//Tolerance Check
+// Returns true if the value matches the target within a specified tolerance
 static bool toleranceCheck(uint32_t value, uint32_t target, uint32_t tol){
 	//Check if within Tolerance
 	if ( (value <= target + tol) && (value >= target - tol)){

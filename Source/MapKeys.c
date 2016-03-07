@@ -6,7 +6,7 @@
    1.0.1
 
  Description
-   This service maps keystrokes to events 
+   This service maps keystrokes to events. Used for testing.
 
  Notes
 

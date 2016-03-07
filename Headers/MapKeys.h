@@ -1,5 +1,5 @@
 /****************************************************************************
- Template header file for Hierarchical Sate Machines AKA StateCharts
+ MapKeys header file
 
  ****************************************************************************/
 

@@ -22,6 +22,7 @@ typedef struct {
     uint8_t head, tail, max;
 } queue;
 
+// queue struct
 static queue q = 
 {
 	.head = 0,
@@ -75,6 +76,7 @@ uint8_t PositionInQueue(uint8_t station)
 	int i = q.head;
 	int position = 0;
 	
+	// search for station in queue
 	while(i != q.tail)
 	{
 		if (q.stationIndices[i] == station)

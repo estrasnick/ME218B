@@ -1,6 +1,6 @@
 /****************************************************************************
  Module
-   master_SM.c
+   Master_SM.c
 
  Description
    This is a the master state machine that handles all lower level state machines
@@ -60,6 +60,7 @@ bool InitMasterSM ( uint8_t Priority )
 	
   ThisEvent.EventType = ES_ENTRY;
 	
+	// Initialize game status pins
 	GPIO_Init(GAME_SYSCTL, GAME_BASE, GAME_STATUS_PIN, OUTPUT);
 	GPIO_Init(GAME_SYSCTL, GAME_BASE, COLOR_PIN, INPUT);
 	

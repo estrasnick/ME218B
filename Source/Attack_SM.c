@@ -1,9 +1,9 @@
 /****************************************************************************
  Module
-   PAC Logic.c
+   Attack_SM.c
 
  Description
-   This is the top level state machine of the PAC Logic controlling communication with the SUPER PAC
+   Carries out the actions in the attack sequence
 
  Notes
 
@@ -87,15 +87,15 @@ ES_Event RunAttackSM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
+					 // If our cannon has reached its target speed
             if (CurrentEvent.EventType == ES_CANNON_READY /*|| ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == CANNON_READY_TIMER))*/) //comes from Cannon Control Service when we reach our an RPM error of zero
             {
-							printf("Cannon ready\r\n");
 							NextState = CannonReady_t;
 							MakeTransition = true;
             }
+						// If we are aligned to the bucket
 						else if (CurrentEvent.EventType == ES_ALIGNED_TO_BUCKET)
 						{
-							printf("Aligned to bucket\r\n");
 							NextState = Aligned_t;
 							MakeTransition = true;
 						}
@@ -110,6 +110,8 @@ ES_Event RunAttackSM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
+					 
+					 // If our cannon has reached its target speed
             if (CurrentEvent.EventType == ES_CANNON_READY /*|| ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == CANNON_READY_TIMER))*/)
             {
 							printf("Cannon ready\r\n");
@@ -127,6 +129,8 @@ ES_Event RunAttackSM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
+					 
+					 // If we are aligned to the bucket
             if (CurrentEvent.EventType == ES_ALIGNED_TO_BUCKET)
 						{
 							printf("Aligned to bucket\r\n");
@@ -225,11 +229,14 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
 			// implement any entry actions required for this state machine
+			
+			// If we have our absolute position
 			if (IsAbsolutePosition())
 			{
 				//Pause our Positioning using the Periscope
-				printf("entering attack state machine. Strategy state is %d\r\n", QueryStrategySM());
 				LatchPeriscope();
+				
+				// Tell the drivetrain that we wish to align with a bucket
 				SetAttemptingToStop(true);
 				
 				//Post an Align Event in order to use the latch to align the periscope
@@ -245,11 +252,10 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event)
 			}
 			else
 			{
+				// Otherwise, check again in a while if we have our absolute position
 				ES_Timer_InitTimer(POSITION_CHECK, POSITION_CHECK_T);
 			}
 			// after that start any lower level machines that run in this state
-			
-			//ES_Timer_InitTimer(CANNON_READY_TIMER, CANNON_READY_T);
 			
 			// after that start any lower level machines that run in this state
 			//StartLowerLevelSM( Event );
@@ -275,11 +281,14 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event)
 				if ((Event.EventType == ES_TIMEOUT) & (Event.EventParam == POSITION_CHECK))
 				{
 					// implement any entry actions required for this state machine
+					
+					// If we have our absolute position
 					if (IsAbsolutePosition())
 					{
 						//Pause our Positioning using the Periscope
-						printf("entering attack state machine\r\n");
 						LatchPeriscope();
+						
+						// Tell the drivetrain that we wish to align with a bucket
 						SetAttemptingToStop(true);
 						
 						//Post an Align Event in order to use the latch to align the periscope
@@ -295,6 +304,7 @@ static ES_Event DuringAlign_and_StartCannon_t( ES_Event Event)
 					}
 					else
 					{
+						// Otherwise, check again in a while if we have our absolute position
 						ES_Timer_InitTimer(POSITION_CHECK, POSITION_CHECK_T);
 					}	
 				}
@@ -386,7 +396,11 @@ static ES_Event DuringFire_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
+			
+				// Start the timer for our attack to finish
         ES_Timer_InitTimer(ATTACK_COMPLETE_TIMER, ATTACK_COMPLETE_T);
+			
+				// Load the ball into the hopper, starting the fire sequence
 				LoadChamber();
         // after that start any lower level machines that run in this state
         //StartLowerLevelSM( Event );
@@ -399,7 +413,11 @@ static ES_Event DuringFire_t( ES_Event Event)
         //RunLowerLevelSM(Event);
         // repeat for any concurrently running state machines
         // now do any local exit functionality
+			
+				// Reset our positioning
 				ResetAligningToBucket();
+			
+				// Deccelerate the cannon
 				ES_Event StopCannonEvent;
 				StopCannonEvent.EventType = ES_STOP_CANNON;
 				PostCannonControlService(StopCannonEvent);
@@ -418,15 +436,15 @@ static ES_Event DuringFire_t( ES_Event Event)
     return(ReturnEvent);
 }
 
+// Loads a ball into the hopper and start a timer to fire
 static void LoadChamber(void)
 {
-	printf("Load Hopper \n\r");
 	SetPWM_Hopper(HOPPER_LOAD_DUTY);
 	ES_Timer_InitTimer(HOPPER_LOAD_TIMER, HOPPER_LOAD_T);
 }
 
+// Drives the hammer back through the chamber, firing the ball
 static void DriveHammer(void)
 {
-	printf("FIRING!!!!!\r\n");
 	SetPWM_Hopper(HOPPER_DEFAULT_DUTY);
 }

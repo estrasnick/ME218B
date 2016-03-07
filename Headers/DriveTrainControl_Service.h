@@ -1,5 +1,5 @@
 /****************************************************************************
-DriveTrainControl_Service
+DriveTrainControl_Service header file
  ****************************************************************************/
 
 #ifndef DriveTrainControl_H

@@ -1,5 +1,5 @@
 /****************************************************************************
-PeriscopeControl_Service
+PeriscopeControl_Service header file
  ****************************************************************************/
 
 #ifndef PeriscopeControl_H

@@ -1,7 +1,6 @@
 /****************************************************************************
  
-  Header file for template service 
-  based on the Gen 2 Events and Services Framework
+  Phototransistor Header file
 
  ****************************************************************************/
 

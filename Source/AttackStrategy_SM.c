@@ -1,9 +1,10 @@
 /****************************************************************************
  Module
-   PAC Logic.c
+   AttackStrategy_SM.c
 
  Description
-   This is the top level state machine of the PAC Logic controlling communication with the SUPER PAC
+   Controls when to attack during the game, and interfaces with the other 
+		modules to shift us into attack mode
 
  Notes
 
@@ -83,9 +84,9 @@ ES_Event RunAttackStrategySM( ES_Event CurrentEvent )
          if ( (CurrentEvent.EventType != ES_NO_EVENT ) && (attackingEnabled))//If an event is active and attacking is enabled
          {	
 						//Check for Specific Events
+						// If preparing to attack, start revving phase
             if (((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == ATTACK_PHASE_TIMER)) || (CurrentEvent.EventType == ES_MANUAL_SHOOT))
 						{
-							////////printf("Starting rev");
 							NextState = Rev_t;
 							MakeTransition = true;
 						}
@@ -100,6 +101,7 @@ ES_Event RunAttackStrategySM( ES_Event CurrentEvent )
          if ( (CurrentEvent.EventType != ES_NO_EVENT ) && (attackingEnabled))//If an event is active and attacking is enabled
          {	
 						//Check for Specific Events
+						// If time to shoot, enter attack SM
             if (((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == ATTACK_PHASE_TIMER)) || (CurrentEvent.EventType == ES_MANUAL_SHOOT))
 						{
 							NextState = Attack_t;
@@ -116,6 +118,7 @@ ES_Event RunAttackStrategySM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
+					 // If the attack is complete, wait for the next attack
 					 if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == ATTACK_COMPLETE_TIMER))
             {
 							NextState = Wait4NextAttack_t;
@@ -132,6 +135,7 @@ ES_Event RunAttackStrategySM( ES_Event CurrentEvent )
          if ( CurrentEvent.EventType != ES_NO_EVENT ) //If an event is active
          {	
 						//Check for Specific Events
+						// Go back to attack if it's time to shoot again
             if ((CurrentEvent.EventType == ES_TIMEOUT) && (CurrentEvent.EventParam == ATTACK_PHASE_TIMER))
             {
 							NextState = Attack_t;
@@ -255,7 +259,11 @@ static ES_Event DuringRev_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
+			
+				// Start the timer for us to enter the attack phase
 				ES_Timer_InitTimer(ATTACK_PHASE_TIMER, ATTACK_PHASE_T);
+			
+				// rev the cannon up to speed
 				setTargetCannonSpeed(REV_SPEED);
 			
         // after that start any lower level machines that run in this state
@@ -293,6 +301,7 @@ static ES_Event DuringAttack_t( ES_Event Event)
     if ( (Event.EventType == ES_ENTRY) || (Event.EventType == ES_ENTRY_HISTORY) )
     {
         // implement any entry actions required for this state machine
+				// Stop positioning when in the attack SM
 				ES_Timer_StopTimer(POSITION_CHECK);
         // after that start any lower level machines that run in this state
         //StartLowerLevelSM( Event );
@@ -308,13 +317,15 @@ static ES_Event DuringAttack_t( ES_Event Event)
 			// repeat for any concurrently running state machines
 			// now do any local exit functionality
 			
+			// Count the number of shots, and don't start a next shot timer
+			// if we are out of ammo
 			shotCounter++;
 			if (shotCounter < 5)
 			{
 				ES_Timer_InitTimer(ATTACK_PHASE_TIMER, NEXT_SHOT_T);
 			}
 			
-			
+			// Reset positioning
 			ES_Event ResetEvent;
 			ResetEvent.EventType = ES_RESET_DESTINATION;
 			PostMasterSM(ResetEvent);

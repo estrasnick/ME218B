@@ -3,7 +3,7 @@
    SendingCMD.c
 
  Description
-   This is the top level state machine of the PAC Logic controlling communication with the SUPER PAC
+   Sends a command via SPI
 
  Notes
 
@@ -320,8 +320,7 @@ uint8_t * getResponseArray(){
 }
 
 static void checkForPACError(void){
-	//If the first byte received was FF
-	//printf("%x, %x, %x, %x, %x\r\n", responseArray[0], responseArray[1], responseArray[2], responseArray[3], responseArray[4]);
+	//If the first byte received was FF, the PAC is in an error state
 	if (responseArray[0] == 0xff){
 		GPIO_Set(PACERROR_BASE, PAC_ERROR_PIN);
 	} else {
